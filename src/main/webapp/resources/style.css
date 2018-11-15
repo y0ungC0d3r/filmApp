@@ -1,0 +1,139 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 114px;
+	background-color: #333333;
+}
+
+.nav {
+	margin-bottom: 50px !important;
+	box-shadow: 0px 0px 11px 1px rgba(0,0,0,0.5);
+}
+
+.film-card {
+	background-color: #2f3439;
+	width: 20rem !important;
+	box-shadow: 0px 0px 11px 1px rgba(0,0,0,0.5);
+	border-style: none !important;
+}
+
+.box-colors {
+	color: LightGray;
+	background-color: #2b2b2b;
+}
+
+.shadow {
+  box-shadow: 0px 0px 11px 1px rgba(0,0,0,0.5) !important;
+}
+
+.logo {
+  color: #fff;
+  font-family: 'Pacifico', cursive;
+  font-size: 100px;
+}
+
+nav .logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 28px;
+}
+
+.green-font-color {
+	color: #349B89;
+}
+
+.orange-font-color {
+	color: #EC7149;
+}
+
+.card-columns {
+	margin-bottom: 0px !important;
+}
+
+.footer {
+	margin-top: 50px;
+	position: absolute;
+  bottom: 0;
+  width: 100%;
+  /*height: 64px;*/
+	background-color: #2b2b2b;
+}
+
+table.film-data {
+  color: silver;
+}
+
+.film-data th {
+  padding-right: 30px;
+  color: #349B89;
+}
+
+p.description {
+  color: silver;
+}
+
+.rating-box {
+  color: #FFD700;
+  font-size: 36px;
+}
+
+.transparent-button {
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+.dark-blue {
+  background-color: #2f3439 !important;
+}
+
+/* Pagination */
+.pagination a {
+  color: white;
+  float: left;
+  padding: 8px 16px;
+	border-radius: .25rem;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: #ffc107;
+  color: black;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+/****** Style Star Rating Widget *****/
+
+.rating {
+  border: none;
+  float: left;
+}
+
+.rating > input { display: none; }
+.rating > label:before {
+  margin: 5px;
+  font-size: 1.25em;
+  display: inline-block;
+}
+
+.rating > label {
+	color: #ddd;
+	float: right;
+	margin: 5px;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold stars when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700; } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85; }

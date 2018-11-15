@@ -23,19 +23,26 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
         return "registration";
+    }*/
+
+    @RequestMapping(value = { "/start", "/register", "login" }, method = RequestMethod.GET)
+    public String registration(Model model) {
+        model.addAttribute("userForm", new User());
+
+        return "start";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "start";
         }
 
         userService.save(userForm);
@@ -45,15 +52,18 @@ public class UserController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(Model model, String error, String logout) {
-        if (error != null)
+
+        if (error != null) {
             model.addAttribute("error", "Nieprawidłowy login lub hasło");
+        }
 
-        if (logout != null)
+        if (logout != null) {
             model.addAttribute("message", "Zostałeś wylogowany.");
+        }
 
-        return "login";
+        return "start";
     }
 
     /*@RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
