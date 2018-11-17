@@ -30,18 +30,20 @@ public class UserController {
         return "registration";
     }*/
 
-    @RequestMapping(value = { "/start", "/register", "login" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/start", "/register", "/login" }, method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        model.addAttribute("loginUserForm", new User());
+        model.addAttribute("registerUserForm", new User());
 
         return "start";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("registerUserForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("loginUserForm", new User());
             return "start";
         }
 
@@ -53,7 +55,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, String error, String logout) {
+    public String login(@ModelAttribute("loginUserForm") User userForm, Model model, String error, String logout) {
 
         if (error != null) {
             model.addAttribute("error", "Nieprawidłowy login lub hasło");

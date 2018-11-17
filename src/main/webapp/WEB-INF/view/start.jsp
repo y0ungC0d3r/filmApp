@@ -38,16 +38,20 @@
 					</div>
 
 					<div class="px-4 pb-4">
-						<form method="post" action="/login">
+						<form:form method="post" action="login" modelAttribute="loginUserForm">
 					        <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Nazwa użytkownika">
+					            <spring:bind path="username">
+                                    <form:input type="text" path="username" class="form-control" placeholder="Nazwa użytkownika"></form:input>
+                                </spring:bind>
                             </div>
 
 					        <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Hasło">
+					            <spring:bind path="password">
+                                    <form:input type="password" path="password" class="form-control" placeholder="Hasło"></form:input>
+                                </spring:bind>
                             </div>
 							<button class="btn btn-warning btn-block mt-4" type="submit">Zaloguj się</button>
-						</form>
+						</form:form>
 					</div>
 				</div>
 
@@ -63,10 +67,11 @@
 					</div>
 
 					<div class="px-4 pb-4">
-						<form:form method="post" action="register" modelAttribute="userForm">
+						<form:form method="post" action="register" modelAttribute="registerUserForm">
 						    <div class="form-group">
                                 <spring:bind path="username">
-                                    <form:input type="text" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}" path="username" placeholder="Nazwa użytkownika"></form:input>
+                                    <form:input type="text" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}"
+                                        path="username" placeholder="Nazwa użytkownika"></form:input>
                                     <div class="invalid-feedback">
                                         <form:errors path="username"></form:errors>
                                     </div>
@@ -74,7 +79,8 @@
 						    </div>
 						    <div class="form-group">
                                 <spring:bind path="password">
-                                    <form:input type="password" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}" path="password" placeholder="Hasło"></form:input>
+                                    <form:input type="password" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}"
+                                        path="password" placeholder="Hasło"></form:input>
                                     <div class="invalid-feedback">
                                         <form:errors path="password"></form:errors>
                                     </div>
@@ -82,7 +88,8 @@
 						    </div>
 						    <div class="form-group">
                                 <spring:bind path="passwordConfirm">
-                                    <form:input type="password" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}" path="passwordConfirm" placeholder="Potwierdź hasło"></form:input>
+                                    <form:input type="password" class="form-control ${status.error ? 'is-invalid' : 'is-valid'}"
+                                        path="passwordConfirm" placeholder="Potwierdź hasło"></form:input>
                                     <div class="invalid-feedback">
                                         <form:errors path="passwordConfirm"></form:errors>
                                     </div>
