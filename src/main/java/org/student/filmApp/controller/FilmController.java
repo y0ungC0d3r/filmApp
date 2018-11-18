@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.Country;
 import org.student.filmApp.entity.Genre;
 import org.student.filmApp.service.CountryService;
+import org.student.filmApp.service.FilmService;
 import org.student.filmApp.service.GenreService;
 import org.student.filmApp.utils.DateUtils;
 
@@ -24,6 +25,9 @@ public class FilmController {
 
     @Autowired
     GenreService genreService;
+
+    @Autowired
+    FilmService filmService;
 
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     String showFilms(Model model) {
@@ -43,6 +47,7 @@ public class FilmController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchCriteria, Model model) {
         filmSearchCriteria.forEach((k, mv) -> mv.forEach(v -> System.out.println(k + "  " + v)));
+        filmService.findFilm(filmSearchCriteria);
         return "films";
     }
 

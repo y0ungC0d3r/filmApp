@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-11 col-8">
                             <div class="input-group mb-5">
-                                <input type="text" class="form-control" name="film-title" placeholder="Wyszukaj film..." />
+                                <input type="text" class="form-control" name="title" placeholder="Wyszukaj film..." />
                                 <div class="input-group-btn">
                                     <button class="btn btn-warning" type="submit"><i class="fa fa-search"></i></button>
                                 </div>
@@ -115,7 +115,7 @@
                         <div class="form-group row my-3">
                             <label for="" class="col-sm-2 col-form-label">Lata produkcji</label>
                             <div class="col-sm-10 form-group">
-                                <select class="selectpicker" name="years" title="Wybierz lata..." data-width="100%" data-size="8" multiple="true">
+                                <select class="selectpicker" name="year" title="Wybierz lata..." data-width="100%" data-size="8" multiple="true">
                                     <c:forEach items="${years}" var="year">
                                         <option value="${year}">${year}</option>
                                     </c:forEach>

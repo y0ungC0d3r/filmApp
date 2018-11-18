@@ -20,33 +20,33 @@ public class Film {
 	@Id
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "original_title")
 	private String originalTitle;
-	
+
 	@Column(name = "polish_title")
 	private String polishTitle;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "worldwide_release_date")
 	private Date worldwideReleaseDate;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "polish_release_date")
 	private Date polishReleaseDate;
-	
+
 	@Column(name = "budget")
 	private Integer budget;
-	
+
 	@Column(name = "box_office")
 	private Integer boxOffice;
-	
+
 	@Column(name = "running_time")
 	private Integer runningTime;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.film")
 	private Set<Actor> filmActors;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "directorFilms")
 	private Set<Person> filmDirectors;
 
@@ -64,6 +64,9 @@ public class Film {
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "cinematographerFilms")
 	private Set<Person> filmCinematographers;
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "films")
+	private Set<Genre> genres;
 
 	public Long getId() {
 		return id;
@@ -183,5 +186,13 @@ public class Film {
 
 	public void setFilmCinematographers(Set<Person> filmCinematographers) {
 		this.filmCinematographers = filmCinematographers;
+	}
+
+	public Set<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(Set<Genre> genres) {
+		this.genres = genres;
 	}
 }
