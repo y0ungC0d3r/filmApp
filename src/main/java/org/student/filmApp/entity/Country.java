@@ -11,25 +11,25 @@ public class Country {
 
 	@Id
 	@Column(name = "country_code_id")
-	private String countryCodeID;
+	private String codeId;
 	
 	@Column(name = "country_name")
-	private String countryName;
+	private String name;
 
-	public String getCountryCodeID() {
-		return countryCodeID;
+	public String getCodeId() {
+		return codeId;
 	}
 
-	public void setCountryCodeID(String countryCodeID) {
-		this.countryCodeID = countryCodeID;
+	public void setCodeId(String codeId) {
+		this.codeId = codeId;
 	}
 
-	public String getCountryName() {
-		return countryName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }
