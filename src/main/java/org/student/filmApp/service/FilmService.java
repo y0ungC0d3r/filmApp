@@ -2,18 +2,18 @@ package org.student.filmApp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
-import org.student.filmApp.entity.Film;
-import org.student.filmApp.entity.Film_;
-import org.student.filmApp.entity.Genre;
-import org.student.filmApp.entity.Genre_;
+import org.student.filmApp.entity.*;
 import org.student.filmApp.repository.FilmRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,30 +35,71 @@ public class FilmService {
         return filmRepository.findById(id).orElse(null);
     }
 
-    public Set<Film> findFilm(MultiValueMap<String, String> criteria) {
+    @Transactional
+    public Set<Film> findFilmBySearchTerms(MultiValueMap<String, String> criteria) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Film> cq = cb.createQuery(Film.class);
-
-        List<Long> wantedGenres = criteria.get(GENRE_CRITERION_NAME)
-                .stream()
-                .map(Long::valueOf)
-                .collect(Collectors.toList());
-
         Root<Film> root = cq.from(Film.class);
-        SetJoin<Film, Genre> genreNode = root.join(Film_.genres);
-        Predicate genresPredicate = genreNode.get(Genre_.id).in(wantedGenres);
-        cq.where(genresPredicate);
 
+        List<Predicate> predicates = new ArrayList<>();
 
-        //cq.select(root).where(genresPredicate);
+        if(!CollectionUtils.isEmpty(criteria.get(TITLE_CRITERION_NAME))) {
+            Predicate polishTitlePredicate = cb.like(root.get(Film_.polishTitle),
+                    "%" + criteria.get(TITLE_CRITERION_NAME).get(0) + "%");
+            Predicate originalTitlePredicate = cb.like(root.get(Film_.originalTitle),
+                    "%" + criteria.get(TITLE_CRITERION_NAME).get(0) + "%");
+
+            Predicate titlePredicate = cb.or(polishTitlePredicate, originalTitlePredicate);
+            predicates.add(titlePredicate);
+        }
+
+        if(!CollectionUtils.isEmpty(criteria.get(YEARS_CRITERION_NAME))) {
+            Predicate[] datePredicates = criteria.get(YEARS_CRITERION_NAME)
+                    .stream()
+                    .map(Integer::valueOf)
+                    .map(y ->
+                            cb.between(root.get(Film_.polishReleaseDate), getFirstDateOfYear(y), getLastDateOfYear(y)))
+                    .toArray(Predicate[]::new);
+
+            Predicate completeDatePredicate = cb.or(datePredicates);
+            predicates.add(completeDatePredicate);
+        }
+
+        if(!CollectionUtils.isEmpty(criteria.get(GENRE_CRITERION_NAME))) {
+            SetJoin<Film, Genre> genreNode = root.join(Film_.genres);
+
+            List<Long> wantedGenres = criteria.get(GENRE_CRITERION_NAME)
+                    .stream()
+                    .map(Long::valueOf)
+                    .collect(Collectors.toList());
+
+            Predicate genresPredicate = genreNode.get(Genre_.id).in(wantedGenres);
+            predicates.add(genresPredicate);
+        }
+
+        if(!CollectionUtils.isEmpty(criteria.get(COUNTRY_CRITERION_NAME))) {
+            SetJoin<Film, Country> countryNode = root.join(Film_.countries);
+            Predicate countriesPredicate = countryNode.get(Country_.codeId).in(criteria.get(COUNTRY_CRITERION_NAME));
+            predicates.add(countriesPredicate);
+        }
+
+        if(!CollectionUtils.isEmpty(predicates)) {
+            Predicate totalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            cq.where(totalPredicate);
+        }
 
         TypedQuery<Film> q = entityManager.createQuery(cq);
-        System.out.println("QQQQQ " + q.getSingleResult());
-        return null;
+        System.out.println("CHUUUUJ ");
+        q.getResultList().forEach(film -> System.out.println(film.getId()));
+        return new HashSet<>(q.getResultList());
     }
 
-    private <T> List<T> getValuesByCriterion(List<String> x, Class<T> clazz) {
-        return null;
+    private LocalDate getFirstDateOfYear(int year) {
+        return LocalDate.of(year, Month.JANUARY, 1);
+    }
+
+    private LocalDate getLastDateOfYear(int year) {
+        return LocalDate.of(year, Month.DECEMBER, 31);
     }
 
 }

@@ -1,6 +1,6 @@
 package org.student.filmApp.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "film")
@@ -27,13 +25,11 @@ public class Film {
 	@Column(name = "polish_title")
 	private String polishTitle;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "worldwide_release_date")
-	private Date worldwideReleaseDate;
+	private LocalDate worldwideReleaseDate;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "polish_release_date")
-	private Date polishReleaseDate;
+	private LocalDate polishReleaseDate;
 
 	@Column(name = "budget")
 	private Integer budget;
@@ -68,6 +64,9 @@ public class Film {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "films")
 	private Set<Genre> genres;
 
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "films")
+	private Set<Country> countries;
+
 	public Long getId() {
 		return id;
 	}
@@ -92,19 +91,19 @@ public class Film {
 		this.polishTitle = polishTitle;
 	}
 
-	public Date getWorldwideReleaseDate() {
+	public LocalDate getWorldwideReleaseDate() {
 		return worldwideReleaseDate;
 	}
 
-	public void setWorldwideReleaseDate(Date worldwideReleaseDate) {
+	public void setWorldwideReleaseDate(LocalDate worldwideReleaseDate) {
 		this.worldwideReleaseDate = worldwideReleaseDate;
 	}
 
-	public Date getPolishReleaseDate() {
+	public LocalDate getPolishReleaseDate() {
 		return polishReleaseDate;
 	}
 
-	public void setPolishReleaseDate(Date polishReleaseDate) {
+	public void setPolishReleaseDate(LocalDate polishReleaseDate) {
 		this.polishReleaseDate = polishReleaseDate;
 	}
 
@@ -194,5 +193,13 @@ public class Film {
 
 	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
+	}
+
+	public Set<Country> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(Set<Country> countries) {
+		this.countries = countries;
 	}
 }

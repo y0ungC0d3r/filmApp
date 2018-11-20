@@ -3,15 +3,15 @@ package org.student.filmApp.entity;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import java.util.Date;
+import java.time.LocalDate;
 
 @StaticMetamodel(Film.class)
 public class Film_ {
     public static volatile SingularAttribute<Film, Long> id;
     public static volatile SingularAttribute<Film, String> originalTitle;
     public static volatile SingularAttribute<Film, String> polishTitle;
-    public static volatile SingularAttribute<Film, Date> worldwideReleaseDate;
-    public static volatile SingularAttribute<Film, Date> polishReleaseDate;
+    public static volatile SingularAttribute<Film, LocalDate> worldwideReleaseDate;
+    public static volatile SingularAttribute<Film, LocalDate> polishReleaseDate;
     public static volatile SingularAttribute<Film, Integer> budget;
     public static volatile SingularAttribute<Film, Integer> boxOffice;
     public static volatile SingularAttribute<Film, Integer> runningTime;
@@ -23,4 +23,5 @@ public class Film_ {
     public static volatile SetAttribute<Film, Person> filmEditors;
     public static volatile SetAttribute<Film, Person> filmCinematographers;
     public static volatile SetAttribute<Film, Genre> genres;
+    public static volatile SetAttribute<Film, Country> countries;
 }

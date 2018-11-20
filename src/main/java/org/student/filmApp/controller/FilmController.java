@@ -15,29 +15,41 @@ import org.student.filmApp.service.FilmService;
 import org.student.filmApp.service.GenreService;
 import org.student.filmApp.utils.DateUtils;
 
-import java.util.Set;
+import java.util.*;
+import static java.util.stream.Collectors.toMap;
 
 @Controller
 public class FilmController {
 
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @Autowired
-    GenreService genreService;
+    private GenreService genreService;
 
     @Autowired
-    FilmService filmService;
+    private FilmService filmService;
+
+    public static final String COUNTRIES_ATTRIBUTE_NAME = "countries";
+    public static final String GENRES_ATTRIBUTE_NAME = "genres";
+    public static final String YERS_ATTRIBUTE_NAME = "years";
+
+    static List<String> ATTRIBUTE_NAMES;
+
+    static {
+        ATTRIBUTE_NAMES = Arrays.asList(COUNTRIES_ATTRIBUTE_NAME, GENRES_ATTRIBUTE_NAME, YERS_ATTRIBUTE_NAME);
+    }
 
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     String showFilms(Model model) {
+
         Set<Country> countries = countryService.findAll();
-        model.addAttribute("countries", countries);
+        model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, countries);
 
         Set<Genre> genres = genreService.findAll();
-        model.addAttribute("genres", genres);
+        model.addAttribute(GENRES_ATTRIBUTE_NAME, genres);
 
-        model.addAttribute("years", DateUtils.getYears());
+        model.addAttribute(YERS_ATTRIBUTE_NAME, DateUtils.getYears());
 
         return "films";
     }
@@ -46,8 +58,24 @@ public class FilmController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchCriteria, Model model) {
-        filmSearchCriteria.forEach((k, mv) -> mv.forEach(v -> System.out.println(k + "  " + v)));
-        filmService.findFilm(filmSearchCriteria);
+
+        filmService.findFilmBySearchTerms(filmSearchCriteria);
+
+        Set<Country> countries = countryService.findAll();
+        model.addAttribute("countries", countries);
+
+        List<String> selectedCountries = filmSearchCriteria.get("countries");
+        if(selectedCountries.contains("countries")) {
+            countries.stream()
+                    .collect(toMap(e -> e, selectedCountries::contains));
+        }
+
+        Set<Genre> genres = genreService.findAll();
+        model.addAttribute("genres", genres);
+
+        model.addAttribute("years", DateUtils.getYears());
+
+        model.addAttribute("criteria", filmSearchCriteria);
         return "films";
     }
 

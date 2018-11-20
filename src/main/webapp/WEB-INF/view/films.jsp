@@ -115,7 +115,7 @@
                         <div class="form-group row my-3">
                             <label for="" class="col-sm-2 col-form-label">Lata produkcji</label>
                             <div class="col-sm-10 form-group">
-                                <select class="selectpicker" name="year" title="Wybierz lata..." data-width="100%" data-size="8" multiple="true">
+                                <select class="selectpicker" name="years" title="Wybierz lata..." data-width="100%" data-size="8" multiple="true">
                                     <c:forEach items="${years}" var="year">
                                         <option value="${year}">${year}</option>
                                     </c:forEach>
@@ -246,7 +246,7 @@
 				</div>
 
 				<div class="pagination justify-content-center mb-5">
-				  <a href="#">&laquo;</a>
+				  <a href="${contextPath}/films">&laquo;</a>
 				  <a href="#">1</a>
 				  <a class="active" href="#">2</a>
 				  <a href="#">3</a>

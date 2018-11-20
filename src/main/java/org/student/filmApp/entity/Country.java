@@ -1,9 +1,7 @@
 package org.student.filmApp.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "country")
@@ -15,6 +13,14 @@ public class Country {
 	
 	@Column(name = "country_name")
 	private String name;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "film_country",
+			joinColumns = { @JoinColumn(name = "country_id") },
+			inverseJoinColumns = { @JoinColumn(name = "film_id") }
+	)
+	private Set<Film> films;
 
 	public String getCodeId() {
 		return codeId;
@@ -31,5 +37,12 @@ public class Country {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public Set<Film> getFilms() {
+		return films;
+	}
+
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
 }
