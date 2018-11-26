@@ -44,11 +44,15 @@
 
 		<main role="main" class="container">
 			<div class="container" style="margin-top: 6rem;">
-                <form method="post" action="${contextPath}/films">
+                <form method="post" action="${contextPath}/films" id="form-criteria">
                     <div class="row">
                         <div class="col-md-11 col-8">
                             <div class="input-group mb-5">
-                                <input type="text" class="form-control" name="title" placeholder="Wyszukaj film..." />
+                                <input type="text" class="form-control" name="title" placeholder="Wyszukaj film..."
+                                    <c:if test="${not empty title}">value="${title}"</c:if>
+                                 />
+                                <div class="input-group-btn">
+                                <div class="input-group-btn">
                                 <div class="input-group-btn">
                                     <button class="btn btn-warning" type="submit"><i class="fa fa-search"></i></button>
                                 </div>
@@ -74,18 +78,18 @@
                                 <select id="rating-picker" class="selectpicker" name="rating" title="Wybierz przedział..."
                                         data-width="100%" multiple="true">
                                     <optgroup data-icon="fas fa-star" label="Od" data-max-options="1">
-                                        <option value="1" title="Od 1">1<i class="fas fa-star"></i></option>
-                                        <option value="2" title="Od 2">2</option>
-                                        <option value="3" title="Od 3">3</option>
-                                        <option value="4" title="Od 4">4</option>
-                                        <option value="5" title="Od 5">5</option>
+                                        <option value="floor-1" title="Od 1" <c:if test="${not empty floor && floor == 1}">selected</c:if>>1</option>
+                                        <option value="floor-2" title="Od 2" <c:if test="${not empty floor && floor == 2}">selected</c:if>>2</option>
+                                        <option value="floor-3" title="Od 3" <c:if test="${not empty floor && floor == 3}">selected</c:if>>3</option>
+                                        <option value="floor-4" title="Od 4" <c:if test="${not empty floor && floor == 4}">selected</c:if>>4</option>
+                                        <option value="floor-5" title="Od 5" <c:if test="${not empty floor && floor == 5}">selected</c:if>>5</option>
                                     </optgroup>
                                     <optgroup data-icon="fas fa-star" label="Do" data-max-options="1">
-                                        <option value="1" title="Do 1">1</option>
-                                        <option value="2" title="Do 2">2</option>
-                                        <option value="3" title="Do 3">3</option>
-                                        <option value="4" title="Do 4">4</option>
-                                        <option value="5" title="Do 5">5</option>
+                                        <option value="roof-1" title="Do 1" <c:if test="${not empty roof && roof == 1}">selected</c:if>>1</option>
+                                        <option value="roof-2" title="Do 2" <c:if test="${not empty roof && roof == 2}">selected</c:if>>2</option>
+                                        <option value="roof-3" title="Do 3" <c:if test="${not empty roof && roof == 3}">selected</c:if>>3</option>
+                                        <option value="roof-4" title="Do 4" <c:if test="${not empty roof && roof == 4}">selected</c:if>>4</option>
+                                        <option value="roof-5" title="Do 5" <c:if test="${not empty roof && roof == 5}">selected</c:if>>5</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -93,10 +97,12 @@
                         <div class="form-group row my-3">
                             <label for="" class="col-sm-2 col-form-label">Gatunek</label>
                             <div class="col-sm-10 form-group">
-                                <select class="selectpicker" name="genre" title="Wybierz gatunek..." data-width="100%"
+                                <select class="selectpicker" name="genres" title="Wybierz gatunek..." data-width="100%"
                                     data-size="8" data-live-search="true" multiple="true">
-                                    <c:forEach items="${genres}" var="genre">
-                                        <option value="${genre.id}">${genre.name}</option>
+                                    <c:forEach items="${genres}" var="genreEntry">
+                                        <option value="${genreEntry.key.id}" <c:if test="${genreEntry.value.booleanValue()}">selected</c:if>>
+                                            ${genreEntry.key.name}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -104,10 +110,12 @@
                         <div class="form-group row my-3">
                             <label for="" class="col-sm-2 col-form-label">Kraje produkcji</label>
                             <div class="col-sm-10 form-group">
-                                <select class="selectpicker" name="country" title="Wybierz kraje..." data-width="100%"
+                                <select class="selectpicker" name="countries" title="Wybierz kraje..." data-width="100%"
                                     data-size="8" data-live-search="true" multiple="true">
-                                    <c:forEach items="${countries}" var="country">
-                                        <option value="${country.codeId}">${country.name}</option>
+                                    <c:forEach items="${countries}" var="countryEntry">
+                                        <option value="${countryEntry.key.id}" <c:if test="${countryEntry.value.booleanValue()}">selected</c:if>>
+                                            ${countryEntry.key.name}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -116,8 +124,10 @@
                             <label for="" class="col-sm-2 col-form-label">Lata produkcji</label>
                             <div class="col-sm-10 form-group">
                                 <select class="selectpicker" name="years" title="Wybierz lata..." data-width="100%" data-size="8" multiple="true">
-                                    <c:forEach items="${years}" var="year">
-                                        <option value="${year}">${year}</option>
+                                    <c:forEach items="${years}" var="yearEntry">
+                                        <option value="${yearEntry.key}" <c:if test="${yearEntry.value.booleanValue()}">selected</c:if>>
+                                            ${yearEntry.key}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -128,14 +138,26 @@
                         <div class="form-group row my-3">
                             <label for="" class="col-sm-2 col-form-label">Kraje produkcji</label>
                             <div class="col-sm-10 form-group">
-                                <select class="selectpicker" name="sort-by" title="" data-width="100%">
+                                <select class="selectpicker" name="sort_by" title="" data-width="100%">
                                     <optgroup label="ocena">
-                                        <option value="rating-descending" title="ocena: najwyższa">najwyższa</option>
-                                        <option value="rating-ascending" title="ocena: najniższa">najniższa</option>
+                                        <option value="rating-descending" title="ocena: najwyższa"
+                                            <c:if test="${not empty sort_by && sort_by == 'rating-descending'}">selected</c:if>>
+                                            najwyższa
+                                        </option>
+                                        <option value="rating-ascending" title="ocena: najniższa"
+                                            <c:if test="${not empty sort_by && sort_by == 'rating-ascending'}">selected</c:if>>
+                                            najniższa
+                                        </option>
                                     </optgroup>
                                     <optgroup label="rok produkcji">
-                                        <option value="date-descending" title="rok produkcji: najnowszy">najnowszy</option>
-                                        <option value="date-ascending" title="rok produkcji: najstarszy">najstarszy</option>
+                                        <option value="date-descending" title="rok produkcji: najnowszy"
+                                            <c:if test="${not empty sort_by && sort_by == 'date-descending'}">selected</c:if>>
+                                            najnowszy
+                                        </option>
+                                        <option value="date-ascending" title="rok produkcji: najstarszy"
+                                            <c:if test="${not empty sort_by && sort_by == 'date-ascending'}">selected</c:if>>
+                                            najstarszy
+                                        </option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -246,14 +268,14 @@
 				</div>
 
 				<div class="pagination justify-content-center mb-5">
-				  <a href="${contextPath}/films">&laquo;</a>
-				  <a href="#">1</a>
-				  <a class="active" href="#">2</a>
-				  <a href="#">3</a>
-				  <a href="#">4</a>
-				  <a href="#">5</a>
-				  <a href="#">6</a>
-				  <a href="#">&raquo;</a>
+				  <button href="${contextPath}/films">&laquo;</button>
+				  <button href="#">1</button>
+				  <button class="active" href="#">2</button>
+				  <button name="page" value="3">3</button>
+				  <button href="#">4</button>
+				  <button href="#">5</button>
+				  <button href="#">6</button>
+				  <button href="#">&raquo;</button>
 				</div>
 
 			</div>
@@ -272,5 +294,10 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+	<!--<script>
+	    $('button').on('click', function() {
+            $('#film-criteria').submit();
+        });
+     </script>-->
 	</body>
 </html>

@@ -79,7 +79,7 @@ public class FilmService {
 
         if(!CollectionUtils.isEmpty(criteria.get(COUNTRY_CRITERION_NAME))) {
             SetJoin<Film, Country> countryNode = root.join(Film_.countries);
-            Predicate countriesPredicate = countryNode.get(Country_.codeId).in(criteria.get(COUNTRY_CRITERION_NAME));
+            Predicate countriesPredicate = countryNode.get(Country_.id).in(criteria.get(COUNTRY_CRITERION_NAME));
             predicates.add(countriesPredicate);
         }
 

@@ -5,11 +5,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "country")
-public class Country {
+public class Country implements Identifiable<String> {
 
 	@Id
 	@Column(name = "country_code_id")
-	private String codeId;
+	private String id;
 	
 	@Column(name = "country_name")
 	private String name;
@@ -22,12 +22,12 @@ public class Country {
 	)
 	private Set<Film> films;
 
-	public String getCodeId() {
-		return codeId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCodeId(String codeId) {
-		this.codeId = codeId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {

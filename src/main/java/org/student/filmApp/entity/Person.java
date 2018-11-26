@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "person")
-public class Person {
+public class Person implements Identifiable<Long> {
 	
 	@Id
 	@Column(name = "id")

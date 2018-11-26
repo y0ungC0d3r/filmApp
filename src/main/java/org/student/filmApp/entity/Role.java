@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Identifiable<Long> {
     private Long id;
     private String name;
     private Set<User> users;

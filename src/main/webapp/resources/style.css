@@ -91,21 +91,23 @@ p.description {
 }
 
 /* Pagination */
-.pagination a {
+.pagination button {
+  outline: none;
+  border: none;
+  background-color: transparent;
   color: white;
-  float: left;
   padding: 8px 16px;
-	border-radius: .25rem;
+  border-radius: .25rem;
   text-decoration: none;
   transition: background-color .3s;
 }
 
-.pagination a.active {
+.pagination button.active {
   background-color: #ffc107;
   color: black;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination button:hover:not(.active) {background-color: #ddd;}
 
 /****** Style Star Rating Widget *****/
 

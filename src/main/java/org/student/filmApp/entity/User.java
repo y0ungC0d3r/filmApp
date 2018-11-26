@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user_")
-public class User {
+public class User implements Identifiable<Long> {
 
     private Long id;
 

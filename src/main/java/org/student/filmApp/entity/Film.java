@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "film")
-public class Film {
+public class Film implements Identifiable<Long> {
 	
 	@Id
 	@Column(name = "id")

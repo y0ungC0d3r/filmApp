@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "genre")
-public class Genre {
+public class Genre implements Identifiable<Long> {
 
     @Id
     @Column(name = "id")
