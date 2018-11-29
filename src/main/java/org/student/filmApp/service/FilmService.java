@@ -7,12 +7,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
 import org.student.filmApp.entity.*;
 import org.student.filmApp.repository.FilmRepository;
+import static org.student.filmApp.Consts.*;
+import static org.student.filmApp.utils.DateUtils.getFirstDayOfYear;
+import static org.student.filmApp.utils.DateUtils.getLastDayOfYear;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,81 +25,90 @@ public class FilmService {
     @Autowired
     EntityManager entityManager;
 
-    private static final String RATING_CRITERION_NAME = "rating";
-    private static final String GENRE_CRITERION_NAME = "genre";
-    private static final String COUNTRY_CRITERION_NAME = "country";
-    private static final String TITLE_CRITERION_NAME = "title";
-    private static final String YEARS_CRITERION_NAME = "years";
-
     Film findById(Long id) {
         return filmRepository.findById(id).orElse(null);
     }
 
     @Transactional
     public Set<Film> findFilmBySearchTerms(MultiValueMap<String, String> criteria) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Film> cq = cb.createQuery(Film.class);
-        Root<Film> root = cq.from(Film.class);
 
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+        Root<Film> countRoot = countCriteria.from(Film.class);
+        Long numberOfRows = entityManager.createQuery(
+                countCriteria
+                        .select(builder.count(countRoot))
+                        .where(getTotalPredicate(criteria, countRoot, builder))
+        ).getSingleResult();
+
+
+        int pageNumber = DEFAULT_PAGE_NUMBER;
+        if(!CollectionUtils.isEmpty(criteria.get(PAGE_CRITERION_NAME))) {
+            pageNumber = Integer.parseInt(criteria.get(PAGE_CRITERION_NAME).get(0));
+        }
+
+        CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
+        Root<Film> pageRoot = pageCriteria.from(Film.class);
+        List<Film> films = entityManager.createQuery(
+                pageCriteria
+                        .select(pageRoot)
+                        .where(getTotalPredicate(criteria, pageRoot, builder))
+                        .orderBy(builder.desc(pageRoot.get(Film_.polishReleaseDate)))
+        ).setFirstResult((pageNumber - 1) * DEFAULT_PAGE_SIZE)
+                .setMaxResults(DEFAULT_PAGE_SIZE)
+                .getResultList();
+
+        return new HashSet<>(films);
+    }
+
+
+    private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap, Root<Film> root, CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(!CollectionUtils.isEmpty(criteria.get(TITLE_CRITERION_NAME))) {
-            Predicate polishTitlePredicate = cb.like(root.get(Film_.polishTitle),
-                    "%" + criteria.get(TITLE_CRITERION_NAME).get(0) + "%");
-            Predicate originalTitlePredicate = cb.like(root.get(Film_.originalTitle),
-                    "%" + criteria.get(TITLE_CRITERION_NAME).get(0) + "%");
+        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME))) {
+            Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
+                    "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
+            Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),
+                    "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
 
-            Predicate titlePredicate = cb.or(polishTitlePredicate, originalTitlePredicate);
+            Predicate titlePredicate = builder.or(polishTitlePredicate, originalTitlePredicate);
             predicates.add(titlePredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteria.get(YEARS_CRITERION_NAME))) {
-            Predicate[] datePredicates = criteria.get(YEARS_CRITERION_NAME)
+        if(!CollectionUtils.isEmpty(criteriaMap.get(YEARS_CRITERION_NAME))) {
+            Predicate[] datePredicates = criteriaMap.get(YEARS_CRITERION_NAME)
                     .stream()
                     .map(Integer::valueOf)
-                    .map(y ->
-                            cb.between(root.get(Film_.polishReleaseDate), getFirstDateOfYear(y), getLastDateOfYear(y)))
-                    .toArray(Predicate[]::new);
+                    .map(y -> builder.between(
+                            root.get(Film_.polishReleaseDate), getFirstDayOfYear(y), getLastDayOfYear(y))
+                    ).toArray(Predicate[]::new);
 
-            Predicate completeDatePredicate = cb.or(datePredicates);
+            Predicate completeDatePredicate = builder.or(datePredicates);
             predicates.add(completeDatePredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteria.get(GENRE_CRITERION_NAME))) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(GENRE_CRITERION_NAME))) {
             SetJoin<Film, Genre> genreNode = root.join(Film_.genres);
 
-            List<Long> wantedGenres = criteria.get(GENRE_CRITERION_NAME)
+            List<Long> requestedGenres = criteriaMap.get(GENRE_CRITERION_NAME)
                     .stream()
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
 
-            Predicate genresPredicate = genreNode.get(Genre_.id).in(wantedGenres);
+            Predicate genresPredicate = genreNode.get(Genre_.id).in(requestedGenres);
             predicates.add(genresPredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteria.get(COUNTRY_CRITERION_NAME))) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(COUNTRY_CRITERION_NAME))) {
             SetJoin<Film, Country> countryNode = root.join(Film_.countries);
-            Predicate countriesPredicate = countryNode.get(Country_.id).in(criteria.get(COUNTRY_CRITERION_NAME));
+            Predicate countriesPredicate = countryNode.get(Country_.id).in(criteriaMap.get(COUNTRY_CRITERION_NAME));
             predicates.add(countriesPredicate);
         }
 
-        if(!CollectionUtils.isEmpty(predicates)) {
-            Predicate totalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            cq.where(totalPredicate);
-        }
+        Predicate totalPredicate = builder.and(predicates.stream().toArray(Predicate[]::new));
 
-        TypedQuery<Film> q = entityManager.createQuery(cq);
-        System.out.println("CHUUUUJ ");
-        q.getResultList().forEach(film -> System.out.println(film.getId()));
-        return new HashSet<>(q.getResultList());
-    }
-
-    private LocalDate getFirstDateOfYear(int year) {
-        return LocalDate.of(year, Month.JANUARY, 1);
-    }
-
-    private LocalDate getLastDateOfYear(int year) {
-        return LocalDate.of(year, Month.DECEMBER, 31);
+        return totalPredicate;
     }
 
 }

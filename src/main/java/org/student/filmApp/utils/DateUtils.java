@@ -1,5 +1,7 @@
 package org.student.filmApp.utils;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -15,5 +17,13 @@ public class DateUtils {
                 .boxed()
                 .sorted(Collections.reverseOrder())
                 .collect(Collectors.toList());
+    }
+
+    public static LocalDate getFirstDayOfYear(int year) {
+        return LocalDate.of(year, Month.JANUARY, 1);
+    }
+
+    public static LocalDate getLastDayOfYear(int year) {
+        return LocalDate.of(year, Month.DECEMBER, 31);
     }
 }

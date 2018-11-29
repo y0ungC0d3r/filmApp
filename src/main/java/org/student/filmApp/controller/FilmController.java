@@ -16,10 +16,9 @@ import org.student.filmApp.service.GenreService;
 import org.student.filmApp.utils.DateUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.*;
-import static org.student.filmApp.utils.CollectionUtils.createMarkedIdentifiableElementsMap;
 
 @Controller
 public class FilmController {
@@ -32,13 +31,6 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
-
-    public static final String COUNTRIES_ATTRIBUTE_NAME = "countries";
-    public static final String GENRES_ATTRIBUTE_NAME = "genres";
-    public static final String YEARS_ATTRIBUTE_NAME = "years";
-    public static final String TITLE_ATTRIBUTE_NAME = "title";
-    public static final String SORT_BY_ATTRIBUTE_NAME = "sort_by";
-    public static final String RATING_ATTRIBUTE_NAME = "rating";
 
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor-|roof-)[1-5]";
 
@@ -61,8 +53,6 @@ public class FilmController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchCriteria, Model model) {
-
-        filmService.findFilmBySearchTerms(filmSearchCriteria);
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(),
                 convertNull(filmSearchCriteria.get(COUNTRIES_ATTRIBUTE_NAME)));
@@ -96,6 +86,8 @@ public class FilmController {
         if(!isNullOrEmpty(filmSearchCriteria.get(SORT_BY_ATTRIBUTE_NAME))) {
             model.addAttribute(SORT_BY_ATTRIBUTE_NAME, filmSearchCriteria.get(SORT_BY_ATTRIBUTE_NAME).get(0));
         }
+
+        filmService.findFilmBySearchTerms(filmSearchCriteria);
 
         return "films";
     }
