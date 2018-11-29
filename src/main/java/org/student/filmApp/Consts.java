@@ -11,6 +11,7 @@ public class Consts {
     public static final String SORT_BY_ATTRIBUTE_NAME = "sort_by";
     public static final String RATING_ATTRIBUTE_NAME = "rating";
 
+    public static final String SORT_BY_CRITERION_NAME = "sort_by";
     public static final String RATING_CRITERION_NAME = "rating";
     public static final String GENRE_CRITERION_NAME = "genres";
     public static final String COUNTRY_CRITERION_NAME = "countries";

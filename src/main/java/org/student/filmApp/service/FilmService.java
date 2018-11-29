@@ -13,6 +13,7 @@ import static org.student.filmApp.utils.DateUtils.getLastDayOfYear;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,8 +49,19 @@ public class FilmService {
             pageNumber = Integer.parseInt(criteria.get(PAGE_CRITERION_NAME).get(0));
         }
 
+
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
         Root<Film> pageRoot = pageCriteria.from(Film.class);
+
+        if(!CollectionUtils.isEmpty(criteria.get(SORT_BY_CRITERION_NAME))) {
+            String[] sortCriterium = criteria.get(SORT_BY_CRITERION_NAME).get(0).split("-");
+            if(sortCriterium[0] == "date") {
+                Path<LocalDate> date = pageRoot.get(Film_.polishReleaseDate);
+            } else {
+                //Path<>
+            }
+        }
+
         List<Film> films = entityManager.createQuery(
                 pageCriteria
                         .select(pageRoot)
