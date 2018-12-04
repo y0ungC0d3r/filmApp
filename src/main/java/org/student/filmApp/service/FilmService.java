@@ -58,15 +58,16 @@ public class FilmService {
             if(sortCriterium[0] == "date") {
                 Path<LocalDate> date = pageRoot.get(Film_.polishReleaseDate);
             } else {
-                //Path<>
+                SetJoin<Film, FilmRating> ratingsNode = pageRoot.join(Film_.ratings);
             }
         }
+        SetJoin<Film, FilmRating> ratingsNode = pageRoot.join(Film_.ratings);
 
         List<Film> films = entityManager.createQuery(
                 pageCriteria
                         .select(pageRoot)
                         .where(getTotalPredicate(criteria, pageRoot, builder))
-                        .orderBy(builder.desc(pageRoot.get(Film_.polishReleaseDate)))
+                        .orderBy(builder.desc(ratingsNode.get(FilmRating_.rating)))
         ).setFirstResult((pageNumber - 1) * DEFAULT_PAGE_SIZE)
                 .setMaxResults(DEFAULT_PAGE_SIZE)
                 .getResultList();

@@ -29,6 +29,16 @@ public class Test {
 			System.out.println("insert into film(id, polish_release_date) values(" + (i + 2) + ", TO_DATE('" + (1990 + ThreadLocalRandom.current().nextInt(29)) + "', 'yyyy'));");
 		}
 
+		List<String> strings = Arrays.asList("55", "6", "3");
+
+		strings.sort((s1, s2) -> {
+			if(s1.length() == s2.length()) {
+				return s1.compareTo(s2);
+			}
+			return s1.length() - s2.length();
+		});
+		System.out.println(strings);
+
 		convertToDatabaseColumn(LocalDate.of(2013, Month.JANUARY, 1));
 	}
 

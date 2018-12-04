@@ -68,7 +68,7 @@ public class Film implements Identifiable<Long> {
 	private Set<Country> countries;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "filmRatingId.film")
-	private Set<FilmRating> filmRatings;
+	private Set<FilmRating> ratings;
 
 	public Long getId() {
 		return id;
@@ -206,11 +206,11 @@ public class Film implements Identifiable<Long> {
 		this.countries = countries;
 	}
 
-	public Set<FilmRating> getFilmRatings() {
-		return filmRatings;
+	public Set<FilmRating> getRatings() {
+		return ratings;
 	}
 
-	public void setFilmRatings(Set<FilmRating> filmRatings) {
-		this.filmRatings = filmRatings;
+	public void setRatings(Set<FilmRating> ratings) {
+		this.ratings = ratings;
 	}
 }

@@ -24,4 +24,5 @@ public class Film_ {
     public static volatile SetAttribute<Film, Person> filmCinematographers;
     public static volatile SetAttribute<Film, Genre> genres;
     public static volatile SetAttribute<Film, Country> countries;
+    public static volatile SetAttribute<Film, FilmRating> ratings;
 }
