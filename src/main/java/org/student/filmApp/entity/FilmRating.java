@@ -13,7 +13,7 @@ import java.util.Date;
 public class FilmRating {
 
     @EmbeddedId
-    private FilmRatingId filmaRatingId = new FilmRatingId();
+    private FilmRatingId filmRatingId = new FilmRatingId();
 
     @Column(name = "rating")
     private Short rating;
@@ -21,16 +21,12 @@ public class FilmRating {
     @Column(name = "date_of_rating")
     private Date dateOfRating;
 
-    private User user;
-
-    private Film film;
-
-    public FilmRatingId getFilmaRatingId() {
-        return filmaRatingId;
+    public FilmRatingId getFilmRatingId() {
+        return filmRatingId;
     }
 
-    public void setFilmaRatingId(FilmRatingId filmaRatingId) {
-        this.filmaRatingId = filmaRatingId;
+    public void setFilmRatingId(FilmRatingId filmRatingId) {
+        this.filmRatingId = filmRatingId;
     }
 
     public Short getRating() {
@@ -50,20 +46,20 @@ public class FilmRating {
     }
 
     public User getUser() {
-        return user;
+        return filmRatingId.getUser();
     }
 
     @Transient
     public void setUser(User user) {
-        this.user = user;
+        filmRatingId.setUser(user);
     }
 
     public Film getFilm() {
-        return film;
+        return filmRatingId.getFilm();
     }
 
     @Transient
     public void setFilm(Film film) {
-        this.film = film;
+        filmRatingId.setFilm(film);
     }
 }

@@ -67,6 +67,9 @@ public class Film implements Identifiable<Long> {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "films")
 	private Set<Country> countries;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "filmRatingId.film")
+	private Set<FilmRating> filmRatings;
+
 	public Long getId() {
 		return id;
 	}
@@ -201,5 +204,13 @@ public class Film implements Identifiable<Long> {
 
 	public void setCountries(Set<Country> countries) {
 		this.countries = countries;
+	}
+
+	public Set<FilmRating> getFilmRatings() {
+		return filmRatings;
+	}
+
+	public void setFilmRatings(Set<FilmRating> filmRatings) {
+		this.filmRatings = filmRatings;
 	}
 }
