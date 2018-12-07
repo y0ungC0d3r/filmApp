@@ -26,12 +26,14 @@ public class FilmService {
     @Autowired
     EntityManager entityManager;
 
+    public static final String SORT_BY_VALUE_PATTERN = "(rating|date)-(ascending|descending)";
+
     Film findById(Long id) {
         return filmRepository.findById(id).orElse(null);
     }
 
     @Transactional
-    public Set<Film> findFilmBySearchTerms(MultiValueMap<String, String> criteria) {
+    public Long countFilmsBySearchTerms(MultiValueMap<String, String> criteria) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
@@ -43,10 +45,20 @@ public class FilmService {
                         .where(getTotalPredicate(criteria, countRoot, builder))
         ).getSingleResult();
 
+        return numberOfRows;
+    }
+
+    @Transactional
+    public List<Film> findFilmsBySearchTerms(MultiValueMap<String, String> criteria, int lastPageNumber) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         int pageNumber = DEFAULT_PAGE_NUMBER;
         if(!CollectionUtils.isEmpty(criteria.get(PAGE_CRITERION_NAME))) {
             pageNumber = Integer.parseInt(criteria.get(PAGE_CRITERION_NAME).get(0));
+        }
+
+        if(lastPageNumber < pageNumber) {
+            pageNumber = lastPageNumber;
         }
 
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
@@ -61,7 +73,7 @@ public class FilmService {
                 .setMaxResults(DEFAULT_PAGE_SIZE)
                 .getResultList();
 
-        return new HashSet<>(films);
+        return films;
     }
 
 
@@ -114,10 +126,10 @@ public class FilmService {
     }
 
     private Order getOrder(List<String> sortByCriterion, Root<Film> pageRoot, CriteriaBuilder builder) {
-        if(!CollectionUtils.isEmpty(sortByCriterion)) {
+        if(!CollectionUtils.isEmpty(sortByCriterion) && sortByCriterion.get(0).matches(SORT_BY_VALUE_PATTERN)) {
             String[] sortCriterium = sortByCriterion.get(0).split("-");
             if(sortCriterium[0].equals("date")) {
-                Path<LocalDate> releaseDate = pageRoot.get(Film_.polishReleaseDate);
+                Path<LocalDate> releaseDate = pageRoot.get(Film_.worldwideReleaseDate);
                 if(sortCriterium[1].equals("descending")) {
                     return builder.desc(releaseDate);
                 }

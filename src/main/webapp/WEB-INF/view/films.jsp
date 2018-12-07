@@ -173,7 +173,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Moonlight</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -187,7 +186,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Batman</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -201,7 +199,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Lord of war</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -215,7 +212,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Las Vegas Parano</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -229,7 +225,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Fight Club</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -243,7 +238,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Inception</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>
@@ -257,7 +251,6 @@
 							<div class="card-body">
 								<h4 class="card-title green-font-color">Dunkirk</h4>
 								<h6 class="card-subtitle mb-2 text-muted">2017</h6>
-				<!--<p class="card-text">Some quick example text to build on the</p>-->
 							</div>
 							<div class="card-footer text-right box-colors">
 								<span class="orange-font-color">★</span> <span class="text-muted">7,2</span>

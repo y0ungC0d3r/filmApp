@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.Country;
+import org.student.filmApp.entity.Film;
 import org.student.filmApp.entity.Genre;
 import org.student.filmApp.service.CountryService;
 import org.student.filmApp.service.FilmService;
 import org.student.filmApp.service.GenreService;
 import org.student.filmApp.utils.DateUtils;
+import org.student.filmApp.utils.PaginationUtils;
 
 import java.util.*;
 
@@ -45,6 +48,9 @@ public class FilmController {
 
         Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(), Collections.emptyList());
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
+
+        Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
+        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), PaginationUtils.calculateLastPage(numberOfFilms));
 
         return "films";
     }
@@ -87,7 +93,8 @@ public class FilmController {
             model.addAttribute(SORT_BY_ATTRIBUTE_NAME, filmSearchCriteria.get(SORT_BY_ATTRIBUTE_NAME).get(0));
         }
 
-        filmService.findFilmBySearchTerms(filmSearchCriteria);
+        Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
+        List<Film> filmsBySearchTerms = filmService.findFilmsBySearchTerms(filmSearchCriteria, PaginationUtils.calculateLastPage(numberOfFilms));
 
         return "films";
     }

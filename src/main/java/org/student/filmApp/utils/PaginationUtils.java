@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.student.filmApp.Consts.DEFAULT_NUMBER_OF_PAGES;
+import static org.student.filmApp.Consts.DEFAULT_PAGE_SIZE;
 
 public class PaginationUtils {
     public static List<Integer> getPaginationRange(int currPageNumber, int numberOfPages) {
@@ -24,6 +25,13 @@ public class PaginationUtils {
                 .rangeClosed(startPageNumber, endPageNumber)
                 .boxed()
                 .collect(Collectors.toList());
+    }
+
+    public static int calculateLastPage(long numberOfRows) {
+        if(numberOfRows % DEFAULT_PAGE_SIZE == 0) {
+            return (int) (numberOfRows / DEFAULT_PAGE_SIZE);
+        }
+        return (int) ((numberOfRows / DEFAULT_PAGE_SIZE) + 1);
     }
 
     public static void main(String ...args) {
