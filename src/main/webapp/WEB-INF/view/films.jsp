@@ -136,7 +136,7 @@
                         <hr class="border-light my-3" />
 
                         <div class="form-group row my-3">
-                            <label for="" class="col-sm-2 col-form-label">Kraje produkcji</label>
+                            <label for="" class="col-sm-2 col-form-label">Sortuj według</label>
                             <div class="col-sm-10 form-group">
                                 <select class="selectpicker" name="sort_by" title="" data-width="100%">
                                     <optgroup label="ocena">

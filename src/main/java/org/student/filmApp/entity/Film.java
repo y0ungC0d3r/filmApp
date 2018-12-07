@@ -39,6 +39,15 @@ public class Film implements Identifiable<Long> {
 
 	@Column(name = "running_time")
 	private Integer runningTime;
+
+	@Column(name = "ratings_sum")
+	private Long ratingsSum;
+
+	@Column(name = "number_of_votes")
+	private Long numberOfVotes;
+
+	@Column(name = "average_rating")
+	private Float averageRating;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.film")
 	private Set<Actor> filmActors;
@@ -212,5 +221,29 @@ public class Film implements Identifiable<Long> {
 
 	public void setRatings(Set<FilmRating> ratings) {
 		this.ratings = ratings;
+	}
+
+	public Long getRatingsSum() {
+		return ratingsSum;
+	}
+
+	public void setRatingsSum(Long ratingsSum) {
+		this.ratingsSum = ratingsSum;
+	}
+
+	public Long getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(Long numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public Float getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Float averageRating) {
+		this.averageRating = averageRating;
 	}
 }

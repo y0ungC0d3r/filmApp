@@ -15,6 +15,9 @@ public class Film_ {
     public static volatile SingularAttribute<Film, Integer> budget;
     public static volatile SingularAttribute<Film, Integer> boxOffice;
     public static volatile SingularAttribute<Film, Integer> runningTime;
+    public static volatile SingularAttribute<Film, Long> ratingsSum;
+    public static volatile SingularAttribute<Film, Long> numberOfVotes;
+    public static volatile SingularAttribute<Film, Float> averageRating;
     public static volatile SetAttribute<Film, Actor> filmActors;
     public static volatile SetAttribute<Film, Person> filmDirectors;
     public static volatile SetAttribute<Film, Person> filmScreenwriters;

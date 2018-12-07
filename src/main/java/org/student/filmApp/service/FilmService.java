@@ -49,25 +49,14 @@ public class FilmService {
             pageNumber = Integer.parseInt(criteria.get(PAGE_CRITERION_NAME).get(0));
         }
 
-
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
         Root<Film> pageRoot = pageCriteria.from(Film.class);
-
-        if(!CollectionUtils.isEmpty(criteria.get(SORT_BY_CRITERION_NAME))) {
-            String[] sortCriterium = criteria.get(SORT_BY_CRITERION_NAME).get(0).split("-");
-            if(sortCriterium[0] == "date") {
-                Path<LocalDate> date = pageRoot.get(Film_.polishReleaseDate);
-            } else {
-                SetJoin<Film, FilmRating> ratingsNode = pageRoot.join(Film_.ratings);
-            }
-        }
-        SetJoin<Film, FilmRating> ratingsNode = pageRoot.join(Film_.ratings);
 
         List<Film> films = entityManager.createQuery(
                 pageCriteria
                         .select(pageRoot)
                         .where(getTotalPredicate(criteria, pageRoot, builder))
-                        .orderBy(builder.desc(ratingsNode.get(FilmRating_.rating)))
+                        .orderBy(getOrder(criteria.get(SORT_BY_CRITERION_NAME), pageRoot, builder))
         ).setFirstResult((pageNumber - 1) * DEFAULT_PAGE_SIZE)
                 .setMaxResults(DEFAULT_PAGE_SIZE)
                 .getResultList();
@@ -122,6 +111,26 @@ public class FilmService {
         Predicate totalPredicate = builder.and(predicates.stream().toArray(Predicate[]::new));
 
         return totalPredicate;
+    }
+
+    private Order getOrder(List<String> sortByCriterion, Root<Film> pageRoot, CriteriaBuilder builder) {
+        if(!CollectionUtils.isEmpty(sortByCriterion)) {
+            String[] sortCriterium = sortByCriterion.get(0).split("-");
+            if(sortCriterium[0].equals("date")) {
+                Path<LocalDate> releaseDate = pageRoot.get(Film_.polishReleaseDate);
+                if(sortCriterium[1].equals("descending")) {
+                    return builder.desc(releaseDate);
+                }
+                return builder.asc(releaseDate);
+            } else if(sortCriterium[0].equals("rating")) {
+                Path<Float> averageRating = pageRoot.get(Film_.averageRating);
+                if(sortCriterium[1].equals("descending")) {
+                    return builder.desc(averageRating);
+                }
+                return builder.asc(averageRating);
+            }
+        }
+        return builder.desc(pageRoot.get(Film_.averageRating));
     }
 
 }
