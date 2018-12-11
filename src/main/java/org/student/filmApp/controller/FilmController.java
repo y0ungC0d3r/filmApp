@@ -16,12 +16,12 @@ import org.student.filmApp.service.CountryService;
 import org.student.filmApp.service.FilmService;
 import org.student.filmApp.service.GenreService;
 import org.student.filmApp.utils.DateUtils;
-import org.student.filmApp.utils.PaginationUtils;
 
 import java.util.*;
 
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.*;
+import static org.student.filmApp.utils.PaginationUtils.*;
 
 @Controller
 public class FilmController {
@@ -35,7 +35,7 @@ public class FilmController {
     @Autowired
     private FilmService filmService;
 
-    public static final String RATING_RANGE_VALUE_PATTERN = "(floor-|roof-)[1-5]";
+    public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
 
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     String showFilms(Model model) {
@@ -50,7 +50,7 @@ public class FilmController {
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
-        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), PaginationUtils.calculateLastPage(numberOfFilms));
+        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), calculateNumberOfPages(numberOfFilms));
 
         return "films";
     }
@@ -94,7 +94,7 @@ public class FilmController {
         }
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
-        List<Film> filmsBySearchTerms = filmService.findFilmsBySearchTerms(filmSearchCriteria, PaginationUtils.calculateLastPage(numberOfFilms));
+        List<Film> filmsBySearchTerms = filmService.findFilmsBySearchTerms(filmSearchCriteria, calculateNumberOfPages(numberOfFilms));
 
         return "films";
     }

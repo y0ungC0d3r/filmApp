@@ -27,7 +27,10 @@ public class PaginationUtils {
                 .collect(Collectors.toList());
     }
 
-    public static int calculateLastPage(long numberOfRows) {
+    public static int calculateNumberOfPages(long numberOfRows) {
+        if(numberOfRows < 1) {
+            return 1;
+        }
         if(numberOfRows % DEFAULT_PAGE_SIZE == 0) {
             return (int) (numberOfRows / DEFAULT_PAGE_SIZE);
         }
@@ -36,5 +39,6 @@ public class PaginationUtils {
 
     public static void main(String ...args) {
         System.out.println(getPaginationRange(5, 7));
+        System.out.println(calculateNumberOfPages(13));
     }
 }
