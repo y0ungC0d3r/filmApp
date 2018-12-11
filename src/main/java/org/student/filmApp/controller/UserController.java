@@ -23,13 +23,6 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-    /*@RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "registration";
-    }*/
-
     @RequestMapping(value = { "/start", "/register", "/login" }, method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("loginUserForm", new User());
@@ -51,7 +44,8 @@ public class UserController {
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/";
+        //return "start";
+        return "redirect:/films";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -65,7 +59,8 @@ public class UserController {
             model.addAttribute("message", "Zostałeś wylogowany.");
         }
 
-        return "start";
+        //return "start";
+        return "redirect:/films";
     }
 
     /*@RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)

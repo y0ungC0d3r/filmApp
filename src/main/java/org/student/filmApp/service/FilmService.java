@@ -49,17 +49,8 @@ public class FilmService {
     }
 
     @Transactional
-    public List<Film> findFilmsBySearchTerms(MultiValueMap<String, String> criteria, int lastPageNumber) {
+    public List<Film> findFilmsBySearchTerms(MultiValueMap<String, String> criteria, int currPageNumber, int lastPageNumber) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-        int pageNumber = DEFAULT_PAGE_NUMBER;
-        if(!CollectionUtils.isEmpty(criteria.get(PAGE_CRITERION_NAME))) {
-            pageNumber = Integer.parseInt(criteria.get(PAGE_CRITERION_NAME).get(0));
-        }
-
-        if(lastPageNumber < pageNumber) {
-            pageNumber = lastPageNumber;
-        }
 
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
         Root<Film> pageRoot = pageCriteria.from(Film.class);
@@ -69,7 +60,7 @@ public class FilmService {
                         .select(pageRoot)
                         .where(getTotalPredicate(criteria, pageRoot, builder))
                         .orderBy(getOrder(criteria.get(SORT_BY_CRITERION_NAME), pageRoot, builder))
-        ).setFirstResult((pageNumber - 1) * DEFAULT_PAGE_SIZE)
+        ).setFirstResult((currPageNumber - 1) * DEFAULT_PAGE_SIZE)
                 .setMaxResults(DEFAULT_PAGE_SIZE)
                 .getResultList();
 

@@ -136,7 +136,7 @@
                         <hr class="border-light my-3" />
 
                         <div class="form-group row my-3">
-                            <label for="" class="col-sm-2 col-form-label">Sortuj według</label>
+                            <label for="" class="col-sm-2 col-form-label">Sortuj według...</label>
                             <div class="col-sm-10 form-group">
                                 <select class="selectpicker" name="sort_by" title="" data-width="100%">
                                     <optgroup label="ocena">
@@ -166,6 +166,21 @@
 			    </form>
 
 				<div class="row card-columns justify-content-center">
+
+					<c:forEach items="${films}" var="film">
+						<div class="col-xl-4 col-md-6 col-sm-12">
+							<div class="card mb-5 film-card">
+								<img class="card-img-top" src="images-w1400.jpg" alt="Card image cap">
+								<div class="card-body">
+									<h4 class="card-title green-font-color">${film.polishTitle}</h4>
+									<h6 class="card-subtitle mb-2 text-muted">${film.worldwideReleaseDate.getYear()}</h6>
+								</div>
+								<div class="card-footer text-right box-colors">
+									<span class="orange-font-color">★</span> <span class="text-muted">${film.averageRating}</span>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
 
 					<div class="col-xl-4 col-md-6 col-sm-12">
 						<div class="card mb-5 film-card">
