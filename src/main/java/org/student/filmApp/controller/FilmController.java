@@ -40,7 +40,7 @@ public class FilmController {
 
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
 
-    @RequestMapping(value = "/films", method = RequestMethod.GET)
+    @RequestMapping(value = { "/", "/films"}, method = RequestMethod.GET)
     String showFilms(Model model) {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
@@ -54,6 +54,8 @@ public class FilmController {
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
         List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), DEFAULT_PAGE_NUMBER, calculateNumberOfPages(numberOfFilms));
+
+        model.addAttribute(FILMS_ATTRIBUTE_NAME, films);
 
         return "films";
     }

@@ -29,9 +29,9 @@
 				<div class="collapse navbar-collapse" id="nabarCollapse">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a href="#" class="nav-link" style="color: #EC7149;">Filmy</a>
+							<a href="${contextPath}/films" class="nav-link" style="color: #EC7149;">Filmy</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item active">
 							<a href="#" class="nav-link">Ludzie kina</a>
 						</li>
 						<li class="nav-item">
@@ -176,7 +176,9 @@
 									<h6 class="card-subtitle mb-2 text-muted">${film.worldwideReleaseDate.getYear()}</h6>
 								</div>
 								<div class="card-footer text-right box-colors">
-									<span class="orange-font-color">★</span> <span class="text-muted">${film.averageRating}</span>
+									<span class="orange-font-color">★</span> <span class="text-muted">
+									    ${empty film.averageRating ? "Brak" : film.averageRating}
+									</span>
 								</div>
 							</div>
 						</div>
