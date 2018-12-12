@@ -4,6 +4,10 @@ public class Consts {
 
     private Consts() {}
 
+    public static final String START_VIEW_NAME = "start";
+    public static final String FILM_VIEW_NAME = "film";
+    public static final String FILMS_VIEW_NAME = "films";
+
     public static final String COUNTRIES_ATTRIBUTE_NAME = "countries";
     public static final String GENRES_ATTRIBUTE_NAME = "genres";
     public static final String YEARS_ATTRIBUTE_NAME = "years";
@@ -13,6 +17,7 @@ public class Consts {
     public static final String PAGE_ATTRIBUTE_NAME = "page";
     public static final String PAGINATION_RANGE_ATTRIBUTE_NAME = "pagination";
     public static final String FILMS_ATTRIBUTE_NAME = "films";
+    public static final String FILM_ATTRIBUTE_NAME = "film";
 
     public static final String SORT_BY_CRITERION_NAME = "sort_by";
     public static final String RATING_CRITERION_NAME = "rating";

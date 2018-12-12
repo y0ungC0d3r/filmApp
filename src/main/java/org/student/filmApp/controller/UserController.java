@@ -12,6 +12,8 @@ import org.student.filmApp.service.SecurityService;
 import org.student.filmApp.service.UserService;
 import org.student.filmApp.validator.UserValidator;
 
+import static org.student.filmApp.Consts.START_VIEW_NAME;
+
 @Controller
 public class UserController {
     @Autowired
@@ -28,7 +30,7 @@ public class UserController {
         model.addAttribute("loginUserForm", new User());
         model.addAttribute("registerUserForm", new User());
 
-        return "start";
+        return START_VIEW_NAME;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -37,14 +39,13 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("loginUserForm", new User());
-            return "start";
+            return START_VIEW_NAME;
         }
 
         userService.save(userForm);
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        //return "start";
         return "redirect:/films";
     }
 
@@ -59,7 +60,6 @@ public class UserController {
             model.addAttribute("message", "Zostałeś wylogowany.");
         }
 
-        //return "start";
         return "redirect:/films";
     }
 

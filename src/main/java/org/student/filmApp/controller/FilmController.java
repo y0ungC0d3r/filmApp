@@ -7,20 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.Country;
 import org.student.filmApp.entity.Film;
 import org.student.filmApp.entity.Genre;
-import org.student.filmApp.service.CountryService;
-import org.student.filmApp.service.FilmService;
-import org.student.filmApp.service.GenreService;
+import org.student.filmApp.entity.User;
+import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
-import org.student.filmApp.utils.PaginationUtils;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.*;
@@ -37,6 +35,12 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
+
+    @Autowired
+    private SecurityServiceImpl securityService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
 
@@ -57,7 +61,7 @@ public class FilmController {
 
         model.addAttribute(FILMS_ATTRIBUTE_NAME, films);
 
-        return "films";
+        return FILMS_VIEW_NAME;
     }
 
     @RequestMapping(value = "/films",
@@ -112,6 +116,16 @@ public class FilmController {
         model.addAttribute(FILMS_ATTRIBUTE_NAME, filmsBySearchTerms);
         model.addAttribute("", filmsBySearchTerms.stream().findFirst());
 
-        return "films";
+        return FILMS_VIEW_NAME;
+    }
+
+    @RequestMapping(value = "/film/{id}", method = RequestMethod.GET)
+    String showFilm(@PathVariable String id, Model model) {
+        Film film = filmService.findByIdWithFetch(Long.valueOf(id));
+        model.addAttribute(FILM_ATTRIBUTE_NAME, film);
+
+        //Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
+
+        return FILM_VIEW_NAME;
     }
 }

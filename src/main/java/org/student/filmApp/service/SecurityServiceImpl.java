@@ -26,7 +26,10 @@ public class SecurityServiceImpl implements SecurityService {
     public String findLoggedInUsername() {
         Optional<Object> userDetails = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getDetails());
 
-        return userDetails.filter(u -> (u instanceof UserDetails)).map(u -> (((UserDetails) u)).getUsername()).orElse(null);
+        return userDetails
+                .filter(u -> (u instanceof UserDetails))
+                .map(u -> (((UserDetails) u)).getUsername())
+                .orElse(null);
     }
 
     @Override

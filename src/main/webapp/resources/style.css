@@ -41,6 +41,11 @@ nav .logo {
   font-size: 28px;
 }
 
+a:hover.film-link {
+    color: #03c4a3;
+    text-decoration: none;
+}
+
 .green-font-color {
 	color: #349B89;
 }

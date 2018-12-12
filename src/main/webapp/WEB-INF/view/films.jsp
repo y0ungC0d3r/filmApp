@@ -172,8 +172,8 @@
 							<div class="card mb-5 film-card">
 								<img class="card-img-top" src="images-w1400.jpg" alt="Card image cap">
 								<div class="card-body">
-									<h4 class="card-title green-font-color">${film.polishTitle}</h4>
-									<h6 class="card-subtitle mb-2 text-muted">${film.worldwideReleaseDate.getYear()}</h6>
+									<h4 class="card-title"><a href="${contextPath}/films/${film.id}" class="green-font-color film-link">${film.polishTitle}</a></h4>
+									<h6 class="card-subtitle mb-2 text-muted"><a href="#">${film.worldwideReleaseDate.getYear()}</a></h6>
 								</div>
 								<div class="card-footer text-right box-colors">
 									<span class="orange-font-color">★</span> <span class="text-muted">

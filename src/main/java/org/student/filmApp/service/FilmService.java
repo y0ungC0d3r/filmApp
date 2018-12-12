@@ -32,6 +32,10 @@ public class FilmService {
         return filmRepository.findById(id).orElse(null);
     }
 
+    public Film findByIdWithFetch(Long id) {
+        return filmRepository.findByIdWithFetch(id);
+    }
+
     @Transactional
     public Long countFilmsBySearchTerms(MultiValueMap<String, String> criteria) {
 
@@ -54,6 +58,10 @@ public class FilmService {
 
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
         Root<Film> pageRoot = pageCriteria.from(Film.class);
+
+        if(currPageNumber > lastPageNumber) {
+            currPageNumber = lastPageNumber;
+        }
 
         List<Film> films = entityManager.createQuery(
                 pageCriteria
