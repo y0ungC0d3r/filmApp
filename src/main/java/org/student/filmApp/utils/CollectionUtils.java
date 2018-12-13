@@ -26,7 +26,7 @@ public class CollectionUtils {
                 .collect(toMap(Function.identity(), selectedElements::contains));
     }
 
-    public static <T> Collection<T> convertNull(Collection<T> c) {
+    public static <T> Collection<T> emptyIfNull(Collection<T> c) {
         return c == null ? Collections.EMPTY_LIST :  c;
     }
 

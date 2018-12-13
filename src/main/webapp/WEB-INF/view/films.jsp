@@ -288,6 +288,21 @@
 				  <button href="#">&raquo;</button>
 				</div>
 
+				<div class="pagination justify-content-center mb-5">
+					<c:forEach items="${pagination}" var="page" varStatus="loop">
+						<c:if test="${loop.first && !page.value.booleanValue()}">
+							<button href="${page.key - 1}">&laquo;</button>
+						</c:if>
+
+						<button <c:if test="${page.value.booleanValue()}">class="active" disabled</c:if> href="#">4</button>
+						<button ${page.value.booleanValue() ? 'class="active" disabled' : 'href="${page.value}"' }>${page.value}</button>
+
+						<c:if test="${loop.last && !page.value.booleanValue()}">
+							<button href="${page.key + 1}">&raquo;</button>
+						</c:if>
+					</c:forEach>
+				</div>
+
 			</div>
 		</main>
 

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.Country;
 import org.student.filmApp.entity.Film;
 import org.student.filmApp.entity.Genre;
-import org.student.filmApp.entity.User;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 
-import javax.servlet.jsp.PageContext;
 import java.util.*;
 
 import static org.student.filmApp.Consts.*;
@@ -71,15 +68,15 @@ public class FilmController {
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchAttributes, Model model) {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(),
-                convertNull(filmSearchAttributes.get(COUNTRIES_ATTRIBUTE_NAME)));
+                emptyIfNull(filmSearchAttributes.get(COUNTRIES_ATTRIBUTE_NAME)));
         model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
 
         Map<Genre, Boolean> markedGenres = createMarkedIdentifiableElementsMap(genreService.findAll(),
-                convertNull(filmSearchAttributes.get(GENRES_ATTRIBUTE_NAME)));
+                emptyIfNull(filmSearchAttributes.get(GENRES_ATTRIBUTE_NAME)));
         model.addAttribute(GENRES_ATTRIBUTE_NAME, markedGenres);
 
         Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(),
-                convertNull(filmSearchAttributes.get(YEARS_ATTRIBUTE_NAME)));
+                emptyIfNull(filmSearchAttributes.get(YEARS_ATTRIBUTE_NAME)));
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
 
         if(!isNullOrEmpty(filmSearchAttributes.get(TITLE_ATTRIBUTE_NAME))) {
@@ -103,19 +100,17 @@ public class FilmController {
             model.addAttribute(SORT_BY_ATTRIBUTE_NAME, filmSearchAttributes.get(SORT_BY_ATTRIBUTE_NAME).get(0));
         }
 
-        int pageNumber = DEFAULT_PAGE_NUMBER;
-        if(!CollectionUtils.isEmpty(filmSearchAttributes.get(PAGE_ATTRIBUTE_NAME))) {
-            pageNumber = Integer.parseInt(filmSearchAttributes.get(PAGE_ATTRIBUTE_NAME).get(0));
-        }
-
         Long numberOfFilms = filmService.countFilmsBySearchTerms(filmSearchAttributes);
         int lastPageNumber = calculateNumberOfPages(numberOfFilms);
+        int pageNumber = calculateCurrPageNumber(filmSearchAttributes.get(CURRENT_PAGE_ATTRIBUTE_NAME), lastPageNumber);
+
+        model.addAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, pageNumber);
+
         List<Film> filmsBySearchTerms = filmService.findFilmsBySearchTerms(filmSearchAttributes, pageNumber, lastPageNumber);
-        Map<Integer, Boolean> paginationRange = getPaginationRange(pageNumber, lastPageNumber);
+        List<Integer> paginationRange = getPaginationRange(pageNumber, lastPageNumber);
 
         model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
         model.addAttribute(FILMS_ATTRIBUTE_NAME, filmsBySearchTerms);
-        model.addAttribute("", filmsBySearchTerms.stream().findFirst());
 
         return FILMS_VIEW_NAME;
     }

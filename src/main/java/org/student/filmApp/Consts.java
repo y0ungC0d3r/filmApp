@@ -14,7 +14,7 @@ public class Consts {
     public static final String TITLE_ATTRIBUTE_NAME = "title";
     public static final String SORT_BY_ATTRIBUTE_NAME = "sort_by";
     public static final String RATING_ATTRIBUTE_NAME = "rating";
-    public static final String PAGE_ATTRIBUTE_NAME = "page";
+    public static final String CURRENT_PAGE_ATTRIBUTE_NAME = "page";
     public static final String PAGINATION_RANGE_ATTRIBUTE_NAME = "pagination";
     public static final String FILMS_ATTRIBUTE_NAME = "films";
     public static final String FILM_ATTRIBUTE_NAME = "film";
