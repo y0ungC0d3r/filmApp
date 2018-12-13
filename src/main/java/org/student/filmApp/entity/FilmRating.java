@@ -18,7 +18,7 @@ public class FilmRating {
     @Column(name = "rating")
     private Short rating;
 
-    @Column(name = "date_of_rating")
+    @Column(name = "date_of_rate")
     private Date dateOfRating;
 
     public FilmRatingId getFilmRatingId() {

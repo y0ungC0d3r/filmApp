@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="../resources/style.css">
 
 		<title>${film.polishTitle} (${film.worldwideReleaseDate.getYear()})</title>
 	</head>
@@ -49,13 +49,13 @@
 			<div class="row justify-content-center">
 				<div id="poster" class="col-lg-4 text-center">
 					<div class="card mb-5 film-card mx-auto">
-						<img class="card-img-top rounded" src="fight_club.jpg" alt="Card image cap">
+						<img class="card-img-top rounded" src="" alt="Card image cap">
 					</div>
 				</div>
 
 				<div class="col-lg-5 mx-lg-0 ml-lg-5">
 					<div id="title" class="mb-5 text-lg-left text-center">
-						<h2 class="green-font-color d-inline-block">${film.polishTitle}</h2> <h3 class="orange-font-color d-inline-block">(1999)</h3>
+						<h2 class="green-font-color d-inline-block">${film.polishTitle}</h2> <h3 class="orange-font-color d-inline-block">(${film.worldwideReleaseDate.getYear()})</h3>
 						<h3 class="text-muted">${film.originalTitle}</h3>
 					</div>
 
@@ -81,11 +81,21 @@
 					<table class="film-data mx-lg-0 mx-auto mt-5">
 						<tr>
 							<th>Gatunek:</th>
-							<td>${fn:join(film.genres, ", ")}</td>
+							<td>
+							    <c:forEach items="${film.genres}" var="genre" varStatus="loop">
+                                    ${genre.name}
+                                    ${!loop.last ? ',' : ''}
+                               </c:forEach>
+                           </td>
 						</tr>
 						<tr>
 							<th>Produkcja:</th>
-							<td>${fn:join(film.countries, ", ")}</td>
+							<td>
+							    <c:forEach items="${film.countries}" var="country" varStatus="loop">
+							        ${country.name}
+							        ${!loop.last ? ',' : ''}
+							    </c:forEach>
+							</td>
 						</tr>
 						<tr>
 							<th>Premiera na świecie:</th>
@@ -110,7 +120,7 @@
 
 			<h4 class="my-4 green-font-color">Opis:</h4>
 
-			<p class="description">Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści. Dwóch mężczyzn znudzonych rutyną zakłada klub, w którym co tydzień odbywają się walki na gołe pięści.</p>
+			<p class="description">${film.storyline}</p>
 
 			<h4 class="my-4 green-font-color">Galeria:</h4>
 

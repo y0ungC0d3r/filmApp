@@ -31,6 +31,9 @@ public class Film implements Identifiable<Long> {
 	@Column(name = "polish_release_date")
 	private LocalDate polishReleaseDate;
 
+	@Column(name = "storyline")
+	private String storyline;
+
 	@Column(name = "budget")
 	private Integer budget;
 
@@ -245,5 +248,13 @@ public class Film implements Identifiable<Long> {
 
 	public void setAverageRating(Float averageRating) {
 		this.averageRating = averageRating;
+	}
+
+	public String getStoryline() {
+		return storyline;
+	}
+
+	public void setStoryline(String storyline) {
+		this.storyline = storyline;
 	}
 }

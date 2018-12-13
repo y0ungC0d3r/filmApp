@@ -18,6 +18,7 @@ import org.student.filmApp.entity.User;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 
+import javax.servlet.jsp.PageContext;
 import java.util.*;
 
 import static org.student.filmApp.Consts.*;
@@ -119,11 +120,10 @@ public class FilmController {
         return FILMS_VIEW_NAME;
     }
 
-    @RequestMapping(value = "/film/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{id}", method = RequestMethod.GET)
     String showFilm(@PathVariable String id, Model model) {
         Film film = filmService.findByIdWithFetch(Long.valueOf(id));
         model.addAttribute(FILM_ATTRIBUTE_NAME, film);
-
         //Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
 
         return FILM_VIEW_NAME;

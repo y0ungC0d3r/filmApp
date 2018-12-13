@@ -32,6 +32,7 @@ public class FilmService {
         return filmRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Film findByIdWithFetch(Long id) {
         return filmRepository.findByIdWithFetch(id);
     }
