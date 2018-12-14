@@ -46,17 +46,23 @@ public class FilmController {
     String showFilms(Model model) {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
-        model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
+        //model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
 
         Map<Genre, Boolean> markedGenres = createMarkedIdentifiableElementsMap(genreService.findAll(), Collections.emptyList());
-        model.addAttribute(GENRES_ATTRIBUTE_NAME, markedGenres);
+        //model.addAttribute(GENRES_ATTRIBUTE_NAME, markedGenres);
 
         Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(), Collections.emptyList());
-        model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
+        //model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
-        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), DEFAULT_PAGE_NUMBER, calculateNumberOfPages(numberOfFilms));
+        int lastPageNumber = calculateNumberOfPages(numberOfFilms);
 
+        model.addAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, DEFAULT_PAGE_NUMBER);
+
+        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), DEFAULT_PAGE_NUMBER, lastPageNumber);
+        List<Integer> paginationRange = getPaginationRange(DEFAULT_PAGE_NUMBER, lastPageNumber);
+
+        model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
         model.addAttribute(FILMS_ATTRIBUTE_NAME, films);
 
         return FILMS_VIEW_NAME;

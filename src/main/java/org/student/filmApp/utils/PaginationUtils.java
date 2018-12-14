@@ -3,6 +3,7 @@ package org.student.filmApp.utils;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,12 +43,14 @@ public class PaginationUtils {
     }
 
     public static int calculateCurrPageNumber(List<String> currPageNumberList, int lastPageNumber) {
+
         try {
-            String currPageNumberAttribute = emptyIfNull(currPageNumberList)
+            int currPageNumber = emptyIfNull(currPageNumberList)
                     .stream()
                     .findFirst()
-                    .get();
-            int currPageNumber = Integer.parseInt(currPageNumberAttribute);
+                    .map(Integer::parseInt)
+                    .orElseThrow(NullPointerException::new);
+
             return currPageNumber > lastPageNumber ? lastPageNumber : currPageNumber;
         } catch (NumberFormatException | NullPointerException e) {
             return DEFAULT_PAGE_NUMBER;
@@ -55,7 +58,7 @@ public class PaginationUtils {
     }
 
     public static void main(String ...args) {
-        System.out.println(getPaginationRange(1, 1));
+        System.out.println(getPaginationRange(2, 10));
         System.out.println(calculateNumberOfPages(13));
         //System.out.println(calculateCurrPageNumber(4, null));
         System.out.println(emptyIfNull(null)

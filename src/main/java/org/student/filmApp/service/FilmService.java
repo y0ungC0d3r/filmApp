@@ -80,7 +80,7 @@ public class FilmService {
     private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap, Root<Film> root, CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME))) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME)) && !criteriaMap.get(TITLE_CRITERION_NAME).get(0).equals("")) {
             Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
                     "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
             Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),
