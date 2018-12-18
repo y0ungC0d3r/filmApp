@@ -1,6 +1,7 @@
 package org.student.filmApp.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,7 +20,7 @@ public class FilmRating {
     private Short rating;
 
     @Column(name = "date_of_rate")
-    private Date dateOfRating;
+    private LocalDate dateOfRating;
 
     public FilmRatingId getFilmRatingId() {
         return filmRatingId;
@@ -37,11 +38,11 @@ public class FilmRating {
         this.rating = rating;
     }
 
-    public Date getDateOfRating() {
+    public LocalDate getDateOfRating() {
         return dateOfRating;
     }
 
-    public void setDateOfRating(Date dateOfRating) {
+    public void setDateOfRating(LocalDate dateOfRating) {
         this.dateOfRating = dateOfRating;
     }
 

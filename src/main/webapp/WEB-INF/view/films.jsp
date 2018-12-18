@@ -185,18 +185,18 @@
                 <div class="pagination justify-content-center mb-5">
                     <c:forEach items="${pagination}" var="p" varStatus="loop">
                         <c:if test="${loop.first && p != page}">
-                            <button name="page" value="${page - 1}">&laquo;</button>
+                            <button name="page" value="${page - 1}" form="film-criteria">&laquo;</button>
                         </c:if>
 
                         <button <c:choose>
                                     <c:when test="${p == page}">class="active" disabled</c:when>
                                     <c:otherwise>name="page" value="${p}"</c:otherwise>
-                                </c:choose>>
+                                </c:choose> form="film-criteria">
                             ${p}
                         </button>
 
                         <c:if test="${loop.last && p != page}">
-                            <button name="page" value="${page + 1}">&raquo;</button>
+                            <button name="page" value="${page + 1}" form="film-criteria">&raquo;</button>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -217,10 +217,10 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
-	<script>
+	<!--<script>
 	    $('button').on('click', function() {
             $('#film-criteria').submit();
         });
-     </script>
+     </script>-->
 	</body>
 </html>

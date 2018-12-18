@@ -9,7 +9,6 @@ import org.student.filmApp.entity.Film;
 @Repository
 public interface FilmRepository extends BaseRepository<Film, Long> {
 
-	@Transactional
 	@Query("SELECT f FROM Film f " +
 			"LEFT JOIN FETCH f.countries " +
 			"LEFT JOIN FETCH f.genres " +
@@ -20,9 +19,8 @@ public interface FilmRepository extends BaseRepository<Film, Long> {
 			"LEFT JOIN FETCH f.filmMusicians " +
 			"LEFT JOIN FETCH f.filmProducers " +
 			"LEFT JOIN FETCH f.filmScreenwriters " +
-			//"LEFT JOIN FETCH f.ratings r ON (r.filmRatingId.user.id IS NULL OR r.filmRatingId.user.id = 5) " +
-			//"LEFT JOIN FETCH f.ratings r " +
-			//"LEFT JOIN FETCH FilmRating fr ON (fr.filmRatingId.film.id = :id AND fr.filmRatingId.user.id = 5) " +
-			"WHERE f.id = :id")
-	Film findByIdWithFetch(@Param("id") Long id);
+			"LEFT JOIN FETCH FilmRating fr ON (fr.filmRatingId.film.id = f.id AND fr.filmRatingId.user.id = :user_id) " +
+			"LEFT JOIN FETCH f.ratings " +
+			"WHERE f.id = :film_id")
+	Film findByIdWithFetch(@Param("film_id") Long filmId, @Param("user_id") Long userId);
 }

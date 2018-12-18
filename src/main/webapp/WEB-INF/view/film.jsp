@@ -64,17 +64,17 @@
 							<div class="rating-box d-inline-block">${film.averageRating} ★</div>
 							<div class="text-muted d-inline-block ml-3">liczba głosów: ${film.numberOfVotes}</div>
 							<div class="pt-3 text-left">Twoja ocena: </div>
-							<form action="#" method="post">
+							<form:form action="../change-rating" method="post" modelAttribute="filmRating">
 								<fieldset class="rating">
-									<input type="radio" id="star-5" name="rating" value="5" /><label class = "full" for="star-5" title="Badzo dobry"><i class="fas fa-star"></i></label>
-									<input type="radio" id="star-4" name="rating" value="4" /><label class = "full" for="star-4" title="Dobry"><i class="fas fa-star"></i></label>
-									<input type="radio" id="star-3" name="rating" value="3" /><label class = "full" for="star-3" title="Przeciętny"><i class="fas fa-star"></i></label>
-									<input type="radio" id="star-2" name="rating" value="2" /><label class = "full" for="star-2" title="Słaby"><i class="fas fa-star"></i></label>
-									<input type="radio" id="star-1" name="rating" value="1" /><label class = "full" for="star-1" title="Bardzo słaby"><i class="fas fa-star"></i></label>
+									<form:radiobutton id="star-5" path="rating" value="5" /><label class="full" for="star-5" title="Badzo dobry"><i class="fas fa-star"></i></label>
+									<form:radiobutton id="star-4" path="rating" value="4" /><label class="full" for="star-4" title="Dobry"><i class="fas fa-star"></i></label>
+									<form:radiobutton id="star-3" path="rating" value="3" /><label class="full" for="star-3" title="Przeciętny"><i class="fas fa-star"></i></label>
+									<form:radiobutton id="star-2" path="rating" value="2" /><label class="full" for="star-2" title="Słaby"><i class="fas fa-star"></i></label>
+									<form:radiobutton id="star-1" path="rating" value="1" /><label class="full" for="star-1" title="Bardzo słaby"><i class="fas fa-star"></i></label>
 								</fieldset>
-								<input type="hidden" name="filmId" value=${film.id} />
-								<input type="hidden" name="UserId" value=${userId} />
-							</form>
+								<form:hidden path = "user.id" />
+								<form:hidden path = "film.id" />
+							</form:form>
 						</div>
 					</div>
 

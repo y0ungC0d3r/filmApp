@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.Country;
 import org.student.filmApp.entity.Film;
 import org.student.filmApp.entity.Genre;
+import org.student.filmApp.entity.User;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 
@@ -122,10 +123,19 @@ public class FilmController {
     }
 
     @RequestMapping(value = "/films/{id}", method = RequestMethod.GET)
-    String showFilm(@PathVariable String id, Model model) {
-        Film film = filmService.findByIdWithFetch(Long.valueOf(id));
+    String showFilm(@PathVariable String id, Model model) throws IllegalAccessException {
+
+        Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
+
+        Film film = filmService.findByIdWithFetch(
+                Long.valueOf(id),
+                loggedUser
+                        .map(User::getId)
+                        .orElseThrow(IllegalAccessException::new)
+        );
+
         model.addAttribute(FILM_ATTRIBUTE_NAME, film);
-        //Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
+        model.addAttribute("filmRating", film.getRatings().size() == 1 ? film.getRatings().iterator().next() : null);
 
         return FILM_VIEW_NAME;
     }

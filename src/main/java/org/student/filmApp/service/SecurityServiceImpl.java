@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,11 +25,10 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public String findLoggedInUsername() {
-        Optional<Object> userDetails = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getDetails());
+        Optional<Authentication> userDetails = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
 
         return userDetails
-                .filter(u -> (u instanceof UserDetails))
-                .map(u -> (((UserDetails) u)).getUsername())
+                .map(Authentication::getName)
                 .orElse(null);
     }
 
