@@ -217,38 +217,43 @@
 									<div class="col-6">${director.stageName}</div>
 									<div class="col-6 text-right">reżyseria</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmScreenwriters}" var="screenwriter">
 								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="col-6">${screenwriter.stageName}</div>
 									<div class="col-6 text-right">scenariusz</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmCinematographers}" var="cinematographer">
 								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="col-6">${cinematographer.stageName}</div>
 									<div class="col-6 text-right">zdjęcia</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmMusicians}" var="musician">
 								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="col-6">${musician.stageName}</div>
 									<div class="col-6 text-right">muzyka</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmEditors}" var="editor">
 								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="col-6">${editor.stageName}</div>
 									<div class="col-6 text-right">montaż</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmProducers}" var="producer">
 								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="col-6">${producer.stageName}</div>
 									<div class="col-6 text-right">produkcja</div>
 								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
-							<c:set var="counter" value="${counter + 1}" />
 						</div>
 					</div>
 				</div>
