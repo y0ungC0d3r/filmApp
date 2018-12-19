@@ -60,7 +60,6 @@ public class PaginationUtils {
     public static void main(String ...args) {
         System.out.println(getPaginationRange(2, 10));
         System.out.println(calculateNumberOfPages(13));
-        //System.out.println(calculateCurrPageNumber(4, null));
         System.out.println(emptyIfNull(null)
                 .stream()
                 .findFirst()

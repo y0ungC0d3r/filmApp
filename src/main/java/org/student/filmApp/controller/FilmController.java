@@ -140,7 +140,7 @@ public class FilmController {
                 .findFirst()
                 .orElse(new FilmRating(new Film(filmId), new User(userId)));
 
-        model.addAttribute("filmRating", filmRating);
+        model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
 
         return FILM_VIEW_NAME;
     }
