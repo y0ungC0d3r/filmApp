@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.student.filmApp.entity.Country;
-import org.student.filmApp.entity.Film;
-import org.student.filmApp.entity.Genre;
-import org.student.filmApp.entity.User;
+import org.student.filmApp.entity.*;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 
@@ -127,15 +124,23 @@ public class FilmController {
 
         Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
 
-        Film film = filmService.findByIdWithFetch(
-                Long.valueOf(id),
-                loggedUser
-                        .map(User::getId)
-                        .orElseThrow(IllegalAccessException::new)
-        );
+        Long filmId = Long.valueOf(id);
+        Long userId = loggedUser
+                .map(User::getId)
+                .orElseThrow(IllegalAccessException::new);
+
+        Film film = filmService.findByIdWithFetch(filmId);
 
         model.addAttribute(FILM_ATTRIBUTE_NAME, film);
-        model.addAttribute("filmRating", film.getRatings().size() == 1 ? film.getRatings().iterator().next() : null);
+
+        FilmRating filmRating = film
+                .getRatings()
+                .stream()
+                .filter(r -> r.getUser().getId().equals(userId))
+                .findFirst()
+                .orElse(new FilmRating(new Film(filmId), new User(userId)));
+
+        model.addAttribute("filmRating", filmRating);
 
         return FILM_VIEW_NAME;
     }

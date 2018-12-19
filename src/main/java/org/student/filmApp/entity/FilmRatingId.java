@@ -1,7 +1,6 @@
 package org.student.filmApp.entity;
 
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 

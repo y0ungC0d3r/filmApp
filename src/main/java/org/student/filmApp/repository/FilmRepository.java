@@ -19,8 +19,7 @@ public interface FilmRepository extends BaseRepository<Film, Long> {
 			"LEFT JOIN FETCH f.filmMusicians " +
 			"LEFT JOIN FETCH f.filmProducers " +
 			"LEFT JOIN FETCH f.filmScreenwriters " +
-			"LEFT JOIN FETCH FilmRating fr ON (fr.filmRatingId.film.id = f.id AND fr.filmRatingId.user.id = :user_id) " +
 			"LEFT JOIN FETCH f.ratings " +
 			"WHERE f.id = :film_id")
-	Film findByIdWithFetch(@Param("film_id") Long filmId, @Param("user_id") Long userId);
+	Film findByIdWithFetch(@Param("film_id") Long filmId);
 }

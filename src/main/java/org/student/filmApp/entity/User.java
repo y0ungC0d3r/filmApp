@@ -7,6 +7,12 @@ import java.util.Set;
 @Table(name = "user_")
 public class User implements Identifiable<Long> {
 
+    public User() {}
+
+    public User(Long id) {
+        this.id = id;
+    }
+
     private Long id;
 
     private String username;

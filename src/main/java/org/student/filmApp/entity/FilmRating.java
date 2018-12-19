@@ -3,6 +3,8 @@ package org.student.filmApp.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 @Entity
 @Table(name = "film_rating")
@@ -12,6 +14,13 @@ import java.util.Date;
         @AssociationOverride(name = "filmRatingId.film",
                 joinColumns = @JoinColumn(name = "film_id")) })
 public class FilmRating {
+
+    public FilmRating() {}
+
+    public FilmRating(Film film, User user) {
+        setFilm(film);
+        setUser(user);
+    }
 
     @EmbeddedId
     private FilmRatingId filmRatingId = new FilmRatingId();
@@ -63,4 +72,5 @@ public class FilmRating {
     public void setFilm(Film film) {
         filmRatingId.setFilm(film);
     }
+
 }

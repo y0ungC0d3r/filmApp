@@ -33,8 +33,8 @@ public class FilmService {
     }
 
     @Transactional
-    public Film findByIdWithFetch(Long filmId, Long userId) {
-        return filmRepository.findByIdWithFetch(filmId, userId);
+    public Film findByIdWithFetch(Long filmId) {
+        return filmRepository.findByIdWithFetch(filmId);
     }
 
     @Transactional

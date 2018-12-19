@@ -14,6 +14,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "film")
 public class Film implements Identifiable<Long> {
+
+	public Film() {}
+
+	public Film(Long id) {
+		this.id = id;
+	}
 	
 	@Id
 	@Column(name = "id")

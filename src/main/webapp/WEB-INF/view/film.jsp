@@ -27,7 +27,7 @@
 				<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<a href="#" class="navbar-brand logo pr-4">filmore</a>
+				<a href="${contextPath}" class="navbar-brand logo pr-4">filmore</a>
 				<div class="collapse navbar-collapse" id="nabarCollapse">
 					<ul class="navbar-nav">
 						<li class="nav-item">
