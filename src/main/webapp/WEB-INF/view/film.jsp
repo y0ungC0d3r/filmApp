@@ -181,13 +181,23 @@
 					</div>
 					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body dark-blue">
-							<table class="w-100">
-								<tr>
-									<td class="w-50">Brad Pitt</td>
-									<td class="w-25">jako:</td>
-									<td class="w-25">Tyler Durden</td>
-								</tr>
-							</table>
+							<c:forEach items="${film.actors}" var="actor" varStatus="loop">
+								<c:choose>
+									<c:when test="${loop.first}">
+										<div class="row py-2 bg-dark">
+											<div class="col-4">${actor.person.stageName}</div>
+											<div class="col-4 text-center">jako:</div>
+											<div class="col-4 text-right">${actor.character}</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="row py-2 ${loop.index % 2 == 0 ? '' : 'bg-dark'}">
+											<div class="col-6">${actor.person.stageName}</div>
+											<div class="col-6 text-right">${actor.character}</div>
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
@@ -202,12 +212,49 @@
 					</div>
 					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 						<div class="card-body dark-blue">
-							<table class="w-100">
-								<tr>
-									<td class="w-75">David Fincher</td>
-									<td class="w-25">Reżyser</td>
-								</tr>
-							</table>
+							<c:set var="counter" value="0" />
+							<c:forEach items="${film.filmDirectors}" var="director">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${director.stageName}</div>
+									<div class="col-6 text-right">reżyseria</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+							<c:forEach items="${film.filmScreenwriters}" var="screenwriter">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${screenwriter.stageName}</div>
+									<div class="col-6 text-right">scenariusz</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+							<c:forEach items="${film.filmCinematographers}" var="cinematographer">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${cinematographer.stageName}</div>
+									<div class="col-6 text-right">zdjęcia</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+							<c:forEach items="${film.filmMusicians}" var="musician">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${musician.stageName}</div>
+									<div class="col-6 text-right">muzyka</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+							<c:forEach items="${film.filmEditors}" var="editor">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${editor.stageName}</div>
+									<div class="col-6 text-right">montaż</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+							<c:forEach items="${film.filmProducers}" var="producer">
+								<div class="row py-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="col-6">${producer.stageName}</div>
+									<div class="col-6 text-right">produkcja</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
 						</div>
 					</div>
 				</div>
@@ -231,14 +278,14 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
 	<script type="text/javascript">
-			$('input[type=radio]').on('change', function() {
-				$(this).closest("form").submit();
-			});
+		$('input[type=radio]').on('change', function() {
+			$(this).closest("form").submit();
+		});
 
-			$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-          event.preventDefault();
-          $(this).ekkoLightbox();
-      });
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+		  event.preventDefault();
+		  $(this).ekkoLightbox();
+	  	});
 	</script>
 	</body>
 </html>
