@@ -8,6 +8,7 @@ public class Consts {
     public static final String FILM_VIEW_NAME = "film";
     public static final String FILMS_VIEW_NAME = "films";
 
+    public static final String FILM_RATING_ATTRIBUTE_NAME = "filmRating";
     public static final String COUNTRIES_ATTRIBUTE_NAME = "countries";
     public static final String GENRES_ATTRIBUTE_NAME = "genres";
     public static final String YEARS_ATTRIBUTE_NAME = "years";

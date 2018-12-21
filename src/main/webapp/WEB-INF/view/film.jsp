@@ -75,6 +75,7 @@
 								<form:hidden path = "user.id" />
 								<form:hidden path = "film.id" />
 							</form:form>
+							<!--<div class="pt-3 text-left">${film.ratings.iterator().next().dateOfRating}</div>-->
 						</div>
 					</div>
 

@@ -15,6 +15,7 @@ import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.*;
@@ -140,7 +141,7 @@ public class FilmController {
                 .findFirst()
                 .orElse(new FilmRating(new Film(filmId), new User(userId)));
 
-        model.addAttribute("filmRating", filmRating);
+        model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
 
         return FILM_VIEW_NAME;
     }
