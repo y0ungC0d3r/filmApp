@@ -28,6 +28,12 @@ public class Consts {
     public static final String YEARS_CRITERION_NAME = "years";
     public static final String PAGE_CRITERION_NAME = "page";
 
+    public static final String RATING_FLOOR_CRITERIA_SUFFIX = "floor";
+    public static final String RATING_ROOF_CRITERIA_SUFFIX = "roof";
+
+    public static final float MAX_AVERAGE_RATING_VALUE = 5.f;
+    public static final float MIN_AVERAGE_RATING_VALUE = 1.f;
+
     public static final int DEFAULT_PAGE_NUMBER = 1;
     public static final int DEFAULT_PAGE_SIZE = 12;
     public static final int DEFAULT_NUMBER_OF_PAGES = 5;

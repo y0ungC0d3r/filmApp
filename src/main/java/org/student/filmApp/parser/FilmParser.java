@@ -38,7 +38,7 @@ public class FilmParser {
     static {
         FILM_INFO_LABEL = Arrays.asList(GENRE_FILM_INFO_LABEL, COUNTRY_FILM_INFO_LABEL, RELEASE_DATES_FILM_INFO_LABEL, BOXOFFICE_FILM_INFO_LABEL);
     }
-    static public String parse() throws IOException, ParseException {
+    static public String parse(int filmId) throws IOException, ParseException {
         Document doc = Jsoup.connect("http://www.filmweb.pl/Podziemny.Krag").get();
 
         Element storylineEl = doc.select("div.filmPlot.bottom-15 p").first();
@@ -104,11 +104,11 @@ public class FilmParser {
         System.out.println(findCountries(filmInfoRows));
 
         for(String c : findCountries(filmInfoRows)) {
-            System.out.println("INSERT INTO FILM_COUNTRY(FILM_ID, COUNTRY_ID) INTO VALUES(, " + countriesByName.get(c) + ");");
+            System.out.println("INSERT INTO FILM_COUNTRY(FILM_ID, COUNTRY_ID) VALUES(" + filmId + ", " + countriesByName.get(c) + ");");
         }
 
         for(String g : findGenres(filmInfoRows)) {
-            System.out.println("INSERT INTO FILM_GENRE(FILM_ID, GENRE_ID) INTO VALUES(, " + genresByName.get(g) + ");");
+            System.out.println("INSERT INTO FILM_GENRE(FILM_ID, GENRE_ID) VALUES(" + filmId + ", " + genresByName.get(g) + ");");
         }
 
         return null;
@@ -166,7 +166,7 @@ public class FilmParser {
     }
 
     public static void main(String[] args) throws IOException, ParseException {
-        parse();
+        parse(Integer.parseInt(args[0]));
     }
 
     private static Map<String, Integer> genresByName = new HashMap<>();

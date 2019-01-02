@@ -27,6 +27,7 @@ public class FilmService {
     EntityManager entityManager;
 
     public static final String SORT_BY_VALUE_PATTERN = "(rating|date)-(ascending|descending)";
+    public static final String RATING_PATTERN = "(roof|floor)-[1-5]";
 
     Film findById(Long id) {
         return filmRepository.findById(id).orElse(null);
@@ -85,7 +86,31 @@ public class FilmService {
     private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap, Root<Film> root, CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME)) && !criteriaMap.get(TITLE_CRITERION_NAME).get(0).equals("")) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(RATING_CRITERION_NAME))) {
+            Optional<Float> floor = criteriaMap.get(RATING_CRITERION_NAME)
+                    .stream()
+                    .filter(f -> f.startsWith(RATING_FLOOR_CRITERIA_SUFFIX))
+                    .map(f -> f.charAt(f.length() - 1))
+                    .map(String::valueOf)
+                    .map(Float::valueOf)
+                    .findFirst();
+
+            Optional<Float> roof = criteriaMap.get(RATING_CRITERION_NAME)
+                    .stream()
+                    .filter(f -> f.startsWith(RATING_ROOF_CRITERIA_SUFFIX))
+                    .map(f -> f.charAt(f.length() - 1))
+                    .map(String::valueOf)
+                    .map(Float::valueOf)
+                    .findFirst();
+
+            Predicate floorRatingPredicate = builder.greaterThanOrEqualTo(root.get(Film_.averageRating), floor.orElse(MIN_AVERAGE_RATING_VALUE));
+            predicates.add(floorRatingPredicate);
+
+            Predicate roofRatingPredicate = builder.lessThanOrEqualTo(root.get(Film_.averageRating), roof.orElse(MAX_AVERAGE_RATING_VALUE));
+            predicates.add(roofRatingPredicate);
+        }
+
+        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME)) && !criteriaMap.get(TITLE_CRITERION_NAME).get(0).isEmpty()) {
             Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
                     "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
             Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),

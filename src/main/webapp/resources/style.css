@@ -50,6 +50,8 @@ a:hover.film-link {
     text-decoration: none;
 }
 
+a, a:hover { color: inherit; }
+
 .green-font-color {
 	color: #349B89;
 }
@@ -93,6 +95,8 @@ p.description {
   background-color: transparent;
   display: block;
   width: 100%;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .dark-blue {

@@ -80,40 +80,52 @@
 					</div>
 
 					<table class="film-data mx-lg-0 mx-auto mt-5">
-						<tr>
-							<th>Gatunek:</th>
-							<td>
-							    <c:forEach items="${film.genres}" var="genre" varStatus="loop">
-                                    ${genre.name}
-                                    ${!loop.last ? ',' : ''}
-                               </c:forEach>
-                           </td>
-						</tr>
-						<tr>
-							<th>Produkcja:</th>
-							<td>
-							    <c:forEach items="${film.countries}" var="country" varStatus="loop">
-							        ${country.name}
-							        ${!loop.last ? ',' : ''}
-							    </c:forEach>
-							</td>
-						</tr>
-						<tr>
-							<th>Premiera na świecie:</th>
-							<td>${film.worldwideReleaseDate}</td>
-						</tr>
-						<tr>
-							<th>Premiera w Polsce:</th>
-							<td>${film.polishReleaseDate}</td>
-						</tr>
-						<tr>
-							<th>Czas trwania:</th>
-							<td>${film.runningTime} min.</td>
-						</tr>
-						<tr>
-							<th>Box office:</th>
-							<td>${film.boxOffice}</td>
-						</tr>
+					    <c:if test="${not empty film.genres}">
+                            <tr>
+                                <th>Gatunek:</th>
+                                <td>
+                                    <c:forEach items="${film.genres}" var="genre" varStatus="loop">
+                                        ${genre.name}
+                                        ${!loop.last ? ',' : ''}
+                                   </c:forEach>
+                               </td>
+                            </tr>
+						</c:if>
+						<c:if test="${not empty film.countries}">
+                            <tr>
+                                <th>Produkcja:</th>
+                                <td>
+                                    <c:forEach items="${film.countries}" var="country" varStatus="loop">
+                                        ${country.name}
+                                        ${!loop.last ? ',' : ''}
+                                    </c:forEach>
+                                </td>
+                            </tr>
+						</c:if>
+						<c:if test="${not empty film.worldwideReleaseDate}">
+                            <tr>
+                                <th>Premiera na świecie:</th>
+                                <td>${film.worldwideReleaseDate}</td>
+                            </tr>
+						</c:if>
+						<c:if test="${not empty film.polishReleaseDate}">
+                            <tr>
+                                <th>Premiera w Polsce:</th>
+                                <td>${film.polishReleaseDate}</td>
+                            </tr>
+						</c:if>
+						<c:if test="${not empty film.runningTime}">
+                            <tr>
+                                <th>Czas trwania:</th>
+                                <td>${film.runningTime} min.</td>
+                            </tr>
+						</c:if>
+						<c:if test="${not empty film.boxOffice}">
+                            <tr>
+                                <th>Box office:</th>
+                                <td>${film.boxOffice}</td>
+                            </tr>
+						</c:if>
 					</table>
 
 				</div>
@@ -185,14 +197,18 @@
 								<c:choose>
 									<c:when test="${loop.first}">
 										<div class="clearfix p-2 bg-dark">
-											<div class="float-left w-1-3">${actor.person.stageName}</div>
+											<div class="float-left w-1-3">
+											<a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
+											</div>
 											<div class="float-left w-1-3 text-center">jako:</div>
 											<div class="float-left w-1-3 text-right">${actor.character}</div>
 										</div>
 									</c:when>
 									<c:otherwise>
 										<div class="clearfix p-2 ${loop.index % 2 == 0 ? '' : 'bg-dark'}">
-											<div class="float-left w-50">${actor.person.stageName}</div>
+											<div class="float-left w-50">
+											    <a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
+											</div>
 											<div class="float-left w-50 text-right">${actor.character}</div>
 										</div>
 									</c:otherwise>
@@ -215,42 +231,54 @@
 							<c:set var="counter" value="0" />
 							<c:forEach items="${film.filmDirectors}" var="director">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${director.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${director.id}">${director.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">reżyseria</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmScreenwriters}" var="screenwriter">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${screenwriter.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${screenwriter.id}">${screenwriter.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">scenariusz</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmCinematographers}" var="cinematographer">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${cinematographer.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${cinematographer.id}">${cinematographer.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">zdjęcia</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmMusicians}" var="musician">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${musician.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${musician.id}">${musician.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">muzyka</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmEditors}" var="editor">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${editor.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${editor.id}">${editor.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">montaż</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 							<c:forEach items="${film.filmProducers}" var="producer">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">${producer.stageName}</div>
+									<div class="float-left w-50">
+									    <a href="${contextPath}/people/${producer.id}">${producer.stageName}</a>
+									</div>
 									<div class="float-left w-50 text-right">produkcja</div>
 								</div>
 								<c:set var="counter" value="${counter + 1}" />
