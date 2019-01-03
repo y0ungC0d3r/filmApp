@@ -164,6 +164,8 @@
 
 				<div class="row card-columns justify-content-center">
 
+                    <c:if test="${empty films}"><h1>Nie znaleziono żadnych filmów</h1></c:if>
+
 					<c:forEach items="${films}" var="film">
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="card mb-5 film-card">

@@ -27,7 +27,6 @@ public class FilmService {
     EntityManager entityManager;
 
     public static final String SORT_BY_VALUE_PATTERN = "(rating|date)-(ascending|descending)";
-    public static final String RATING_PATTERN = "(roof|floor)-[1-5]";
 
     Film findById(Long id) {
         return filmRepository.findById(id).orElse(null);
