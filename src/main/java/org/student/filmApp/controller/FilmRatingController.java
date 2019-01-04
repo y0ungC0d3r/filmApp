@@ -19,7 +19,7 @@ public class FilmRatingController {
     @Autowired
     FilmRatingService filmRatingService;
 
-    @RequestMapping(value = "/change-rating", method = RequestMethod.POST)
+    @RequestMapping(value = "/change-film-rating", method = RequestMethod.POST)
     String changeRating(@ModelAttribute("filmRating") FilmRating rating) {
         filmRatingService.save(rating);
         return "redirect:/films/" + rating.getFilm().getId();
