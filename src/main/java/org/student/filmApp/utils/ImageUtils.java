@@ -1,13 +1,25 @@
 package org.student.filmApp.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.ServletContextAware;
+
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+@Component
 public class ImageUtils {
 
     private static final int THUMBNAIL_WIDTH = 400;
@@ -15,28 +27,60 @@ public class ImageUtils {
 
     private static final String JPG_FILE_EXTENSION = "jpg";
 
-    private static final String FILMS_IMAGES_BASE_FOLDER = "";
+    private static final FileFilter IS_JPG_PREDICATE = f -> JPG_FILE_EXTENSION.equals(getFileExtension(f).toLowerCase());
 
-    /*public static List<String> getAllFilmImagePaths(Long filmId) {
-        new File(FILMS_IMAGES_BASE_FOLDER);
-    }*/
+    private static final String FILMS_IMAGES_BASE_FOLDER = "src/main/webapp/resources/image/film/";
+    private static final String THUMBNAIL_FOLDER_NAME = "thumbnail";
+
+    private static final String FILMS_IMAGES_PATH = "/resources/image/film/";
+
+    @Autowired
+    static ResourceLoader resourceLoader;
+
+    public static Map<String, String> getAllFilmImagePaths(Long filmId) {
+        String imagesFolderDir = FILMS_IMAGES_BASE_FOLDER + filmId;
+        String thumbnailsFolderDir = imagesFolderDir + "/" + THUMBNAIL_FOLDER_NAME;
+
+        File thumbnailsFileDir = new File(thumbnailsFolderDir);
+
+        if(!thumbnailsFileDir.exists()) {
+            return Collections.EMPTY_MAP;
+        }
+
+        Set<String> thumbnails = Arrays
+                .stream(thumbnailsFileDir.listFiles(IS_JPG_PREDICATE))
+                .map(File::getName)
+                .collect(Collectors.toSet());
+
+        Set<String> images = Arrays
+                .stream(new File(imagesFolderDir).listFiles(IS_JPG_PREDICATE))
+                .map(File::getName)
+                .collect(Collectors.toSet());
+
+        final String imagesPath = FILMS_IMAGES_PATH + filmId;
+        final String thumbnailPath = imagesPath + THUMBNAIL_FOLDER_NAME;
+
+        return thumbnails
+                .stream()
+                .filter(images::contains)
+                .collect(Collectors.toMap(k -> thumbnailPath.concat(k), v -> imagesPath.concat(v)));
+    }
 
     public static void createThumbnails(String directory) throws IOException {
         File dir = new File(directory);
+
         if(!dir.isDirectory()) {
             throw new IllegalArgumentException();
         }
-        File[] files = dir.listFiles();
+
+        File[] files = dir.listFiles(IS_JPG_PREDICATE);
         for (int i = 0; i < files.length; i++) {
-            if(JPG_FILE_EXTENSION.equals(getFileExtension(files[i]).toLowerCase())) {
-                renameFile(files[i], String.valueOf(i + 1), JPG_FILE_EXTENSION);
-                //createThumbnail(files[i].getParent(), String.valueOf(i + 1), "t");
-                System.out.println(files[i].getPath());
-            }
+            renameFile(files[i], String.valueOf(i + 1), JPG_FILE_EXTENSION);
+            createThumbnail(files[i].getParent(), String.valueOf(i + 1));
         }
     }
 
-    public static void createThumbnail(String dir, String imageName, String thumbnailNameAppendix) throws IOException {
+    public static void createThumbnail(String dir, String imageName) throws IOException {
 
         BufferedImage inImage = ImageIO.read(new File(dir + "\\" + imageName + "." + JPG_FILE_EXTENSION));
         BufferedImage outImage = new BufferedImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -65,8 +109,8 @@ public class ImageUtils {
                     .getSubimage(0, crop, scaledWidth, scaledHeight - 2 * (heightDiff % 2 == 0 ? crop : crop + 1));
             outImage.createGraphics().drawImage(image, 0, 0,null);
         }
-
-        ImageIO.write(outImage, JPG_FILE_EXTENSION, new File(dir + "\\" + imageName + thumbnailNameAppendix + "." + JPG_FILE_EXTENSION));
+        new File(dir + "\\thumbnail\\").mkdir();
+        ImageIO.write(outImage, JPG_FILE_EXTENSION, new File(dir + "\\thumbnail\\" + imageName + "." + JPG_FILE_EXTENSION));
 
     }
 
@@ -92,9 +136,10 @@ public class ImageUtils {
         return file.renameTo(new File(file.getParent() + "\\" + newFileName + "." + fileExtension));
     }
 
-    public static void main(String[] args) throws IOException, IllegalAccessException {
+    public static void main(String[] args) throws IOException {
         //createThumbnail("C:\\Users\\Comarch\\Desktop\\Brimestone.jpg");
-        createThumbnails("C:\\Users\\Comarch\\Desktop\\Nowy folder (5)");
-        getFileExtension(new File("C:\\Users\\Comarch\\Desktop\\Brimestone.jpg"));
+        createThumbnails("C:\\Users\\wowow\\Desktop\\Nowy folder (3)");
+        //getFileExtension(new File("C:\\Users\\Comarch\\Desktop\\Brimestone.jpg"));
+        //getAllFilmImagePaths(1L);
     }
 }

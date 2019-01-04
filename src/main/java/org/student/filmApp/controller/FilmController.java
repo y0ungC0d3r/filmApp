@@ -1,6 +1,7 @@
 package org.student.filmApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.entity.*;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
+import org.student.filmApp.utils.ImageUtils;
 
+import javax.servlet.ServletContext;
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -38,6 +41,12 @@ public class FilmController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    ServletContext servletContext;
+
+    @Autowired
+    ResourceLoader resourceLoader;
 
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
 
@@ -142,6 +151,10 @@ public class FilmController {
                 .orElse(new FilmRating(new Film(filmId), new User(userId)));
 
         model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
+
+        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId);
+
+        model.addAttribute(IMAGES_PATHS_ATTRIBUTE_NAME, imagesPaths);
 
         return FILM_VIEW_NAME;
     }

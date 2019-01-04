@@ -19,6 +19,7 @@ public class Consts {
     public static final String PAGINATION_RANGE_ATTRIBUTE_NAME = "pagination";
     public static final String FILMS_ATTRIBUTE_NAME = "films";
     public static final String FILM_ATTRIBUTE_NAME = "film";
+    public static final String IMAGES_PATHS_ATTRIBUTE_NAME = "imagesPaths";
 
     public static final String SORT_BY_CRITERION_NAME = "sort_by";
     public static final String RATING_CRITERION_NAME = "rating";
