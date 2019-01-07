@@ -49,13 +49,14 @@
 			<div class="row justify-content-center">
 				<div id="poster" class="col-lg-4 text-center">
 					<div class="card mb-5 film-card mx-auto">
-						<img class="card-img-top rounded" src="" alt="Card image cap">
+						<img class="card-img-top rounded" src="../${posterPath}" alt="Card image cap">
 					</div>
 				</div>
 
 				<div class="col-lg-5 mx-lg-0 ml-lg-5">
 					<div id="title" class="mb-5 text-lg-left text-center">
-						<h2 class="green-font-color d-inline-block">${film.polishTitle}</h2> <h3 class="orange-font-color d-inline-block">(${film.worldwideReleaseDate.getYear()})</h3>
+						<h2 class="d-inline-block"><a href="#" class="green-font-color film-link">${film.polishTitle}</a></h2>
+						<h3 class="orange-font-color d-inline-block">(${film.worldwideReleaseDate.getYear()})</h3>
 						<h3 class="text-muted">${film.originalTitle}</h3>
 					</div>
 
@@ -133,52 +134,26 @@
 
 			<h4 class="my-4 green-font-color">Opis:</h4>
 
-			<p class="description">${film.storyline}</p>
+            <c:choose>
+                <c:when test="${not empty film.storyline}">
+                    <p class="description">${film.storyline}</p>
+                </c:when>
+                <c:otherwise>
+                    Film nie posiada jeszcze opisu fabuły.
+                </c:otherwise>
+            </c:choose>
 
 			<h4 class="my-4 green-font-color">Galeria:</h4>
 
-			<div class="row text-center text-lg-left">
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/M185_qYH8vg/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/sesveuG_rNo/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/AvhMzHwiE_0/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/2gYsZUmockw/400x300" alt="">
-		       </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="C:\Users\wowow\Desktop\cards\images-w1400.jpg" class="d-block h-100" data-toggle="lightbox" data-gallery="example-gallery">
-		            <img class="mw-100" src="https://source.unsplash.com/EMSDtjVHdQ8/400x300" alt="" class="img-fluid">
-		          </a>
-		    </div>
-		  </div>
+        <div class="row text-center text-lg-left">
+            <c:forEach var="path" items="${imagesPaths}">
+                <div class="col-lg-3 col-6 m-0 p-0">
+                  <a href="../${path.value}" class="d-block h-100" data-toggle="lightbox" data-gallery="example-gallery">
+                    <img class="mw-100" src="../${path.key}" alt="" class="img-fluid">
+                  </a>
+                </div>
+            </c:forEach>
+		</div>
 
 
 			<div id="accordion" class="mt-5 shadow rounded">

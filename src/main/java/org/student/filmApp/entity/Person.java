@@ -1,6 +1,6 @@
 package org.student.filmApp.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -29,13 +29,11 @@ public class Person implements Identifiable<Long> {
 	@Column(name = "stage_name")
 	 private String stageName;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_birth")
-	 private Date dateOfBirth;
+	 private LocalDate dateOfBirth;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_death")
-	 private Date dateOfDeath;
+	 private LocalDate dateOfDeath;
 	
 	@Column(name = "place_of_birth")
 	 private String placeOfBirth;
@@ -45,6 +43,15 @@ public class Person implements Identifiable<Long> {
 	
 	@Column(name = "height")
 	 private Integer height;
+
+	@Column(name = "ratings_sum")
+	private Long ratingsSum;
+
+	@Column(name = "number_of_votes")
+	private Long numberOfVotes;
+
+	@Column(name = "average_rating")
+	private Float averageRating;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.person")
 	private Set<Actor> actorFilms;
@@ -129,19 +136,19 @@ public class Person implements Identifiable<Long> {
 		this.stageName = stageName;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Date getDateOfDeath() {
+	public LocalDate getDateOfDeath() {
 		return dateOfDeath;
 	}
 
-	public void setDateOfDeath(Date dateOfDeath) {
+	public void setDateOfDeath(LocalDate dateOfDeath) {
 		this.dateOfDeath = dateOfDeath;
 	}
 
@@ -231,5 +238,29 @@ public class Person implements Identifiable<Long> {
 
 	public void setCostumeDesignerFilms(Set<Film> costumeDesignerFilms) {
 		this.costumeDesignerFilms = costumeDesignerFilms;
+	}
+
+	public Long getRatingsSum() {
+		return ratingsSum;
+	}
+
+	public void setRatingsSum(Long ratingsSum) {
+		this.ratingsSum = ratingsSum;
+	}
+
+	public Long getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(Long numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public Float getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Float averageRating) {
+		this.averageRating = averageRating;
 	}
 }

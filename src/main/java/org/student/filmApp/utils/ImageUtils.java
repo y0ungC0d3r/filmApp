@@ -1,25 +1,16 @@
 package org.student.filmApp.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.ServletContextAware;
-
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Component
+import static org.student.filmApp.Consts.FILMS_IMAGES_PATH;
+
 public class ImageUtils {
 
     private static final int THUMBNAIL_WIDTH = 400;
@@ -29,19 +20,9 @@ public class ImageUtils {
 
     private static final FileFilter IS_JPG_PREDICATE = f -> JPG_FILE_EXTENSION.equals(getFileExtension(f).toLowerCase());
 
-    private static final String FILMS_IMAGES_BASE_FOLDER = "src/main/webapp/resources/image/film/";
     private static final String THUMBNAIL_FOLDER_NAME = "thumbnail";
 
-    private static final String FILMS_IMAGES_PATH = "/resources/image/film/";
-
-    @Autowired
-    static ResourceLoader resourceLoader;
-
-    public static Map<String, String> getAllFilmImagePaths(Long filmId) {
-        String imagesFolderDir = FILMS_IMAGES_BASE_FOLDER + filmId;
-        String thumbnailsFolderDir = imagesFolderDir + "/" + THUMBNAIL_FOLDER_NAME;
-
-        File thumbnailsFileDir = new File(thumbnailsFolderDir);
+    public static Map<String, String> getAllFilmImagePaths(Long filmId, File filmImagesFieDir, File thumbnailsFileDir) {
 
         if(!thumbnailsFileDir.exists()) {
             return Collections.EMPTY_MAP;
@@ -53,17 +34,26 @@ public class ImageUtils {
                 .collect(Collectors.toSet());
 
         Set<String> images = Arrays
-                .stream(new File(imagesFolderDir).listFiles(IS_JPG_PREDICATE))
+                .stream(filmImagesFieDir.listFiles(IS_JPG_PREDICATE))
                 .map(File::getName)
                 .collect(Collectors.toSet());
 
-        final String imagesPath = FILMS_IMAGES_PATH + filmId;
-        final String thumbnailPath = imagesPath + THUMBNAIL_FOLDER_NAME;
+        final String imagesPath = FILMS_IMAGES_PATH + filmId + "/";
+        final String thumbnailPath = imagesPath + THUMBNAIL_FOLDER_NAME + "/";
 
         return thumbnails
                 .stream()
                 .filter(images::contains)
                 .collect(Collectors.toMap(k -> thumbnailPath.concat(k), v -> imagesPath.concat(v)));
+    }
+
+    public static String getPosterPath(Long filmId, File filmImagesFileDir) {
+        String filmImagesPath = FILMS_IMAGES_PATH + filmId + "/";
+        return Arrays.stream(filmImagesFileDir.list() == null ? new String[]{} : filmImagesFileDir.list())
+                .filter(n -> n.equals("poster.jpg"))
+                .findFirst()
+                .map(filmImagesPath::concat)
+                .orElse("");
     }
 
     public static void createThumbnails(String directory) throws IOException {

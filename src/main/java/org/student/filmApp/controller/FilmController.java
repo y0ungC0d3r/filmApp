@@ -17,8 +17,9 @@ import org.student.filmApp.utils.DateUtils;
 import org.student.filmApp.utils.ImageUtils;
 
 import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import java.util.function.BiFunction;
 
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.*;
@@ -51,7 +52,7 @@ public class FilmController {
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
 
     @RequestMapping(value = { "/", "/films"}, method = RequestMethod.GET)
-    String showFilms(Model model) {
+    String showFilms(Model model) throws IOException {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
         model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
@@ -72,6 +73,15 @@ public class FilmController {
 
         model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
         model.addAttribute(FILMS_ATTRIBUTE_NAME, films);
+
+        HashMap<Long, String> posterPathsMap = new HashMap<>();
+        for(Film film : films) {
+            File filmPosterFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + film.getId()).getFile();
+            String posterPath = ImageUtils.getPosterPath(film.getId(), filmPosterFileDir);
+            posterPathsMap.put(film.getId(), posterPath);
+        }
+
+        model.addAttribute(POSTER_PATHS_ATTRIBUTE_NAME, posterPathsMap);
 
         return FILMS_VIEW_NAME;
     }
@@ -130,7 +140,7 @@ public class FilmController {
     }
 
     @RequestMapping(value = "/films/{id}", method = RequestMethod.GET)
-    String showFilm(@PathVariable String id, Model model) throws IllegalAccessException {
+    String showFilm(@PathVariable String id, Model model) throws IllegalAccessException, IOException {
 
         Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
 
@@ -152,9 +162,15 @@ public class FilmController {
 
         model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
 
-        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId);
+
+        File filmImagesFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId).getFile();
+        File thumbnailsFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId + "/thumbnail").getFile();
+        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId, filmImagesFileDir, thumbnailsFileDir);
+
+        String posterPath = ImageUtils.getPosterPath(filmId, filmImagesFileDir);
 
         model.addAttribute(IMAGES_PATHS_ATTRIBUTE_NAME, imagesPaths);
+        model.addAttribute(POSTER_PATH_ATTRIBUTE_NAME, posterPath);
 
         return FILM_VIEW_NAME;
     }

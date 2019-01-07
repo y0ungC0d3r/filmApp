@@ -163,13 +163,12 @@
 			    </form>
 
 				<div class="row card-columns justify-content-center">
-
-                    <c:if test="${empty films}"><h1>Nie znaleziono żadnych filmów</h1></c:if>
+                    <c:if test="${empty films}"><h1 class="green-font-color">Nie znaleziono żadnych filmów</h1></c:if>
 
 					<c:forEach items="${films}" var="film">
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="card mb-5 film-card">
-								<img class="card-img-top" src="images-w1400.jpg" alt="Card image cap">
+								<img class="card-img-top" src="${posterPaths[film.id]}" alt="Card image cap">
 								<div class="card-body">
 									<h4 class="card-title"><a href="${contextPath}/films/${film.id}" class="green-font-color film-link">${film.polishTitle}</a></h4>
 									<h6 class="card-subtitle mb-2 text-muted">${film.worldwideReleaseDate.getYear()}</h6>
