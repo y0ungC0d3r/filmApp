@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
-import org.student.filmApp.entity.Film;
-import org.student.filmApp.entity.Film_;
-import org.student.filmApp.entity.Person;
-import org.student.filmApp.entity.Person_;
+import org.student.filmApp.entity.*;
 import org.student.filmApp.repository.PersonRepository;
 
 import javax.persistence.EntityManager;
@@ -42,7 +39,7 @@ public class PersonService {
         Long numberOfRows = entityManager.createQuery(
                 countCriteria
                         .select(builder.count(countRoot))
-                        .where(getTotalPredicate(criteria, countRoot, builder))
+                        .where(getTotalPredicate(criteria, countRoot, builder, countCriteria))
         ).getSingleResult();
 
         return numberOfRows;
@@ -55,9 +52,6 @@ public class PersonService {
         CriteriaQuery<Person> pageCriteria = builder.createQuery(Person.class);
         Root<Person> pageRoot = pageCriteria.from(Person.class);
 
-        SetJoin<Person, Film> filmNode = pageRoot.join(Person_.actorFilms);
-        filmNode.get(Film_.id);
-
         if(currPageNumber > lastPageNumber) {
             currPageNumber = lastPageNumber;
         }
@@ -65,7 +59,7 @@ public class PersonService {
         List<Person> people = entityManager.createQuery(
                 pageCriteria
                         .select(pageRoot)
-                        .where(getTotalPredicate(criteria, pageRoot, builder))
+                        .where(getTotalPredicate(criteria, pageRoot, builder, pageCriteria))
                         .orderBy(getOrder(criteria.get(SORT_BY_CRITERION_NAME), pageRoot, builder))
         ).setFirstResult((currPageNumber - 1) * DEFAULT_PAGE_SIZE)
                 .setMaxResults(DEFAULT_PAGE_SIZE)
@@ -74,7 +68,8 @@ public class PersonService {
         return people;
     }
 
-    private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap, Root<Person> root, CriteriaBuilder builder) {
+    private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap,
+                                        Root<Person> root, CriteriaBuilder builder, CriteriaQuery<?> pageCriteria) {
         List<Predicate> predicates = new ArrayList<>();
 
         if(!CollectionUtils.isEmpty(criteriaMap.get(RATING_CRITERION_NAME))) {
@@ -111,7 +106,16 @@ public class PersonService {
             predicates.add(namePredicate);
         }
 
-        root.get(Person_.actorFilms);
+        if(!CollectionUtils.isEmpty(criteriaMap.get(PROFESSION_CRITERION_NAME)) && !criteriaMap.get(PROFESSION_CRITERION_NAME).get(0).isEmpty()) {
+            Subquery<Long> sub = pageCriteria.subquery(Long.class);
+            Root<Film> personSubRoot = sub.from(Film.class);
+            SetJoin<Film, Person> subPeople = personSubRoot.join(Film_.filmDirectors);
+            sub.select(builder.count(personSubRoot.get(Film_.id)));
+            sub.where(builder.equal(root.get(Person_.id), subPeople.get(Person_.id)));
+
+            Predicate professionPredicate = builder.greaterThan(sub, 0L);
+            predicates.add(professionPredicate);
+        }
 
         Predicate totalPredicate = builder.and(predicates.stream().toArray(Predicate[]::new));
 

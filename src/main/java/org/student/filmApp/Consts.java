@@ -2,6 +2,8 @@ package org.student.filmApp;
 
 public class Consts {
 
+
+
     private Consts() {}
 
     public static final String START_VIEW_NAME = "start";
@@ -22,6 +24,7 @@ public class Consts {
     public static final String IMAGES_PATHS_ATTRIBUTE_NAME = "imagesPaths";
     public static final String POSTER_PATH_ATTRIBUTE_NAME = "posterPath";
     public static final String POSTER_PATHS_ATTRIBUTE_NAME = "posterPaths";
+    public static final String PROFESSION_ATTRIBUTE_NAME = "profession";
 
     public static final String SORT_BY_CRITERION_NAME = "sort_by";
     public static final String RATING_CRITERION_NAME = "rating";
@@ -31,6 +34,7 @@ public class Consts {
     public static final String YEARS_CRITERION_NAME = "years";
     public static final String PAGE_CRITERION_NAME = "page";
     public static final String PERSON_NAME_CRITERION_NAME = "name";
+    public static final String PROFESSION_CRITERION_NAME = "profession";
 
     public static final String RATING_FLOOR_CRITERIA_SUFFIX = "floor";
     public static final String RATING_ROOF_CRITERIA_SUFFIX = "roof";
