@@ -16,7 +16,7 @@ public class Person_ {
     public static volatile SingularAttribute<Person, Long> ratingsSum;
     public static volatile SingularAttribute<Person, Long> numberOfVotes;
     public static volatile SingularAttribute<Person, Float> averageRating;
-    public static volatile SetAttribute<Person, Film> actorFilms;
+    public static volatile SetAttribute<Actor, Film> actorFilms;
     public static volatile SetAttribute<Person, Film> directorFilms;
     public static volatile SetAttribute<Person, Film> screenwriterFilms;
     public static volatile SetAttribute<Person, Film> producerFilms;

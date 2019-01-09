@@ -25,6 +25,8 @@ public class User implements Identifiable<Long> {
 
     private Set<FilmRating> filmRatings;
 
+    private Set<PersonRating> personRatings;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,  generator = "SEQ")
     @SequenceGenerator(name = "SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
@@ -81,5 +83,14 @@ public class User implements Identifiable<Long> {
 
     public void setFilmRatings(Set<FilmRating> filmRatings) {
         this.filmRatings = filmRatings;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personRatingId.user")
+    public Set<PersonRating> getPersonRatings() {
+        return personRatings;
+    }
+
+    public void setPersonRatings(Set<PersonRating> personRatings) {
+        this.personRatings = personRatings;
     }
 }

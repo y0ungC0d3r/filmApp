@@ -2,6 +2,7 @@ package org.student.filmApp.entity;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,7 +60,7 @@ public class Film implements Identifiable<Long> {
 	private Float averageRating;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.film")
-	private Set<Actor> filmActors;
+	private Set<Actor> filmActorsAssociation;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "directorFilms")
 	private Set<Person> filmDirectors;
@@ -152,12 +153,12 @@ public class Film implements Identifiable<Long> {
 		this.runningTime = runningTime;
 	}
 
-	public Set<Actor> getFilmActors() {
-		return filmActors;
+	public Set<Actor> getFilmActorsAssociation() {
+		return filmActorsAssociation;
 	}
 
-	public void setFilmActors(Set<Actor> filmActors) {
-		this.filmActors = filmActors;
+	public void setFilmActorsAssociation(Set<Actor> filmActorsAssociation) {
+		this.filmActorsAssociation = filmActorsAssociation;
 	}
 
 	public Set<Person> getFilmDirectors() {
@@ -263,4 +264,12 @@ public class Film implements Identifiable<Long> {
 	public void setStoryline(String storyline) {
 		this.storyline = storyline;
 	}
+
+	public Set<Person> getFilmActors() {
+		return getFilmActorsAssociation()
+				.stream()
+				.map(Actor::getPerson)
+				.collect(Collectors.toSet());
+	}
+
 }

@@ -1,5 +1,8 @@
 package org.student.filmApp;
 
+import javax.persistence.metamodel.SingularAttribute;
+import java.util.Map;
+
 public class Consts {
 
 
@@ -9,6 +12,7 @@ public class Consts {
     public static final String START_VIEW_NAME = "start";
     public static final String FILM_VIEW_NAME = "film";
     public static final String FILMS_VIEW_NAME = "films";
+    public static final String PEOPLE_VIEW_NAME = "people";
 
     public static final String FILM_RATING_ATTRIBUTE_NAME = "filmRating";
     public static final String COUNTRIES_ATTRIBUTE_NAME = "countries";
@@ -21,6 +25,7 @@ public class Consts {
     public static final String PAGINATION_RANGE_ATTRIBUTE_NAME = "pagination";
     public static final String FILMS_ATTRIBUTE_NAME = "films";
     public static final String FILM_ATTRIBUTE_NAME = "film";
+    public static final String PEOPLE_ATTRIBUTE_NAME = "people";
     public static final String IMAGES_PATHS_ATTRIBUTE_NAME = "imagesPaths";
     public static final String POSTER_PATH_ATTRIBUTE_NAME = "posterPath";
     public static final String POSTER_PATHS_ATTRIBUTE_NAME = "posterPaths";
@@ -38,6 +43,14 @@ public class Consts {
 
     public static final String RATING_FLOOR_CRITERIA_SUFFIX = "floor";
     public static final String RATING_ROOF_CRITERIA_SUFFIX = "roof";
+
+    public static final String ACTOR_PROFESSION_NAME = "actor";
+    public static final String DIRECTOR_PROFESSION_NAME = "director";
+    public static final String SCREENWRITER_PROFESSION_NAME = "screenwriter";
+    public static final String CINEMATOGRAPHER_PROFESSION_NAME = "cinematographer";
+    public static final String EDITOR_PROFESSION_NAME = "editor";
+    public static final String PRODUCER_PROFESSION_NAME = "producer";
+    public static final String MUSICIAN_PROFESSION_NAME = "musician";
 
     public static final float MAX_AVERAGE_RATING_VALUE = 5.f;
     public static final float MIN_AVERAGE_RATING_VALUE = 1.f;

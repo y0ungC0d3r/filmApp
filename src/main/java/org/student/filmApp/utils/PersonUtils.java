@@ -1,25 +1,24 @@
 package org.student.filmApp.utils;
 
+import org.student.filmApp.ProfessionName;
 import org.student.filmApp.entity.*;
 
 import javax.persistence.metamodel.SetAttribute;
 
 public class PersonUtils {
-    public static SetAttribute<Film, Person> mapProfession(String professionName) {
+    public static SetAttribute<Film, Person> mapProfession(ProfessionName professionName) {
         switch(professionName) {
-            case "actor":
-                return null;
-            case "director":
+            case DIRECTOR:
                 return Film_.filmDirectors;
-            case "screenwriter":
+            case SCREENWRITER:
                 return Film_.filmScreenwriters;
-            case "cinematographer":
+            case CINEMATOGRAPHER:
                 return Film_.filmCinematographers;
-            case "editor":
+            case EDITOR:
                 return Film_.filmEditors;
-            case "producer":
+            case PRODUCER:
                 return Film_.filmProducers;
-            case "musician":
+            case MUSICIAN:
                 return Film_.filmMusicians;
             default:
                 throw new IllegalArgumentException();

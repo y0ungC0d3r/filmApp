@@ -109,7 +109,34 @@ public class PersonService {
         if(!CollectionUtils.isEmpty(criteriaMap.get(PROFESSION_CRITERION_NAME)) && !criteriaMap.get(PROFESSION_CRITERION_NAME).get(0).isEmpty()) {
             Subquery<Long> sub = pageCriteria.subquery(Long.class);
             Root<Film> personSubRoot = sub.from(Film.class);
-            SetJoin<Film, Person> subPeople = personSubRoot.join(Film_.filmDirectors);
+
+            SetJoin<Film, Person> subPeople;
+            switch(criteriaMap.get(PROFESSION_CRITERION_NAME).get(0)) {
+                case ACTOR_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmActors);
+                    break;
+                case DIRECTOR_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmDirectors);
+                    break;
+                case SCREENWRITER_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmScreenwriters);
+                    break;
+                case CINEMATOGRAPHER_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmCinematographers);
+                    break;
+                case EDITOR_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmEditors);
+                    break;
+                case PRODUCER_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmProducers);
+                    break;
+                case MUSICIAN_PROFESSION_NAME:
+                    subPeople = personSubRoot.join(Film_.filmMusicians);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+
             sub.select(builder.count(personSubRoot.get(Film_.id)));
             sub.where(builder.equal(root.get(Person_.id), subPeople.get(Person_.id)));
 

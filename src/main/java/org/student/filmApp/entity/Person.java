@@ -112,6 +112,9 @@ public class Person implements Identifiable<Long> {
 	)
 	private Set<Film> costumeDesignerFilms;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "personRatingId.person")
+	private Set<PersonRating> ratings;
+
 	public Long getId() {
 		return id;
 	}
@@ -262,5 +265,13 @@ public class Person implements Identifiable<Long> {
 
 	public void setAverageRating(Float averageRating) {
 		this.averageRating = averageRating;
+	}
+
+	public Set<PersonRating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<PersonRating> ratings) {
+		this.ratings = ratings;
 	}
 }

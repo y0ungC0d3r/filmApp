@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class PersonRating {
 
     @EmbeddedId
-    private PersonRatingId personRatingId= new PersonRatingId();
+    private PersonRatingId personRatingId = new PersonRatingId();
 
     @Column(name = "rating")
     private Short rating;

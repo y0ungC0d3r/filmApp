@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
 		<link rel="stylesheet" type="text/css" href="../resources/style.css">
 
-		<title>${film.polishTitle} (${film.worldwideReleaseDate.getYear()})</title>
+		<title>${person.stageName}</title>
 	</head>
 	<body>
 
@@ -49,20 +49,20 @@
 			<div class="row justify-content-center">
 				<div id="poster" class="col-lg-4 text-center">
 					<div class="card mb-5 film-card mx-auto">
-						<img class="card-img-top rounded" src="" alt="Card image cap">
+						<img class="card-img-top rounded" src="../${posterPath}" alt="Card image cap">
 					</div>
 				</div>
 
 				<div class="col-lg-5 mx-lg-0 ml-lg-5">
 					<div id="title" class="mb-5 text-lg-left text-center">
-						<h2 class="green-font-color d-inline-block">${film.polishTitle}</h2> <h3 class="orange-font-color d-inline-block">(${film.worldwideReleaseDate.getYear()})</h3>
-						<h3 class="text-muted">${film.originalTitle}</h3>
+						<h2 class="d-inline-block"><a href="#" class="green-font-color film-link">${person.stageName}</a></h2>
+						<h3 class="text-muted">${person.fullName}</h3>
 					</div>
 
 					<div id="wrapper" class="w-100 text-lg-left text-center">
 						<div class="rounded box-colors shadow pl-4 pr-5 py-3 clearfix d-inline-block">
-							<div class="rating-box d-inline-block">${film.averageRating} ★</div>
-							<div class="text-muted d-inline-block ml-3">liczba głosów: ${film.numberOfVotes}</div>
+							<div class="rating-box d-inline-block">${person.averageRating} ★</div>
+							<div class="text-muted d-inline-block ml-3">liczba głosów: ${person.numberOfVotes}</div>
 							<div class="pt-3 text-left">Twoja ocena: </div>
 							<form:form action="../change-person-rating" method="post" modelAttribute="personRating">
 								<fieldset class="rating">
@@ -80,50 +80,32 @@
 					</div>
 
 					<table class="film-data mx-lg-0 mx-auto mt-5">
-					    <c:if test="${not empty film.genres}">
+					    <c:if test="${not empty person.dateOfBirth}">
                             <tr>
-                                <th>Gatunek:</th>
+                                <th>Data urodzenia:</th>
                                 <td>
-                                    <c:forEach items="${film.genres}" var="genre" varStatus="loop">
-                                        ${genre.name}
-                                        ${!loop.last ? ',' : ''}
-                                   </c:forEach>
+                                    ${person.dateOfBirth}
                                </td>
                             </tr>
 						</c:if>
-						<c:if test="${not empty film.countries}">
+						<c:if test="${not empty person.dateOfDeath}">
                             <tr>
-                                <th>Produkcja:</th>
+                                <th>Data śmierci:</th>
                                 <td>
-                                    <c:forEach items="${film.countries}" var="country" varStatus="loop">
-                                        ${country.name}
-                                        ${!loop.last ? ',' : ''}
-                                    </c:forEach>
+                                    ${person.dateOfDeath}
                                 </td>
                             </tr>
 						</c:if>
-						<c:if test="${not empty film.worldwideReleaseDate}">
+						<c:if test="${not empty person.placeOfBirth}">
                             <tr>
-                                <th>Premiera na świecie:</th>
-                                <td>${film.worldwideReleaseDate}</td>
+                                <th>Miejsce urodzenia:</th>
+                                <td>${person.placeOfBirth}</td>
                             </tr>
 						</c:if>
-						<c:if test="${not empty film.polishReleaseDate}">
+						<c:if test="${not empty person.height}">
                             <tr>
-                                <th>Premiera w Polsce:</th>
-                                <td>${film.polishReleaseDate}</td>
-                            </tr>
-						</c:if>
-						<c:if test="${not empty film.runningTime}">
-                            <tr>
-                                <th>Czas trwania:</th>
-                                <td>${film.runningTime} min.</td>
-                            </tr>
-						</c:if>
-						<c:if test="${not empty film.boxOffice}">
-                            <tr>
-                                <th>Box office:</th>
-                                <td>${film.boxOffice}</td>
+                                <th>Wzrost:</th>
+                                <td>${person.height}</td>
                             </tr>
 						</c:if>
 					</table>
@@ -133,52 +115,26 @@
 
 			<h4 class="my-4 green-font-color">Opis:</h4>
 
-			<p class="description">${film.storyline}</p>
+            <c:choose>
+                <c:when test="${not empty person.biography}">
+                    <p class="description">${person.biography}</p>
+                </c:when>
+                <c:otherwise>
+                    Osoba nie posiada jeszcze biografii.
+                </c:otherwise>
+            </c:choose>
 
 			<h4 class="my-4 green-font-color">Galeria:</h4>
 
-			<div class="row text-center text-lg-left">
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/M185_qYH8vg/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/sesveuG_rNo/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/AvhMzHwiE_0/400x300" alt="">
-		          </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="#" class="d-block h-100">
-		            <img class="mw-100" src="https://source.unsplash.com/2gYsZUmockw/400x300" alt="">
-		       </a>
-		    </div>
-		    <div class="col-lg-3 col-6 m-0 p-0">
-		      <a href="C:\Users\wowow\Desktop\cards\images-w1400.jpg" class="d-block h-100" data-toggle="lightbox" data-gallery="example-gallery">
-		            <img class="mw-100" src="https://source.unsplash.com/EMSDtjVHdQ8/400x300" alt="" class="img-fluid">
-		          </a>
-		    </div>
-		  </div>
+        <div class="row text-center text-lg-left">
+            <c:forEach var="path" items="${imagesPaths}">
+                <div class="col-lg-3 col-6 m-0 p-0">
+                  <a href="../${path.value}" class="d-block h-100" data-toggle="lightbox" data-gallery="example-gallery">
+                    <img class="mw-100" src="../${path.key}" alt="" class="img-fluid">
+                  </a>
+                </div>
+            </c:forEach>
+		</div>
 
 
 			<div id="accordion" class="mt-5 shadow rounded">
@@ -187,7 +143,7 @@
 					<div class="card-header" id="headingOne">
 						<h5 class="mb-0">
 							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							<strong>Obsada aktorska</strong>
+							<strong>Aktor</strong>
 							</button>
 						</h5>
 					</div>
@@ -213,75 +169,6 @@
 										</div>
 									</c:otherwise>
 								</c:choose>
-							</c:forEach>
-						</div>
-					</div>
-				</div>
-
-				<div class="card box-colors rounded-bottom">
-					<div class="card-header" id="headingTwo">
-						<h5 class="mb-0">
-							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-								<strong>Twórcy</strong>
-							</button>
-						</h5>
-					</div>
-					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-						<div class="card-body dark-blue p-0">
-							<c:set var="counter" value="0" />
-							<c:forEach items="${film.filmDirectors}" var="director">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${director.id}">${director.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">reżyseria</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
-							</c:forEach>
-							<c:forEach items="${film.filmScreenwriters}" var="screenwriter">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${screenwriter.id}">${screenwriter.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">scenariusz</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
-							</c:forEach>
-							<c:forEach items="${film.filmCinematographers}" var="cinematographer">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${cinematographer.id}">${cinematographer.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">zdjęcia</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
-							</c:forEach>
-							<c:forEach items="${film.filmMusicians}" var="musician">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${musician.id}">${musician.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">muzyka</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
-							</c:forEach>
-							<c:forEach items="${film.filmEditors}" var="editor">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${editor.id}">${editor.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">montaż</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
-							</c:forEach>
-							<c:forEach items="${film.filmProducers}" var="producer">
-								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
-									<div class="float-left w-50">
-									    <a href="${contextPath}/people/${producer.id}">${producer.stageName}</a>
-									</div>
-									<div class="float-left w-50 text-right">produkcja</div>
-								</div>
-								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 						</div>
 					</div>
