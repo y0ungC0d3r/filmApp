@@ -60,5 +60,6 @@ public class Consts {
     public static final int DEFAULT_NUMBER_OF_PAGES = 5;
 
     public static final String FILMS_IMAGES_PATH = "resources/image/film/";
+    public static final String PEOPLE_IMAGES_PATH = "resources/image/person/";
 
 }

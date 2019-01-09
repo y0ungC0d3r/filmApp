@@ -8,7 +8,7 @@ import org.student.filmApp.entity.Person;
 @Repository
 public interface PersonRepository extends BaseRepository<Person, Long> {
     // TODO
-    @Query("SELECT p FROM Person p " +
+    /*@Query("SELECT p FROM Person p " +
             "LEFT JOIN FETCH p.countries " +
             "LEFT JOIN FETCH p.genres " +
             "LEFT JOIN FETCH p.filmActors " +
@@ -21,5 +21,5 @@ public interface PersonRepository extends BaseRepository<Person, Long> {
             "LEFT JOIN FETCH p.ratings " +
             "WHERE f.id = :film_id" +
             "ORDER BY f.worldwideReleaseDate")
-    Person findByIdWithFetch(@Param("person_id") Long personId);
+    Person findByIdWithFetch(@Param("person_id") Long personId);*/
 }

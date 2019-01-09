@@ -12,7 +12,7 @@ public interface FilmRepository extends BaseRepository<Film, Long> {
 	@Query("SELECT f FROM Film f " +
 			"LEFT JOIN FETCH f.countries " +
 			"LEFT JOIN FETCH f.genres " +
-			"LEFT JOIN FETCH f.filmActors " +
+			"LEFT JOIN FETCH f.filmActorsAssociation " +
 			"LEFT JOIN FETCH f.filmCinematographers " +
 			"LEFT JOIN FETCH f.filmDirectors " +
 			"LEFT JOIN FETCH f.filmEditors " +

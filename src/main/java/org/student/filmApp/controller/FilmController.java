@@ -77,7 +77,7 @@ public class FilmController {
         HashMap<Long, String> posterPathsMap = new HashMap<>();
         for(Film film : films) {
             File filmPosterFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + film.getId()).getFile();
-            String posterPath = ImageUtils.getPosterPath(film.getId(), filmPosterFileDir);
+            String posterPath = ImageUtils.getPosterPath(film.getId(), filmPosterFileDir, FILMS_IMAGES_PATH);
             posterPathsMap.put(film.getId(), posterPath);
         }
 
@@ -165,9 +165,9 @@ public class FilmController {
 
         File filmImagesFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId).getFile();
         File thumbnailsFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId + "/thumbnail").getFile();
-        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId, filmImagesFileDir, thumbnailsFileDir);
+        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId, filmImagesFileDir, thumbnailsFileDir, FILMS_IMAGES_PATH);
 
-        String posterPath = ImageUtils.getPosterPath(filmId, filmImagesFileDir);
+        String posterPath = ImageUtils.getPosterPath(filmId, filmImagesFileDir, FILMS_IMAGES_PATH);
 
         model.addAttribute(IMAGES_PATHS_ATTRIBUTE_NAME, imagesPaths);
         model.addAttribute(POSTER_PATH_ATTRIBUTE_NAME, posterPath);

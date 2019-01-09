@@ -38,7 +38,7 @@ public class FilmParser {
         FILM_INFO_LABEL = Arrays.asList(GENRE_FILM_INFO_LABEL, COUNTRY_FILM_INFO_LABEL, RELEASE_DATES_FILM_INFO_LABEL, BOXOFFICE_FILM_INFO_LABEL);
     }
     static public String parse(int filmId) throws IOException, ParseException {
-        Document doc = Jsoup.connect("https://www.filmweb.pl/film/Aquaman-2018-549085").get();
+        Document doc = Jsoup.connect("http://www.filmweb.pl/Pulp.Fiction").get();
 
         Element storylineEl = doc.select("div.filmPlot.bottom-15 p").first();
         Optional<String> storyline = Optional

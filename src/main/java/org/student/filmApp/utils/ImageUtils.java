@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.student.filmApp.Consts.FILMS_IMAGES_PATH;
-
 public class ImageUtils {
 
     private static final int THUMBNAIL_WIDTH = 400;
@@ -22,7 +20,7 @@ public class ImageUtils {
 
     private static final String THUMBNAIL_FOLDER_NAME = "thumbnail";
 
-    public static Map<String, String> getAllFilmImagePaths(Long filmId, File filmImagesFieDir, File thumbnailsFileDir) {
+    public static Map<String, String> getAllFilmImagePaths(Long id, File imagesFileDir, File thumbnailsFileDir, String imagesPath) {
 
         if(!thumbnailsFileDir.exists()) {
             return Collections.EMPTY_MAP;
@@ -34,25 +32,25 @@ public class ImageUtils {
                 .collect(Collectors.toSet());
 
         Set<String> images = Arrays
-                .stream(filmImagesFieDir.listFiles(IS_JPG_PREDICATE))
+                .stream(imagesFileDir.listFiles(IS_JPG_PREDICATE))
                 .map(File::getName)
                 .collect(Collectors.toSet());
 
-        final String imagesPath = FILMS_IMAGES_PATH + filmId + "/";
-        final String thumbnailPath = imagesPath + THUMBNAIL_FOLDER_NAME + "/";
+        final String imagesSubPath = imagesPath + id + "/";
+        final String thumbnailsPath = imagesSubPath + THUMBNAIL_FOLDER_NAME + "/";
 
         return thumbnails
                 .stream()
                 .filter(images::contains)
-                .collect(Collectors.toMap(k -> thumbnailPath.concat(k), v -> imagesPath.concat(v)));
+                .collect(Collectors.toMap(k -> thumbnailsPath.concat(k), v -> imagesSubPath.concat(v)));
     }
 
-    public static String getPosterPath(Long filmId, File filmImagesFileDir) {
-        String filmImagesPath = FILMS_IMAGES_PATH + filmId + "/";
-        return Arrays.stream(filmImagesFileDir.list() == null ? new String[]{} : filmImagesFileDir.list())
+    public static String getPosterPath(Long filmId, File imagesFileDir, String imagesPath) {
+        String imagesSubPath = imagesPath + filmId + "/";
+        return Arrays.stream(imagesFileDir.list() == null ? new String[]{} : imagesFileDir.list())
                 .filter(n -> n.equals("poster.jpg"))
                 .findFirst()
-                .map(filmImagesPath::concat)
+                .map(imagesSubPath::concat)
                 .orElse("");
     }
 
@@ -99,8 +97,14 @@ public class ImageUtils {
                     .getSubimage(0, crop, scaledWidth, scaledHeight - 2 * (heightDiff % 2 == 0 ? crop : crop + 1));
             outImage.createGraphics().drawImage(image, 0, 0,null);
         }
-        new File(dir + "\\thumbnail\\").mkdir();
-        ImageIO.write(outImage, JPG_FILE_EXTENSION, new File(dir + "\\thumbnail\\" + imageName + "." + JPG_FILE_EXTENSION));
+
+        new File(dir + "/" + THUMBNAIL_FOLDER_NAME + "/").mkdir();
+
+        ImageIO.write(
+                outImage,
+                JPG_FILE_EXTENSION,
+                new File(dir + "/" + THUMBNAIL_FOLDER_NAME + "/" + imageName + "." + JPG_FILE_EXTENSION)
+        );
 
     }
 
