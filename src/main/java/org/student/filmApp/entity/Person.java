@@ -12,8 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "person")
@@ -54,7 +52,15 @@ public class Person implements Identifiable<Long> {
 	private Float averageRating;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.person")
-	private Set<Actor> actorFilms;
+	private Set<Actor> actorFilmsAssociation;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "actor",
+			joinColumns = { @JoinColumn(name = "person_id") },
+			inverseJoinColumns = { @JoinColumn(name = "film_id") }
+	)
+	private Set<Film> actorFilms;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -179,12 +185,12 @@ public class Person implements Identifiable<Long> {
 		this.height = height;
 	}
 
-	public Set<Actor> getActorFilms() {
-		return actorFilms;
+	public Set<Actor> getActorFilmsAssociation() {
+		return actorFilmsAssociation;
 	}
 
-	public void setActorFilms(Set<Actor> actorFilms) {
-		this.actorFilms = actorFilms;
+	public void setActorFilmsAssociation(Set<Actor> actorFilmsAssociation) {
+		this.actorFilmsAssociation = actorFilmsAssociation;
 	}
 
 	public Set<Film> getDirectorFilms() {
@@ -273,5 +279,13 @@ public class Person implements Identifiable<Long> {
 
 	public void setRatings(Set<PersonRating> ratings) {
 		this.ratings = ratings;
+	}
+
+	public Set<Film> getActorFilms() {
+		return actorFilms;
+	}
+
+	public void setActorFilms(Set<Film> actorFilms) {
+		this.actorFilms = actorFilms;
 	}
 }

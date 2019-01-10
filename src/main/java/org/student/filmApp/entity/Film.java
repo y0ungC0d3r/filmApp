@@ -62,6 +62,9 @@ public class Film implements Identifiable<Long> {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "actorId.film")
 	private Set<Actor> filmActorsAssociation;
 
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "actorFilms")
+	private Set<Person> filmActors;
+
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "directorFilms")
 	private Set<Person> filmDirectors;
 

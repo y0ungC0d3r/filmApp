@@ -168,7 +168,7 @@
 					</div>
 					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body dark-blue p-0">
-							<c:forEach items="${film.filmActors}" var="actor" varStatus="loop">
+							<c:forEach items="${film.filmActorsAssociation}" var="actor" varStatus="loop">
 								<c:choose>
 									<c:when test="${loop.first}">
 										<div class="clearfix p-2 bg-dark">
