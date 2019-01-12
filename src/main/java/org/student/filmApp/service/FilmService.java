@@ -109,11 +109,11 @@ public class FilmService {
             predicates.add(roofRatingPredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(TITLE_CRITERION_NAME)) && !criteriaMap.get(TITLE_CRITERION_NAME).get(0).isEmpty()) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(FILM_TITLE_CRITERION_NAME)) && !criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0).isEmpty()) {
             Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
-                    "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
+                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
             Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),
-                    "%" + criteriaMap.get(TITLE_CRITERION_NAME).get(0) + "%");
+                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
 
             Predicate titlePredicate = builder.or(polishTitlePredicate, originalTitlePredicate);
             predicates.add(titlePredicate);
@@ -131,10 +131,10 @@ public class FilmService {
             predicates.add(completeDatePredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(GENRE_CRITERION_NAME))) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(FILM_GENRE_CRITERION_NAME))) {
             SetJoin<Film, Genre> genreNode = root.join(Film_.genres);
 
-            List<Long> requestedGenres = criteriaMap.get(GENRE_CRITERION_NAME)
+            List<Long> requestedGenres = criteriaMap.get(FILM_GENRE_CRITERION_NAME)
                     .stream()
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
@@ -143,9 +143,9 @@ public class FilmService {
             predicates.add(genresPredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(COUNTRY_CRITERION_NAME))) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(FILM_COUNTRY_CRITERION_NAME))) {
             SetJoin<Film, Country> countryNode = root.join(Film_.countries);
-            Predicate countriesPredicate = countryNode.get(Country_.id).in(criteriaMap.get(COUNTRY_CRITERION_NAME));
+            Predicate countriesPredicate = countryNode.get(Country_.id).in(criteriaMap.get(FILM_COUNTRY_CRITERION_NAME));
             predicates.add(countriesPredicate);
         }
 

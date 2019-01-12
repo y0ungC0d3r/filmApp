@@ -30,6 +30,11 @@ public class PersonService {
     EntityManager entityManager;
 
     @Transactional
+    public Person findByIdWithFetch(Long personId) {
+        return personRepository.findByIdWithFetch(personId);
+    }
+
+    @Transactional
     public Long countPeopleBySearchTerms(MultiValueMap<String, String> criteria) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -96,7 +101,8 @@ public class PersonService {
             predicates.add(roofRatingPredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(PERSON_NAME_CRITERION_NAME)) && !criteriaMap.get(PERSON_NAME_CRITERION_NAME).get(0).isEmpty()) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(PERSON_NAME_CRITERION_NAME)) &&
+                !criteriaMap.get(PERSON_NAME_CRITERION_NAME).get(0).isEmpty()) {
             Predicate stageNamePredicate = builder.like(root.get(Person_.stageName),
                     "%" + criteriaMap.get(PERSON_NAME_CRITERION_NAME).get(0) + "%");
             Predicate fullNamePredicate = builder.like(root.get(Person_.fullName),
@@ -106,31 +112,33 @@ public class PersonService {
             predicates.add(namePredicate);
         }
 
-        if(!CollectionUtils.isEmpty(criteriaMap.get(PROFESSION_CRITERION_NAME)) && !criteriaMap.get(PROFESSION_CRITERION_NAME).get(0).isEmpty()) {
+        if(!CollectionUtils.isEmpty(criteriaMap.get(PROFESSION_CRITERION_NAME)) &&
+                !criteriaMap.get(PROFESSION_CRITERION_NAME).get(0).isEmpty()) {
+
             Subquery<Long> sub = pageCriteria.subquery(Long.class);
             Root<Film> personSubRoot = sub.from(Film.class);
 
             SetJoin<Film, Person> subPeople;
             switch(criteriaMap.get(PROFESSION_CRITERION_NAME).get(0)) {
-                case ACTOR_PROFESSION_NAME:
+                case ACTOR_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmActors);
                     break;
-                case DIRECTOR_PROFESSION_NAME:
+                case DIRECTOR_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmDirectors);
                     break;
-                case SCREENWRITER_PROFESSION_NAME:
+                case SCREENWRITER_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmScreenwriters);
                     break;
-                case CINEMATOGRAPHER_PROFESSION_NAME:
+                case CINEMATOGRAPHER_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmCinematographers);
                     break;
-                case EDITOR_PROFESSION_NAME:
+                case EDITOR_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmEditors);
                     break;
-                case PRODUCER_PROFESSION_NAME:
+                case PRODUCER_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmProducers);
                     break;
-                case MUSICIAN_PROFESSION_NAME:
+                case MUSICIAN_PROFESSION_ID:
                     subPeople = personSubRoot.join(Film_.filmMusicians);
                     break;
                 default:

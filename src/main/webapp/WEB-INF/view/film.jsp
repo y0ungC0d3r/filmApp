@@ -139,7 +139,7 @@
                     <p class="description">${film.storyline}</p>
                 </c:when>
                 <c:otherwise>
-                    Film nie posiada jeszcze opisu fabuły.
+                    <p class="description">Film nie posiada jeszcze opisu fabuły.</p>
                 </c:otherwise>
             </c:choose>
 
@@ -173,7 +173,7 @@
 									<c:when test="${loop.first}">
 										<div class="clearfix p-2 bg-dark">
 											<div class="float-left w-1-3">
-											<a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
+											    <a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
 											</div>
 											<div class="float-left w-1-3 text-center">jako:</div>
 											<div class="float-left w-1-3 text-right">${actor.character}</div>

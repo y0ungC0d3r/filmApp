@@ -55,10 +55,10 @@ public class FilmController {
     String showFilms(Model model) throws IOException {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
-        model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
+        model.addAttribute(FILM_COUNTRIES_ATTRIBUTE_NAME, markedCountries);
 
         Map<Genre, Boolean> markedGenres = createMarkedIdentifiableElementsMap(genreService.findAll(), Collections.emptyList());
-        model.addAttribute(GENRES_ATTRIBUTE_NAME, markedGenres);
+        model.addAttribute(FILM_GENRES_ATTRIBUTE_NAME, markedGenres);
 
         Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(), Collections.emptyList());
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
@@ -92,24 +92,25 @@ public class FilmController {
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchAttributes, Model model) {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(),
-                emptyIfNull(filmSearchAttributes.get(COUNTRIES_ATTRIBUTE_NAME)));
-        model.addAttribute(COUNTRIES_ATTRIBUTE_NAME, markedCountries);
+                emptyIfNull(filmSearchAttributes.get(FILM_COUNTRIES_ATTRIBUTE_NAME)));
+        model.addAttribute(FILM_COUNTRIES_ATTRIBUTE_NAME, markedCountries);
 
         Map<Genre, Boolean> markedGenres = createMarkedIdentifiableElementsMap(genreService.findAll(),
-                emptyIfNull(filmSearchAttributes.get(GENRES_ATTRIBUTE_NAME)));
-        model.addAttribute(GENRES_ATTRIBUTE_NAME, markedGenres);
+                emptyIfNull(filmSearchAttributes.get(FILM_GENRES_ATTRIBUTE_NAME)));
+        model.addAttribute(FILM_GENRES_ATTRIBUTE_NAME, markedGenres);
 
         Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(),
                 emptyIfNull(filmSearchAttributes.get(YEARS_ATTRIBUTE_NAME)));
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
 
-        if(!isNullOrEmpty(filmSearchAttributes.get(TITLE_ATTRIBUTE_NAME))) {
-            model.addAttribute(TITLE_ATTRIBUTE_NAME, filmSearchAttributes.get(TITLE_ATTRIBUTE_NAME).get(0));
+        if(!isNullOrEmpty(filmSearchAttributes.get(FILM_TITLE_ATTRIBUTE_NAME))) {
+            model.addAttribute(FILM_TITLE_ATTRIBUTE_NAME, filmSearchAttributes.get(FILM_TITLE_ATTRIBUTE_NAME).get(0));
         }
 
         List<String> ratingRange = filmSearchAttributes.get(RATING_ATTRIBUTE_NAME);
         if(!isNullOrEmpty(ratingRange)) {
-            String[][] splittedRatingRange = ratingRange.stream()
+            String[][] splittedRatingRange = ratingRange
+                    .stream()
                     .filter(s -> s.matches(RATING_RANGE_VALUE_PATTERN))
                     .map(s -> s.split("-"))
                     .toArray(String[][]::new);

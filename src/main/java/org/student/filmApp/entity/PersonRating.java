@@ -12,6 +12,13 @@ import java.time.LocalDate;
                 joinColumns = @JoinColumn(name = "person_id")) })
 public class PersonRating {
 
+    public PersonRating() {}
+
+    public PersonRating(Person person, User user) {
+        setPerson(person);
+        setUser(user);
+    }
+
     @EmbeddedId
     private PersonRatingId personRatingId = new PersonRatingId();
 

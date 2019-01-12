@@ -120,7 +120,7 @@
                     <p class="description">${person.biography}</p>
                 </c:when>
                 <c:otherwise>
-                    Osoba nie posiada jeszcze biografii.
+                    <p class="description">Osoba nie posiada jeszcze biografii.</p>
                 </c:otherwise>
             </c:choose>
 
@@ -143,32 +143,119 @@
 					<div class="card-header" id="headingOne">
 						<h5 class="mb-0">
 							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							<strong>Aktor</strong>
+							    <strong>Aktor</strong>
 							</button>
 						</h5>
 					</div>
 					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body dark-blue p-0">
-							<c:forEach items="${film.filmActors}" var="actor" varStatus="loop">
-								<c:choose>
-									<c:when test="${loop.first}">
-										<div class="clearfix p-2 bg-dark">
-											<div class="float-left w-1-3">
-											<a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
-											</div>
-											<div class="float-left w-1-3 text-center">jako:</div>
-											<div class="float-left w-1-3 text-right">${actor.character}</div>
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="clearfix p-2 ${loop.index % 2 == 0 ? '' : 'bg-dark'}">
-											<div class="float-left w-50">
-											    <a href="${contextPath}/people/${actor.person.id}">${actor.person.stageName}</a>
-											</div>
-											<div class="float-left w-50 text-right">${actor.character}</div>
-										</div>
-									</c:otherwise>
-								</c:choose>
+							<c:forEach items="${person.actorFilmsAssociation}" var="actor" varStatus="loop">
+                                <div class="clearfix p-2 ${loop.index % 2 == 0 ? '' : 'bg-dark'}">
+                                    <div class="float-left w-50">
+                                        <a href="${contextPath}/film/${actor.film.id}">
+                                            ${actor.film.polishTitle} (${actor.film.worldwideReleaseDate.getYear()})
+                                        </a>
+                                    </div>
+                                    <div class="float-left w-50 text-right">${actor.character}</div>
+                                </div>
+						    </c:forEach>
+						</div>
+					</div>
+				</div>
+
+				<div class="card box-colors">
+					<div class="card-header" id="headingOne">
+						<h5 class="mb-0">
+							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							    <strong>Twórca</strong>
+							</button>
+						</h5>
+					</div>
+					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+						<div class="card-body dark-blue p-0">
+                        <c:set var="counter" value="0" />
+							<c:forEach items="${person.directorFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">reżyseria</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+							<c:forEach items="${person.screenwriterFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">scenariusz</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+                            <c:forEach items="${person.producerFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">produkcja</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+                            <c:forEach items="${person.musicianFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">muzyka</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+                            <c:forEach items="${person.editorFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">montaż</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+                            <c:forEach items="${person.cinematographerFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">zdjęcia</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
+							</c:forEach>
+
+                            <c:forEach items="${person.costumeDesignerFilms}" var="film">
+								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
+									<div class="float-left w-50">
+									    <a href="${contextPath}/film/${film.id}">
+									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
+									    </a>
+									</div>
+									<div class="float-left w-50 text-right">kostiumografia</div>
+								</div>
+								<c:set var="counter" value="${counter + 1}" />
 							</c:forEach>
 						</div>
 					</div>

@@ -16,7 +16,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "person")
 public class Person implements Identifiable<Long> {
-	
+
+	public Person() {}
+
+	public Person(Long id) {
+		this.id = id;
+	}
+
 	@Id
 	@Column(name = "id")
 	 private Long id;
