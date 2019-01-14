@@ -31,19 +31,32 @@
 				<div class="collapse navbar-collapse" id="nabarCollapse">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a href="#" class="nav-link" style="color: #EC7149;">Filmy</a>
+							<a href="${contextPath}/films" class="nav-link">Filmy</a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="nav-link">Ludzie kina</a>
+							<a href="${contextPath}/people" class="nav-link">Ludzie kina</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">Rankingi</a>
 						</li>
 					</ul>
+
+					<ul class="navbar-nav ml-auto">
+					    <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> ${userId}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="${contextPath}/ratings">Moje oceny</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="${contextPath}/logout">Wyloguj się</a>
+                            </div>
+					    </li>
+					</ul>
 				</div>
 			</div>
 		</nav>
-
 
     <div class="container" id="header" style="margin-top: 6rem">
 			<div class="row justify-content-center">
@@ -56,7 +69,7 @@
 				<div class="col-lg-5 mx-lg-0 ml-lg-5">
 					<div id="title" class="mb-5 text-lg-left text-center">
 						<h2 class="d-inline-block"><a href="#" class="green-font-color film-link">${person.stageName}</a></h2>
-						<h3 class="text-muted">${person.fullName}</h3>
+						<h4 class="text-muted">${person.fullName}</h4>
 					</div>
 
 					<div id="wrapper" class="w-100 text-lg-left text-center">
@@ -152,7 +165,7 @@
 							<c:forEach items="${person.actorFilmsAssociation}" var="actor" varStatus="loop">
                                 <div class="clearfix p-2 ${loop.index % 2 == 0 ? '' : 'bg-dark'}">
                                     <div class="float-left w-50">
-                                        <a href="${contextPath}/film/${actor.film.id}">
+                                        <a href="${contextPath}/films/${actor.film.id}">
                                             ${actor.film.polishTitle} (${actor.film.worldwideReleaseDate.getYear()})
                                         </a>
                                     </div>
@@ -164,20 +177,20 @@
 				</div>
 
 				<div class="card box-colors">
-					<div class="card-header" id="headingOne">
+					<div class="card-header" id="headingTwo">
 						<h5 class="mb-0">
-							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							<button class="btn transparent-button green-font-color" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
 							    <strong>Twórca</strong>
 							</button>
 						</h5>
 					</div>
-					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					<div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
 						<div class="card-body dark-blue p-0">
                         <c:set var="counter" value="0" />
 							<c:forEach items="${person.directorFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -189,7 +202,7 @@
 							<c:forEach items="${person.screenwriterFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -201,7 +214,7 @@
                             <c:forEach items="${person.producerFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -213,7 +226,7 @@
                             <c:forEach items="${person.musicianFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -225,7 +238,7 @@
                             <c:forEach items="${person.editorFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -237,7 +250,7 @@
                             <c:forEach items="${person.cinematographerFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>
@@ -249,7 +262,7 @@
                             <c:forEach items="${person.costumeDesignerFilms}" var="film">
 								<div class="clearfix p-2 ${counter % 2 == 0 ? '' : 'bg-dark'}">
 									<div class="float-left w-50">
-									    <a href="${contextPath}/film/${film.id}">
+									    <a href="${contextPath}/films/${film.id}">
 									        ${film.polishTitle} (${film.worldwideReleaseDate.getYear()})
 									    </a>
 									</div>

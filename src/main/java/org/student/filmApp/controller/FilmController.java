@@ -89,7 +89,7 @@ public class FilmController {
     @RequestMapping(value = "/films",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchAttributes, Model model) {
+    String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchAttributes, Model model) throws IOException {
 
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(),
                 emptyIfNull(filmSearchAttributes.get(FILM_COUNTRIES_ATTRIBUTE_NAME)));
@@ -136,6 +136,15 @@ public class FilmController {
 
         model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
         model.addAttribute(FILMS_ATTRIBUTE_NAME, filmsBySearchTerms);
+
+        HashMap<Long, String> posterPathsMap = new HashMap<>();
+        for(Film film : filmsBySearchTerms) {
+            File filmPosterFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + film.getId()).getFile();
+            String posterPath = ImageUtils.getPosterPath(film.getId(), filmPosterFileDir, FILMS_IMAGES_PATH);
+            posterPathsMap.put(film.getId(), posterPath);
+        }
+
+        model.addAttribute(POSTER_PATHS_ATTRIBUTE_NAME, posterPathsMap);
 
         return FILMS_VIEW_NAME;
     }

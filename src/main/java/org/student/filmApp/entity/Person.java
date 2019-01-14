@@ -223,11 +223,11 @@ public class Person implements Identifiable<Long> {
 		this.producerFilms = producerFilms;
 	}
 
-	public Set<Film> getMusicFilms() {
+	public Set<Film> getMusicianFilms() {
 		return musicianFilms;
 	}
 
-	public void setMusicFilms(Set<Film> musicFilms) {
+	public void setMusicianFilms(Set<Film> musicFilms) {
 		this.musicianFilms = musicFilms;
 	}
 

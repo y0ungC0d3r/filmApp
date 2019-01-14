@@ -7,6 +7,7 @@ import org.student.filmApp.entity.PersonRating;
 import org.student.filmApp.repository.PersonRatingRepository;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Service
 public class PersonRatingService {
@@ -18,5 +19,9 @@ public class PersonRatingService {
     public void save(PersonRating personRating) {
         personRating.setDateOfRating(LocalDate.now());
         personRatingRepository.save(personRating);
+    }
+
+    public Set<PersonRating> findByUserId(Long userId) {
+        return personRatingRepository.findByUserId(userId);
     }
 }

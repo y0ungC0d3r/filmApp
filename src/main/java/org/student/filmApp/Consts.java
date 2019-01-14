@@ -14,6 +14,7 @@ public class Consts {
     public static final String FILMS_VIEW_NAME = "films";
     public static final String PERSON_VIEW_NAME = "person";
     public static final String PEOPLE_VIEW_NAME = "people";
+    public static final String RATINGS_VIEW_NAME = "rating";
 
     public static final String FILM_RATING_ATTRIBUTE_NAME = "filmRating";
     public static final String PERSON_RATING_ATTRIBUTE_NAME = "personRating";
@@ -34,6 +35,10 @@ public class Consts {
     public static final String POSTER_PATH_ATTRIBUTE_NAME = "posterPath";
     public static final String POSTER_PATHS_ATTRIBUTE_NAME = "posterPaths";
     public static final String PROFESSION_ATTRIBUTE_NAME = "professions";
+    public static final String PEOPLE_RATINGS_ATTRIBUTE_NAME = "peopleRatings";
+    public static final String FILMS_RATINGS_ATTRIBUTE_NAME = "filmsRatings";
+
+    public static final String RATING_CATEGORY_PEOPLE_ATTRIBUTE_VALUE = "people";
 
     public static final String SORT_BY_CRITERION_NAME = "sort_by";
     public static final String RATING_CRITERION_NAME = "rating";
