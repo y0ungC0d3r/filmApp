@@ -21,6 +21,10 @@ public class Comment {
     private Film film;
 
     @ManyToOne
+    @JoinColumn(name="person_id")
+    private Person person;
+
+    @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
@@ -62,5 +66,13 @@ public class Comment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
