@@ -19,6 +19,7 @@ import org.student.filmApp.utils.ImageUtils;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.student.filmApp.Consts.*;
@@ -172,6 +173,7 @@ public class FilmController {
 
         model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
 
+        model.addAttribute(CURRENT_DATE_ATTRIBUTE_NAME, LocalDate.now());
 
         File filmImagesFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId).getFile();
         File thumbnailsFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId + "/thumbnail").getFile();

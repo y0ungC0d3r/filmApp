@@ -75,22 +75,29 @@
 					</div>
 
 					<div id="wrapper" class="w-100 text-lg-left text-center">
-						<div class="rounded box-colors shadow pl-4 pr-5 py-3 clearfix d-inline-block">
-							<div class="rating-box d-inline-block">${film.averageRating} ★</div>
-							<div class="text-muted d-inline-block ml-3">liczba głosów: ${film.numberOfVotes}</div>
-							<div class="pt-3 text-left">Twoja ocena: </div>
-							<form:form action="../change-film-rating" method="post" modelAttribute="filmRating">
-								<fieldset class="rating">
-									<form:radiobutton id="star-5" path="rating" value="5" /><label class="full" for="star-5" title="Badzo dobry"><i class="fas fa-star"></i></label>
-									<form:radiobutton id="star-4" path="rating" value="4" /><label class="full" for="star-4" title="Dobry"><i class="fas fa-star"></i></label>
-									<form:radiobutton id="star-3" path="rating" value="3" /><label class="full" for="star-3" title="Przeciętny"><i class="fas fa-star"></i></label>
-									<form:radiobutton id="star-2" path="rating" value="2" /><label class="full" for="star-2" title="Słaby"><i class="fas fa-star"></i></label>
-									<form:radiobutton id="star-1" path="rating" value="1" /><label class="full" for="star-1" title="Bardzo słaby"><i class="fas fa-star"></i></label>
-								</fieldset>
-								<form:hidden path = "user.id" />
-								<form:hidden path = "film.id" />
-							</form:form>
-							<!--<div class="pt-3 text-left">${film.ratings.iterator().next().dateOfRating}</div>-->
+						<div class="rounded box-colors shadow px-4 py-3 clearfix d-inline-block">
+                            <c:choose>
+                                <c:when test="${now.isBefore(film.worldwideReleaseDate)}">
+                                    <h5>Film czeka na premiere</h5>
+                                </c:when>
+                                <c:otherwise>
+                                   <div class="rating-box d-inline-block">${film.averageRating} ★</div>
+                                    <div class="text-muted d-inline-block ml-3">liczba głosów: ${film.numberOfVotes}</div>
+                                    <div class="pt-3 text-left">Twoja ocena: </div>
+                                    <form:form action="../change-film-rating" method="post" modelAttribute="filmRating">
+                                        <fieldset class="rating">
+                                            <form:radiobutton id="star-5" path="rating" value="5" /><label class="full" for="star-5" title="Badzo dobry"><i class="fas fa-star"></i></label>
+                                            <form:radiobutton id="star-4" path="rating" value="4" /><label class="full" for="star-4" title="Dobry"><i class="fas fa-star"></i></label>
+                                            <form:radiobutton id="star-3" path="rating" value="3" /><label class="full" for="star-3" title="Przeciętny"><i class="fas fa-star"></i></label>
+                                            <form:radiobutton id="star-2" path="rating" value="2" /><label class="full" for="star-2" title="Słaby"><i class="fas fa-star"></i></label>
+                                            <form:radiobutton id="star-1" path="rating" value="1" /><label class="full" for="star-1" title="Bardzo słaby"><i class="fas fa-star"></i></label>
+                                        </fieldset>
+                                        <form:hidden path = "user.id" />
+                                        <form:hidden path = "film.id" />
+                                    </form:form>
+                                    <!--<div class="pt-3 text-left">${film.ratings.iterator().next().dateOfRating}</div>-->
+                                </c:otherwise>
+                            </c:choose>
 						</div>
 					</div>
 

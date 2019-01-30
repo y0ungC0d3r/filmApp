@@ -1,6 +1,7 @@
 package org.student.filmApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,9 @@ import org.student.filmApp.entity.User;
 import org.student.filmApp.service.PersonService;
 import org.student.filmApp.service.SecurityServiceImpl;
 import org.student.filmApp.service.UserServiceImpl;
+import org.student.filmApp.utils.ImageUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +45,9 @@ public class PersonController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    ResourceLoader resourceLoader;
 
     @RequestMapping(value = "/people", method = RequestMethod.GET)
     String showPeople(Model model) {
@@ -113,6 +119,15 @@ public class PersonController {
                 .orElse(new PersonRating(new Person(personId), new User(userId)));
 
         model.addAttribute(PERSON_RATING_ATTRIBUTE_NAME, personRating);
+
+        File personImagesFileDir = resourceLoader.getResource(PEOPLE_IMAGES_PATH + personId).getFile();
+        File thumbnailsFileDir = resourceLoader.getResource(PEOPLE_IMAGES_PATH + personId + "/thumbnail").getFile();
+        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(personId, personImagesFileDir, thumbnailsFileDir, PEOPLE_IMAGES_PATH);
+
+        String posterPath = ImageUtils.getPosterPath(personId, personImagesFileDir, PEOPLE_IMAGES_PATH);
+
+        model.addAttribute(IMAGES_PATHS_ATTRIBUTE_NAME, imagesPaths);
+        model.addAttribute(POSTER_PATH_ATTRIBUTE_NAME, posterPath);
 
         return PERSON_VIEW_NAME;
     }

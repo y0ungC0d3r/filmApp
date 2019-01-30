@@ -37,6 +37,7 @@ public class Consts {
     public static final String PROFESSION_ATTRIBUTE_NAME = "professions";
     public static final String PEOPLE_RATINGS_ATTRIBUTE_NAME = "peopleRatings";
     public static final String FILMS_RATINGS_ATTRIBUTE_NAME = "filmsRatings";
+    public static final String CURRENT_DATE_ATTRIBUTE_NAME = "now";
 
     public static final String RATING_CATEGORY_PEOPLE_ATTRIBUTE_VALUE = "people";
 

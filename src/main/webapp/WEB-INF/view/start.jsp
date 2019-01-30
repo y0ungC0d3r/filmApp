@@ -44,10 +44,12 @@
                                     <form:input type="text" path="username" class="form-control" placeholder="Nazwa użytkownika"></form:input>
                                 </spring:bind>
                             </div>
-
 					        <div class="form-group">
 					            <spring:bind path="password">
                                     <form:input type="password" path="password" class="form-control" placeholder="Hasło"></form:input>
+                                    <div class="invalid-feedback">
+                                        ${not empty error ? error : ''}
+                                    </div>
                                 </spring:bind>
                             </div>
 							<button class="btn btn-warning btn-block mt-4" type="submit">Zaloguj się</button>
