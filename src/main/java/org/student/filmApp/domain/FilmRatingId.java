@@ -1,24 +1,24 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class PersonRatingId implements Serializable {
-    
+public class FilmRatingId implements Serializable {
+
     @ManyToOne
-    private Person person;
+    private Film film;
 
     @ManyToOne
     private User user;
 
-    public Person getPerson() {
-        return person;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 
     public User getUser() {

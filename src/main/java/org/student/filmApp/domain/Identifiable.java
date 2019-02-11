@@ -1,4 +1,4 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 public interface Identifiable<T> {
     T getId();

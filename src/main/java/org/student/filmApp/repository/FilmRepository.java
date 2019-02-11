@@ -3,8 +3,7 @@ package org.student.filmApp.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.student.filmApp.entity.Film;
+import org.student.filmApp.domain.Film;
 
 @Repository
 public interface FilmRepository extends BaseRepository<Film, Long> {
@@ -20,6 +19,7 @@ public interface FilmRepository extends BaseRepository<Film, Long> {
 			"LEFT JOIN FETCH f.filmProducers " +
 			"LEFT JOIN FETCH f.filmScreenwriters " +
 			"LEFT JOIN FETCH f.ratings " +
+			"LEFT JOIN FETCH f.comments " +
 			"WHERE f.id = :film_id")
 	Film findByIdWithFetch(@Param("film_id") Long filmId);
 }

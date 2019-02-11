@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.student.filmApp.Consts;
-import org.student.filmApp.entity.Person;
-import org.student.filmApp.entity.PersonRating;
-import org.student.filmApp.entity.Profession;
-import org.student.filmApp.entity.User;
+import org.student.filmApp.domain.Person;
+import org.student.filmApp.domain.PersonRating;
+import org.student.filmApp.domain.Profession;
+import org.student.filmApp.domain.User;
 import org.student.filmApp.service.PersonService;
-import org.student.filmApp.service.SecurityServiceImpl;
 import org.student.filmApp.service.UserServiceImpl;
 import org.student.filmApp.utils.ImageUtils;
 
@@ -26,7 +25,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.CollectionUtils.createMarkedIdentifiableElementsMap;
@@ -39,9 +37,6 @@ public class PersonController {
 
     @Autowired
     PersonService personService;
-
-    @Autowired
-    private SecurityServiceImpl securityService;
 
     @Autowired
     private UserServiceImpl userService;
@@ -101,12 +96,9 @@ public class PersonController {
     @RequestMapping(value = "/people/{id}", method = RequestMethod.GET)
     String showFilm(@PathVariable String id, Model model) throws IllegalAccessException, IOException {
 
-        Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
-
         Long personId = Long.valueOf(id);
-        Long userId = loggedUser
-                .map(User::getId)
-                .orElseThrow(IllegalAccessException::new);
+
+        User user = userService.findLoggedUser();
 
         Person person = personService.findByIdWithFetch(personId);
 
@@ -114,9 +106,9 @@ public class PersonController {
 
         PersonRating personRating = person.getRatings()
                 .stream()
-                .filter(r -> r.getUser().getId().equals(userId))
+                .filter(r -> r.getUser().getId().equals(user.getId()))
                 .findFirst()
-                .orElse(new PersonRating(new Person(personId), new User(userId)));
+                .orElse(new PersonRating(new Person(personId), user));
 
         model.addAttribute(PERSON_RATING_ATTRIBUTE_NAME, personRating);
 

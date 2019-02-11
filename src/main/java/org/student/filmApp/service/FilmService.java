@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
-import org.student.filmApp.entity.*;
+import org.student.filmApp.domain.*;
 import org.student.filmApp.repository.FilmRepository;
 import static org.student.filmApp.Consts.*;
 import static org.student.filmApp.utils.DateUtils.getFirstDayOfYear;
@@ -28,8 +28,8 @@ public class FilmService {
 
     public static final String SORT_BY_VALUE_PATTERN = "(rating|date)-(ascending|descending)";
 
-    Film findById(Long id) {
-        return filmRepository.findById(id).orElse(null);
+    public Optional<Film> findById(Long id) {
+        return filmRepository.findById(id);
     }
 
     @Transactional

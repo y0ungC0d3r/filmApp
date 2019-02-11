@@ -1,16 +1,13 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
+
+import org.hibernate.annotations.SortNatural;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "film")
@@ -91,6 +88,10 @@ public class Film implements Identifiable<Long> {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "filmRatingId.film")
 	private Set<FilmRating> ratings;
+
+	@OneToMany(mappedBy="film")
+	@SortNatural
+	private SortedSet<Comment> comments;
 
 	public Long getId() {
 		return id;
@@ -275,4 +276,11 @@ public class Film implements Identifiable<Long> {
 				.collect(Collectors.toSet());
 	}
 
+	public SortedSet<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(SortedSet<Comment> comments) {
+		this.comments = comments;
+	}
 }

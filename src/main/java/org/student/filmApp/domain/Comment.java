@@ -1,13 +1,15 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "comment_")
+public class Comment implements Comparable<Comment> {
     @Id
-    @Column(name = "column")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGen")
+    @SequenceGenerator(name = "commentGen", sequenceName = "COMMENT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "date_of_publish")
@@ -27,6 +29,20 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    public Comment() {}
+
+    public Comment(String content, Film film, User user) {
+        this.content = content;
+        this.film = film;
+        this.user = user;
+    }
+
+    public Comment(String content, Person person, User user) {
+        this.content = content;
+        this.person = person;
+        this.user = user;
+    }
 
     public LocalDateTime getDateOfPublish() {
         return dateOfPublish;
@@ -74,5 +90,10 @@ public class Comment {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public int compareTo(Comment c) {
+        return c.getDateOfPublish().compareTo(dateOfPublish);
     }
 }

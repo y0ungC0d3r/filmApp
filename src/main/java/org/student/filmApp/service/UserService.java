@@ -1,6 +1,6 @@
 package org.student.filmApp.service;
 
-import org.student.filmApp.entity.User;
+import org.student.filmApp.domain.User;
 
 import java.util.Optional;
 

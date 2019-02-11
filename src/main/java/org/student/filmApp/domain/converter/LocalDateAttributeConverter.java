@@ -1,4 +1,4 @@
-package org.student.filmApp.entity.converter;
+package org.student.filmApp.domain.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

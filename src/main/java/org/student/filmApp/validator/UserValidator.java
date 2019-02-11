@@ -1,12 +1,11 @@
 package org.student.filmApp.validator;
 
-import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import org.student.filmApp.entity.User;
+import org.student.filmApp.domain.User;
 import org.student.filmApp.service.UserService;
 
 @Component

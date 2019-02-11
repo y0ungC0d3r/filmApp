@@ -1,5 +1,6 @@
 package org.student.filmApp.controller;
 
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,18 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.student.filmApp.entity.Film;
-import org.student.filmApp.entity.FilmRating;
-import org.student.filmApp.entity.PersonRating;
-import org.student.filmApp.entity.User;
+import org.student.filmApp.domain.FilmRating;
+import org.student.filmApp.domain.PersonRating;
 import org.student.filmApp.service.FilmRatingService;
 import org.student.filmApp.service.PersonRatingService;
-import org.student.filmApp.service.SecurityServiceImpl;
 import org.student.filmApp.service.UserServiceImpl;
-
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Optional;
 
 import static org.student.filmApp.Consts.*;
 
@@ -34,9 +28,6 @@ public class RatingController {
     @Autowired
     private UserServiceImpl userService;
 
-    @Autowired
-    private SecurityServiceImpl securityService;
-
     @RequestMapping(value = "/change-film-rating", method = RequestMethod.POST)
     String changeFilmRating(@ModelAttribute("filmRating") FilmRating rating) {
         filmRatingService.save(rating);
@@ -50,18 +41,20 @@ public class RatingController {
     }
 
     @RequestMapping(value = "/ratings", method = RequestMethod.GET)
-    String getRatings(@RequestParam(value = "rating-category", required = false) String ratingCat, Model model) throws IllegalAccessException {
+    String getRatings(@RequestParam(value = "rating-category", required = false) String ratingCat,
+                      @RequestParam(value = "username", required = false) String username,
+                      Model model) throws IllegalAccessException {
 
-        Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
+        if(Strings.isNullOrEmpty(username)) {
+            username = userService.findLoggedUser().getUsername();
+        }
 
-        Long userId = loggedUser
-                .map(User::getId)
-                .orElseThrow(IllegalAccessException::new);
+        model.addAttribute(USERNAME_ATTRIBUTE_NAME, username);
 
         if(RATING_CATEGORY_PEOPLE_ATTRIBUTE_VALUE.equals(ratingCat)) {
-            model.addAttribute(PEOPLE_RATINGS_ATTRIBUTE_NAME, personRatingService.findByUserId(userId));
+            model.addAttribute(PEOPLE_RATINGS_ATTRIBUTE_NAME, personRatingService.findByUsername(username));
         } else {
-            model.addAttribute(FILMS_RATINGS_ATTRIBUTE_NAME, filmRatingService.findByUserId(userId));
+            model.addAttribute(FILMS_RATINGS_ATTRIBUTE_NAME, filmRatingService.findByUsername(username));
         }
 
         return RATINGS_VIEW_NAME;

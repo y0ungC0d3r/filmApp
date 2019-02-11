@@ -1,6 +1,6 @@
 package org.student.filmApp.utils;
 
-import org.student.filmApp.entity.Identifiable;
+import org.student.filmApp.domain.Identifiable;
 
 import java.util.Collection;
 import java.util.Collections;

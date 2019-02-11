@@ -1,4 +1,4 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -126,6 +126,9 @@ public class Person implements Identifiable<Long> {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "personRatingId.person")
 	private Set<PersonRating> ratings;
+
+	@OneToMany(mappedBy="person")
+	private Set<Comment> comments;
 
 	public Long getId() {
 		return id;
@@ -293,5 +296,13 @@ public class Person implements Identifiable<Long> {
 
 	public void setActorFilms(Set<Film> actorFilms) {
 		this.actorFilms = actorFilms;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }

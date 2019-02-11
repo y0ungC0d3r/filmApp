@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<c:set var="userId" value="${pageContext.request.userPrincipal.name}" />
+<c:set var="username" value="${pageContext.request.userPrincipal.name}" />
 
 <!doctype html>
 <html lang="pl">
@@ -30,11 +30,11 @@
 				<a href="${contextPath}" class="navbar-brand logo pr-4">filmore</a>
 				<div class="collapse navbar-collapse" id="nabarCollapse">
 					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a href="#" class="nav-link" style="color: #EC7149;">Filmy</a>
+                        <li class="nav-item">
+							<a href="${contextPath}/films" class="nav-link">Filmy</a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="nav-link">Ludzie kina</a>
+							<a href="${contextPath}/people" class="nav-link">Ludzie kina</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">Rankingi</a>
@@ -45,7 +45,7 @@
 					    <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <span style="font-size: 130%"><i class="fas fa-user green-font-color"></i> ${userId}</span>
+                                <span class="text-white" style="font-size: 130%"><i class="fas fa-user"></i> ${username}</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="${contextPath}/ratings">Moje oceny</a>
@@ -70,6 +70,7 @@
 						<input type="radio" name="rating-category" value="people" id="option2" autocomplete="off" ${empty peopleRatings ? '' : 'checked'}> Ludzie kina
 					</label>
 				</div>
+				<input type="hidden" name="username" value="${name}" />
 			</form>
 
 			<c:choose>

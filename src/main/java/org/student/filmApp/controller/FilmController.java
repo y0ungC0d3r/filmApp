@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.student.filmApp.entity.*;
+import org.student.filmApp.domain.*;
 import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 import org.student.filmApp.utils.ImageUtils;
@@ -37,9 +37,6 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
-
-    @Autowired
-    private SecurityServiceImpl securityService;
 
     @Autowired
     private UserServiceImpl userService;
@@ -153,12 +150,9 @@ public class FilmController {
     @RequestMapping(value = "/films/{id}", method = RequestMethod.GET)
     String showFilm(@PathVariable String id, Model model) throws IllegalAccessException, IOException {
 
-        Optional<User> loggedUser = userService.findByUsername(securityService.findLoggedInUsername());
-
         Long filmId = Long.valueOf(id);
-        Long userId = loggedUser
-                .map(User::getId)
-                .orElseThrow(IllegalAccessException::new);
+
+        User user = userService.findLoggedUser();
 
         Film film = filmService.findByIdWithFetch(filmId);
 
@@ -167,9 +161,9 @@ public class FilmController {
         FilmRating filmRating = film
                 .getRatings()
                 .stream()
-                .filter(r -> r.getUser().getId().equals(userId))
+                .filter(r -> r.getUser().getId().equals(user.getId()))
                 .findFirst()
-                .orElse(new FilmRating(new Film(filmId), new User(userId)));
+                .orElse(new FilmRating(new Film(filmId), user));
 
         model.addAttribute(FILM_RATING_ATTRIBUTE_NAME, filmRating);
 

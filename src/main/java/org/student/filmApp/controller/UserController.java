@@ -7,7 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.student.filmApp.entity.User;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.student.filmApp.domain.User;
 import org.student.filmApp.service.SecurityService;
 import org.student.filmApp.service.UserService;
 import org.student.filmApp.validator.UserValidator;
@@ -50,7 +51,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@ModelAttribute("loginUserForm") User userForm, Model model, String error, String logout) {
+    public String login(@ModelAttribute("loginUserForm") User userForm,
+                        @RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+
+        model.asMap().entrySet().stream().forEach(e -> System.out.println(e.getKey() + "  " + e.getValue()));
+
+        System.out.println("AAAA");
 
         if (error != null) {
             model.addAttribute("error", "Nieprawidłowy login lub hasło");

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<c:set var="userId" value="${pageContext.request.userPrincipal.name}" />
+<c:set var="username" value="${pageContext.request.userPrincipal.name}" />
 
 <!doctype html>
 <html lang="pl">
@@ -30,7 +30,7 @@
 				<a href="${contextPath}" class="navbar-brand logo pr-4">filmore</a>
 				<div class="collapse navbar-collapse" id="nabarCollapse">
 					<ul class="navbar-nav">
-						<li class="nav-item">
+                        <li class="nav-item">
 							<a href="${contextPath}/films" class="nav-link">Filmy</a>
 						</li>
 						<li class="nav-item">
@@ -41,11 +41,11 @@
 						</li>
 					</ul>
 
-					<ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
 					    <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i> ${userId}
+                                <span class="text-white" style="font-size: 130%"><i class="fas fa-user"></i> ${username}</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="${contextPath}/ratings">Moje oceny</a>
@@ -130,7 +130,7 @@
 
             <c:choose>
                 <c:when test="${not empty person.biography}">
-                    <p class="description">${person.biography}</p>
+                    <p class="description text-justify">${person.biography}</p>
                 </c:when>
                 <c:otherwise>
                     <p class="description">Osoba nie posiada jeszcze biografii.</p>
@@ -276,6 +276,49 @@
 
 			</div>
 
+            <form action="../add-person-comment" method="post">
+                <div class="row justify-content-center mt-4" id="comment-section">
+
+                    <div class="col-11 my-3">
+                        <h4 class="my-4"><span class="green-font-color">Komentarze</span> <span style="color: lightgray">(${person.comments.size()})</span></h4>
+                    </div>
+                    <div class="col-10 pb-4">
+                        <textarea class="form-control" name="content" rows="4" placeholder="Napisz komentarz..."></textarea>
+                    </div>
+
+                     <input type="hidden" name="person-id" value="${person.id}" />
+
+                    <div class="col-10 pb-4">
+                        <input class="btn btn-warning btn-block" type="submit" value="Publikuj" />
+                    </div>
+                </div>
+            </form>
+
+            <form action="../delete-comment" method="post">
+                <div class="row justify-content-center mt-4">
+                    <c:forEach items="${person.comments}" var="comment">
+                        <div class="col-10 box-colors py-2 px-4 rounded shadow mx-5 mb-4" style="word-wrap: break-word">
+                            <a style="font-size: 120%;" class="orange-font-color" href="../ratings?username=${comment.user.username}">
+                                ${comment.user.username}</a>
+                            <span class="ml-2 text-muted">
+                                ${comment.dateOfPublish.toLocalDate()} ${comment.dateOfPublish.toLocalTime()}
+                            </span>
+                            <c:if test="${comment.user.username.equals(username)}">
+                                <div class="float-right clearfix">
+                                    <button type="submit" class="btn btn-danger btn-sm" name="comment-id" value="${comment.id}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </c:if>
+
+                            <div class="w-100 pb-2 pt-2" style="color: lightgray">
+                                ${comment.content}
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </form>
+
 		</div>
 
 
@@ -285,7 +328,7 @@
   				<a href="https://www.linkedin.com/in/wojciech-%C5%9Bmigowski-1b22b2140">Wojciech Śmigowski</a>
         </div>
       </div>
-		</footer>
+	</footer>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.student.filmApp.entity.User;
+import org.student.filmApp.domain.User;
 import org.student.filmApp.repository.UserRepository;
 
 import java.util.HashSet;

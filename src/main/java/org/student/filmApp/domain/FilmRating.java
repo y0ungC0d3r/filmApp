@@ -1,10 +1,7 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 @Entity
 @Table(name = "film_rating")

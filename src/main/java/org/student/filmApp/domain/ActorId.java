@@ -1,4 +1,4 @@
-package org.student.filmApp.entity;
+package org.student.filmApp.domain;
 
 import java.io.Serializable;
 

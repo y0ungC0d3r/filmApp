@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
-import org.student.filmApp.entity.*;
+import org.student.filmApp.domain.*;
 import org.student.filmApp.repository.PersonRepository;
 
 import javax.persistence.EntityManager;

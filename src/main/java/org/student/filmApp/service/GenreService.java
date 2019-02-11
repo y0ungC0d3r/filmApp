@@ -2,7 +2,7 @@ package org.student.filmApp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.student.filmApp.entity.Genre;
+import org.student.filmApp.domain.Genre;
 import org.student.filmApp.repository.GenreRepository;
 
 import java.util.Set;
