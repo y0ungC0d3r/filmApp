@@ -13,7 +13,7 @@ public class GenreService {
     @Autowired
     GenreRepository genreRepository;
 
-    public Set<Genre> findAll() {
+    public Iterable<Genre> findAll() {
         return genreRepository.findAll();
     }
 

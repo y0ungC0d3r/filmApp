@@ -56,7 +56,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> -->
 
-	<bean id="entityManagerFactory"
+	<!-- <bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="org.student.filmApp.domain" />
@@ -71,18 +71,32 @@
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
+	</bean> -->
+
+	<bean id="entityManagerFactory"
+		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="org.student.filmApp.domain" />
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
 	</bean>
 
+	<bean id="jpaVendorAdapter"
+		  class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="database" value="ORACLE" />
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="false" />
+		<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" />
+	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<!-- Enable configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- Add support for reading web resources: css, images, js, etc ... -->
 	<mvc:resources location="/resources/" mapping="/resources/**" />
+
+	<jpa:repositories base-package="org.student.filmApp.repository" />
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
@@ -91,7 +105,5 @@
 			</list>
 		</property>
 	</bean>
-
-	<jpa:repositories base-package="org.student.filmApp.repository" />
 
 </beans>

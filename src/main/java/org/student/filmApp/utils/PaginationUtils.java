@@ -42,13 +42,14 @@ public class PaginationUtils {
         return (int) ((numberOfRows / DEFAULT_PAGE_SIZE) + 1);
     }
 
-    public static int calculateCurrPageNumber(List<String> currPageNumberList, int lastPageNumber) {
-
+    public static int calculateCurrPageNumber(List<String> currPageNumberList,
+                                              int lastPageNumber) {
         try {
             int currPageNumber = emptyIfNull(currPageNumberList)
                     .stream()
                     .findFirst()
                     .map(Integer::parseInt)
+                    .filter(n -> n > 0)
                     .orElseThrow(NullPointerException::new);
 
             return currPageNumber > lastPageNumber ? lastPageNumber : currPageNumber;

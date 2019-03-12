@@ -67,7 +67,7 @@ public class Consts {
     public static final float MIN_AVERAGE_RATING_VALUE = 1.f;
 
     public static final int DEFAULT_PAGE_NUMBER = 1;
-    public static final int DEFAULT_PAGE_SIZE = 12;
+    public static final int DEFAULT_PAGE_SIZE = 9;
     public static final int DEFAULT_NUMBER_OF_PAGES = 5;
 
     public static final String FILMS_IMAGES_PATH = "resources/image/film/";

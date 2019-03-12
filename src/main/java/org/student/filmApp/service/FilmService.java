@@ -28,6 +28,7 @@ public class FilmService {
 
     public static final String SORT_BY_VALUE_PATTERN = "(rating|date)-(ascending|descending)";
 
+    @Transactional
     public Optional<Film> findById(Long id) {
         return filmRepository.findById(id);
     }
@@ -59,7 +60,8 @@ public class FilmService {
     }
 
     @Transactional
-    public List<Film> findFilmsBySearchTerms(MultiValueMap<String, String> criteria, int currPageNumber, int lastPageNumber) {
+    public List<Film> findFilmsBySearchTerms(MultiValueMap<String, String> criteria,
+                                             int currPageNumber, int lastPageNumber) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Film> pageCriteria = builder.createQuery(Film.class);
@@ -82,8 +84,20 @@ public class FilmService {
     }
 
 
-    private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap, Root<Film> root, CriteriaBuilder builder) {
+    private Predicate getTotalPredicate(MultiValueMap<String, String> criteriaMap,
+                                        Root<Film> root, CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(criteriaMap.get(FILM_TITLE_CRITERION_NAME)) &&
+                !criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0).isEmpty()) {
+            Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
+                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
+            Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),
+                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
+
+            Predicate titlePredicate = builder.or(polishTitlePredicate, originalTitlePredicate);
+            predicates.add(titlePredicate);
+        }
 
         if(!CollectionUtils.isEmpty(criteriaMap.get(RATING_CRITERION_NAME))) {
             Optional<Float> floor = criteriaMap.get(RATING_CRITERION_NAME)
@@ -107,16 +121,6 @@ public class FilmService {
 
             Predicate roofRatingPredicate = builder.lessThanOrEqualTo(root.get(Film_.averageRating), roof.orElse(MAX_AVERAGE_RATING_VALUE));
             predicates.add(roofRatingPredicate);
-        }
-
-        if(!CollectionUtils.isEmpty(criteriaMap.get(FILM_TITLE_CRITERION_NAME)) && !criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0).isEmpty()) {
-            Predicate polishTitlePredicate = builder.like(root.get(Film_.polishTitle),
-                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
-            Predicate originalTitlePredicate = builder.like(root.get(Film_.originalTitle),
-                    "%" + criteriaMap.get(FILM_TITLE_CRITERION_NAME).get(0) + "%");
-
-            Predicate titlePredicate = builder.or(polishTitlePredicate, originalTitlePredicate);
-            predicates.add(titlePredicate);
         }
 
         if(!CollectionUtils.isEmpty(criteriaMap.get(YEARS_CRITERION_NAME))) {
@@ -155,17 +159,18 @@ public class FilmService {
     }
 
     private Order getOrder(List<String> sortByCriterion, Root<Film> pageRoot, CriteriaBuilder builder) {
-        if(!CollectionUtils.isEmpty(sortByCriterion) && sortByCriterion.get(0).matches(SORT_BY_VALUE_PATTERN)) {
-            String[] sortCriterium = sortByCriterion.get(0).split("-");
-            if(sortCriterium[0].equals("date")) {
+        if(!CollectionUtils.isEmpty(sortByCriterion) &&
+                sortByCriterion.get(0).matches(SORT_BY_VALUE_PATTERN)) {
+            String[] sortCriterion = sortByCriterion.get(0).split("-");
+            if(sortCriterion[0].equals("date")) {
                 Path<LocalDate> releaseDate = pageRoot.get(Film_.worldwideReleaseDate);
-                if(sortCriterium[1].equals("descending")) {
+                if(sortCriterion[1].equals("descending")) {
                     return builder.desc(releaseDate);
                 }
                 return builder.asc(releaseDate);
-            } else if(sortCriterium[0].equals("rating")) {
+            } else if(sortCriterion[0].equals("rating")) {
                 Path<Float> averageRating = pageRoot.get(Film_.averageRating);
-                if(sortCriterium[1].equals("descending")) {
+                if(sortCriterion[1].equals("descending")) {
                     return builder.desc(averageRating);
                 }
                 return builder.asc(averageRating);

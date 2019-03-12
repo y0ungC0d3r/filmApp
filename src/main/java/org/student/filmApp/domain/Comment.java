@@ -1,11 +1,12 @@
 package org.student.filmApp.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment_")
-public class Comment implements Comparable<Comment> {
+public class Comment implements Comparable<Comment>, Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGen")

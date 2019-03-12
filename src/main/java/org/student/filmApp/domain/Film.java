@@ -89,8 +89,8 @@ public class Film implements Identifiable<Long> {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "filmRatingId.film")
 	private Set<FilmRating> ratings;
 
-	@OneToMany(mappedBy="film")
 	@SortNatural
+	@OneToMany(mappedBy="film")
 	private SortedSet<Comment> comments;
 
 	public Long getId() {

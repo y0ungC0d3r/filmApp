@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.student.filmApp.domain.User;
 import org.student.filmApp.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         user.ifPresent(u -> u.getRoles().forEach(r -> grantedAuthorities.add(new SimpleGrantedAuthority(r.getName()))));
-        return new org.springframework.security.core.userdetails.User(user.map(u -> u.getUsername()).orElse(null),
-                user.map(u -> u.getPassword()).orElse(null), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.map(User::getUsername).orElse(null),
+                user.map(User::getPassword).orElse(null), grantedAuthorities);
     }
 }

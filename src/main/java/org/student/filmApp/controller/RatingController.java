@@ -20,10 +20,10 @@ import static org.student.filmApp.Consts.*;
 public class RatingController {
 
     @Autowired
-    FilmRatingService filmRatingService;
+    private FilmRatingService filmRatingService;
 
     @Autowired
-    PersonRatingService personRatingService;
+    private PersonRatingService personRatingService;
 
     @Autowired
     private UserServiceImpl userService;

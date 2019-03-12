@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
     @Autowired
     private UserServiceImpl userService;
@@ -47,7 +47,7 @@ public class CommentController {
 
         commentService.save(comment);
 
-        return "redirect:/people/" + personId;
+        return "redirect:/people/" + personId + "#comment-section";
     }
 
     @RequestMapping(value = { "/delete-comment"}, method = RequestMethod.POST)

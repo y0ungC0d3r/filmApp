@@ -29,8 +29,6 @@ http://www.springframework.org/schema/security/spring-security-4.2.xsd">
         </authentication-provider>
     </authentication-manager>
 
-    <!--<beans:bean id="userDetailsServiceImpl" class="org.student.filmApp.service.UserDetailsServiceImpl"></beans:bean>-->
-
     <beans:bean id="encoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </beans:bean>

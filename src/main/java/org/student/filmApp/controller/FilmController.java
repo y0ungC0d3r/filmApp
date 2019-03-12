@@ -16,7 +16,6 @@ import org.student.filmApp.service.*;
 import org.student.filmApp.utils.DateUtils;
 import org.student.filmApp.utils.ImageUtils;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -42,9 +41,6 @@ public class FilmController {
     private UserServiceImpl userService;
 
     @Autowired
-    ServletContext servletContext;
-
-    @Autowired
     ResourceLoader resourceLoader;
 
     public static final String RATING_RANGE_VALUE_PATTERN = "(floor|roof)-[1-5]";
@@ -52,13 +48,16 @@ public class FilmController {
     @RequestMapping(value = { "/", "/films"}, method = RequestMethod.GET)
     String showFilms(Model model) throws IOException {
 
-        Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
+        Map<Country, Boolean> markedCountries =
+                createMarkedIdentifiableElementsMap(countryService.findAll(), Collections.emptyList());
         model.addAttribute(FILM_COUNTRIES_ATTRIBUTE_NAME, markedCountries);
 
-        Map<Genre, Boolean> markedGenres = createMarkedIdentifiableElementsMap(genreService.findAll(), Collections.emptyList());
+        Map<Genre, Boolean> markedGenres =
+                createMarkedIdentifiableElementsMap(genreService.findAll(), Collections.emptyList());
         model.addAttribute(FILM_GENRES_ATTRIBUTE_NAME, markedGenres);
 
-        Map<String, Boolean> markedYears = createMarkedIntegerElementsMap(DateUtils.getYears(), Collections.emptyList());
+        Map<String, Boolean> markedYears =
+                createMarkedIntegerElementsMap(DateUtils.getYears(), Collections.emptyList());
         model.addAttribute(YEARS_ATTRIBUTE_NAME, markedYears);
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(new LinkedMultiValueMap<>());
@@ -66,7 +65,8 @@ public class FilmController {
 
         model.addAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, DEFAULT_PAGE_NUMBER);
 
-        List<Film> films = filmService.findFilmsBySearchTerms(new LinkedMultiValueMap<>(), DEFAULT_PAGE_NUMBER, lastPageNumber);
+        List<Film> films = filmService
+                .findFilmsBySearchTerms(new LinkedMultiValueMap<>(), DEFAULT_PAGE_NUMBER, lastPageNumber);
         List<Integer> paginationRange = getPaginationRange(DEFAULT_PAGE_NUMBER, lastPageNumber);
 
         model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
@@ -88,7 +88,6 @@ public class FilmController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     String searchFilms(@RequestBody MultiValueMap<String, String> filmSearchAttributes, Model model) throws IOException {
-
         Map<Country, Boolean> markedCountries = createMarkedIdentifiableElementsMap(countryService.findAll(),
                 emptyIfNull(filmSearchAttributes.get(FILM_COUNTRIES_ATTRIBUTE_NAME)));
         model.addAttribute(FILM_COUNTRIES_ATTRIBUTE_NAME, markedCountries);
@@ -125,14 +124,16 @@ public class FilmController {
 
         Long numberOfFilms = filmService.countFilmsBySearchTerms(filmSearchAttributes);
         int lastPageNumber = calculateNumberOfPages(numberOfFilms);
-        int pageNumber = calculateCurrPageNumber(filmSearchAttributes.get(CURRENT_PAGE_ATTRIBUTE_NAME), lastPageNumber);
-
-        model.addAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, pageNumber);
-
-        List<Film> filmsBySearchTerms = filmService.findFilmsBySearchTerms(filmSearchAttributes, pageNumber, lastPageNumber);
+        int pageNumber = calculateCurrPageNumber(filmSearchAttributes
+                .get(CURRENT_PAGE_ATTRIBUTE_NAME), lastPageNumber);
         List<Integer> paginationRange = getPaginationRange(pageNumber, lastPageNumber);
 
+        model.addAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, pageNumber);
         model.addAttribute(PAGINATION_RANGE_ATTRIBUTE_NAME, paginationRange);
+
+        List<Film> filmsBySearchTerms = filmService
+                .findFilmsBySearchTerms(filmSearchAttributes, pageNumber, lastPageNumber);
+
         model.addAttribute(FILMS_ATTRIBUTE_NAME, filmsBySearchTerms);
 
         HashMap<Long, String> posterPathsMap = new HashMap<>();
@@ -148,7 +149,8 @@ public class FilmController {
     }
 
     @RequestMapping(value = "/films/{id}", method = RequestMethod.GET)
-    String showFilm(@PathVariable String id, Model model) throws IllegalAccessException, IOException {
+    String showFilm(@PathVariable String id, Model model)
+            throws IllegalAccessException, IOException {
 
         Long filmId = Long.valueOf(id);
 
@@ -170,8 +172,10 @@ public class FilmController {
         model.addAttribute(CURRENT_DATE_ATTRIBUTE_NAME, LocalDate.now());
 
         File filmImagesFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId).getFile();
-        File thumbnailsFileDir = resourceLoader.getResource(FILMS_IMAGES_PATH + filmId + "/thumbnail").getFile();
-        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(filmId, filmImagesFileDir, thumbnailsFileDir, FILMS_IMAGES_PATH);
+        File thumbnailsFileDir = resourceLoader
+                .getResource(FILMS_IMAGES_PATH + filmId + "/thumbnail").getFile();
+        Map<String, String> imagesPaths = ImageUtils
+                .getAllImagePaths(filmId, filmImagesFileDir, thumbnailsFileDir, FILMS_IMAGES_PATH);
 
         String posterPath = ImageUtils.getPosterPath(filmId, filmImagesFileDir, FILMS_IMAGES_PATH);
 

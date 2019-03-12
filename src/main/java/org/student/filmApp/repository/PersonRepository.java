@@ -1,12 +1,13 @@
 package org.student.filmApp.repository;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.student.filmApp.domain.Person;
 
 @Repository
-public interface PersonRepository extends BaseRepository<Person, Long> {
+public interface PersonRepository extends CrudRepository<Person, Long> {
     @Query("SELECT p FROM Person p " +
             "LEFT JOIN FETCH p.actorFilmsAssociation " +
             "LEFT JOIN FETCH p.directorFilms " +

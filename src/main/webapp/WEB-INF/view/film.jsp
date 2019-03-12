@@ -15,6 +15,7 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
 		<link rel="stylesheet" type="text/css" href="../resources/style.css">
 
@@ -95,7 +96,6 @@
                                         <form:hidden path = "user.id" />
                                         <form:hidden path = "film.id" />
                                     </form:form>
-                                    <!--<div class="pt-3 text-left">${film.ratings.iterator().next().dateOfRating}</div>-->
                                 </c:otherwise>
                             </c:choose>
 						</div>
@@ -346,6 +346,10 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
 	<script type="text/javascript">
+	    $('input[type=radio]').on('change', function() {
+            $(this).closest("form").submit();
+        });
+
 		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
 		  event.preventDefault();
 		  $(this).ekkoLightbox();

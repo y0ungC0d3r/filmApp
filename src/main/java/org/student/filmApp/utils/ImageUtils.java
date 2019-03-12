@@ -20,8 +20,8 @@ public class ImageUtils {
 
     private static final String THUMBNAIL_FOLDER_NAME = "thumbnail";
 
-    public static Map<String, String> getAllFilmImagePaths(Long id, File imagesFileDir, File thumbnailsFileDir, String imagesPath) {
-
+    public static Map<String, String> getAllImagePaths(
+            Long id, File imagesFileDir, File thumbnailsFileDir, String imagesPath) {
         if(!thumbnailsFileDir.exists()) {
             return Collections.EMPTY_MAP;
         }
@@ -42,7 +42,10 @@ public class ImageUtils {
         return thumbnails
                 .stream()
                 .filter(images::contains)
-                .collect(Collectors.toMap(k -> thumbnailsPath.concat(k), v -> imagesSubPath.concat(v)));
+                .collect(Collectors.toMap(
+                        k -> thumbnailsPath.concat(k),
+                        v -> imagesSubPath.concat(v))
+                );
     }
 
     public static String getPosterPath(Long filmId, File imagesFileDir, String imagesPath) {
@@ -70,8 +73,10 @@ public class ImageUtils {
 
     public static void createThumbnail(String dir, String imageName) throws IOException {
 
-        BufferedImage inImage = ImageIO.read(new File(dir + "\\" + imageName + "." + JPG_FILE_EXTENSION));
-        BufferedImage outImage = new BufferedImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        BufferedImage inImage = ImageIO
+                .read(new File(dir + "\\" + imageName + "." + JPG_FILE_EXTENSION));
+        BufferedImage outImage =
+                new BufferedImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         int width = inImage.getWidth();
         int height = inImage.getHeight();
@@ -86,7 +91,8 @@ public class ImageUtils {
             int widthDiff = scaledWidth - THUMBNAIL_WIDTH;
             int crop = widthDiff / 2;
             BufferedImage image = scaleImage(inImage, scaledWidth, scaledHeight)
-                    .getSubimage(crop, 0, scaledWidth - 2 * (widthDiff % 2 == 0 ? crop : crop + 1), scaledHeight);
+                    .getSubimage(crop, 0,
+                            scaledWidth - 2 * (widthDiff % 2 == 0 ? crop : crop + 1), scaledHeight);
             outImage.createGraphics().drawImage(image, 0, 0,null);
         } else {
             int scaledHeight = Math.round((float) height * ((float) THUMBNAIL_WIDTH / width));
@@ -94,7 +100,8 @@ public class ImageUtils {
             int heightDiff = scaledHeight - THUMBNAIL_HEIGHT;
             int crop = heightDiff / 2;
             BufferedImage image = scaleImage(inImage, scaledWidth, scaledHeight)
-                    .getSubimage(0, crop, scaledWidth, scaledHeight - 2 * (heightDiff % 2 == 0 ? crop : crop + 1));
+                    .getSubimage(0, crop,
+                            scaledWidth, scaledHeight - 2 * (heightDiff % 2 == 0 ? crop : crop + 1));
             outImage.createGraphics().drawImage(image, 0, 0,null);
         }
 
@@ -110,7 +117,8 @@ public class ImageUtils {
 
     private static BufferedImage scaleImage(BufferedImage inImage, int scaledWidth, int scaledHeight) {
         Image scaledImage = inImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-        BufferedImage outImage = new BufferedImage(scaledImage.getWidth(null), scaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        BufferedImage outImage = new BufferedImage(scaledImage.getWidth(null),
+                scaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics g = outImage.createGraphics();
         g.drawImage(scaledImage, 0, 0, null);
         g.dispose();
@@ -134,6 +142,6 @@ public class ImageUtils {
         //createThumbnail("C:\\Users\\Comarch\\Desktop\\Brimestone.jpg");
         createThumbnails("C:\\Users\\wowow\\Desktop\\Nowy folder (3)");
         //getFileExtension(new File("C:\\Users\\Comarch\\Desktop\\Brimestone.jpg"));
-        //getAllFilmImagePaths(1L);
+        //getAllImagePaths(1L);
     }
 }

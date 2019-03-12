@@ -6,14 +6,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toMap;
 
 public class CollectionUtils {
-    public static <T extends Identifiable, C extends Collection<T>> Map<T, Boolean> createMarkedIdentifiableElementsMap(
+    public static <T extends Identifiable, C extends Iterable<T>> Map<T, Boolean> createMarkedIdentifiableElementsMap(
             C allElements, Collection<String> selectedElements) {
-        return allElements
-                .stream()
+        return StreamSupport
+                .stream(allElements.spliterator(), false)
                 .collect(toMap(Function.identity(),
                         i -> selectedElements.contains(String.valueOf(i.getId()))));
     }

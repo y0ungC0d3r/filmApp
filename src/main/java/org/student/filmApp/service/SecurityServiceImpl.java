@@ -15,8 +15,7 @@ import java.util.Optional;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
-    @Autowired
-    //@Qualifier("authenticationManager")
+
     private AuthenticationManager authenticationManager;
 
     // <user-service> in xml

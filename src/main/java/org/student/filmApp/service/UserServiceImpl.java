@@ -11,6 +11,7 @@ import org.student.filmApp.repository.UserRepository;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,10 +29,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Set<Role> roles =  roleRepository.findAll().stream()
+        Set<Role> roles = StreamSupport
+                .stream(roleRepository.findAll().spliterator(), false)
                 .filter(r -> r.getName().equals(USER_ROLE))
                 .collect(Collectors.toSet());
-        roles.forEach(r -> System.out.println(r.getName()));
         user.setRoles(roles);
         userRepository.save(user);
     }

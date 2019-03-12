@@ -114,7 +114,7 @@ public class PersonController {
 
         File personImagesFileDir = resourceLoader.getResource(PEOPLE_IMAGES_PATH + personId).getFile();
         File thumbnailsFileDir = resourceLoader.getResource(PEOPLE_IMAGES_PATH + personId + "/thumbnail").getFile();
-        Map<String, String> imagesPaths = ImageUtils.getAllFilmImagePaths(personId, personImagesFileDir, thumbnailsFileDir, PEOPLE_IMAGES_PATH);
+        Map<String, String> imagesPaths = ImageUtils.getAllImagePaths(personId, personImagesFileDir, thumbnailsFileDir, PEOPLE_IMAGES_PATH);
 
         String posterPath = ImageUtils.getPosterPath(personId, personImagesFileDir, PEOPLE_IMAGES_PATH);
 
